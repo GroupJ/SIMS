@@ -73,24 +73,20 @@ public class SummaryTableModel extends DefaultTableModel    {
     }
 
     public void addRow(DataHouse dh)    {
-
-        System.err.println(getColumnCount());
-
+        
         int numRn = dh.CR_row_title.size();
         int colSize = getColumnCount();
 
-        System.err.println(numRn + " " + colSize);
-
         for (int i = 0; i < numRn - ((colSize - 7)/2); i++) {
-            addColumn("R" + i + " (MV)", String.class, false);
-            addColumn("R" + i + " (Std Err(%))", String.class, false);
+            addColumn("R" + ((((colSize - 7)/2)) + i) + " (MV)", String.class, false);
+            addColumn("R" + ((((colSize - 7)/2)) + i) + " (Std Err(%))", String.class, false);
         }
 
         ArrayList<Object> row = new ArrayList<Object> ();
         row.add(new Integer(getRowCount() + 1));
         row.add(new Boolean(false));
         row.add(new Boolean(false));
-        row.add(dh.SampleName);
+        row.add(dh.fileName);
         row.add("(" + dh.x_pos + ", " + dh.y_pos + ")");
         row.add("" + dh.PR_start);
         row.add("" + dh.PR_end);
@@ -104,8 +100,6 @@ public class SummaryTableModel extends DefaultTableModel    {
             row.add(null);
 
         tableEntries.add(row);
-
-        System.err.println(getColumnCount());
     }
 
     public void setEditable(int row, int col, boolean value)   {

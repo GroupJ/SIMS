@@ -10,7 +10,9 @@
  */
 
 package data_summary;
-import javax.swing.table.AbstractTableModel;
+import javax.swing.*;
+import javax.swing.table.TableColumn;
+import javax.swing.table.DefaultTableCellRenderer;
 
 /**
  *
@@ -38,6 +40,8 @@ public class DataSummary extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         exportMenu = new javax.swing.JMenuItem();
 
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance().getContext().getResourceMap(DataSummary.class);
+        setTitle(resourceMap.getString("Form.title")); // NOI18N
         setName(""); // NOI18N
 
         jScrollPane1.setName("jScrollPane1"); // NOI18N
@@ -79,8 +83,35 @@ public class DataSummary extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    public void setTableModel()    {
+    private void setTableModel()    {
         summaryTable.setModel(tableModel);
+        resetColWidth();
+    }
+
+    public void resetColWidth()    {
+        System.err.println("Resizing");
+        setDefaultTableColumnSize();
+        setR0ColumnSize();
+    }
+
+    private void setDefaultTableColumnSize() {
+        TableColumn column = null;
+        for (int i = 0; i < 7; i++) {
+            column = summaryTable.getColumnModel().getColumn(i);
+            column.setPreferredWidth(defaultColWidth[i]);
+        }
+    }
+
+    private void setR0ColumnSize()  {
+        DefaultTableCellRenderer dtcr = new DefaultTableCellRenderer();
+        TableColumn column = null;
+        dtcr.setHorizontalAlignment(JLabel.RIGHT);
+        int size = summaryTable.getColumnCount();
+        for (int i = 7; i < size; i++) {
+            column = summaryTable.getColumnModel().getColumn(i);
+            column.setPreferredWidth(r0Size);
+            summaryTable.setDefaultRenderer(summaryTable.getColumnClass(i), dtcr);
+        }
     }
 
 
@@ -93,4 +124,6 @@ public class DataSummary extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     public SummaryTableModel tableModel = new SummaryTableModel();
+    private int[] defaultColWidth = {40,30,30,100,100,120,120};
+    private final int r0Size = 120;
 }

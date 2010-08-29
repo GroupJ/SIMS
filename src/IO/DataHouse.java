@@ -13,6 +13,8 @@ import java.util.*;
 
 public class DataHouse {
 
+    public String fileName;
+    public String absolutePath;
     public String system;
     public String date;
     public String time;
@@ -90,7 +92,7 @@ public class DataHouse {
         sb.append("xpos : " + x_pos + "\ty : " + y_pos + "\n\n\n");
         sb.append("Acquisiton Parameters :\n");
 
-        sb.append("\t\t\t");
+        sb.append("\t");
         for (int i = 0; i < AQP_col_title.size(); i++) {
             sb.append(AQP_col_title.get(i) + "\t");
         }
@@ -106,14 +108,16 @@ public class DataHouse {
 
         sb.append("\n\nAnalytical Parameters :\n");
         for (int i = 0; i < AP_title.size(); i++) {
-            sb.append(AP_title.get(i) + "\t" + AP_value.get(i) + "\n");
+            if (AP_title.get(i).startsWith("Max Area"))
+                sb.append(AP_title.get(i) + "\t" + AP_value.get(i) + "\n");
+            else
+                sb.append(AP_title.get(i) + "\t\t" + AP_value.get(i) + "\n");
         }
-        sb.append("\n");
 
         sb.append("\n\nComments: \t" + comments + "\n");
-        sb.append("\n\nDetector Parameters : " + DTP_col_title.size() + "\n");
+        sb.append("\n\nDetector Parameters : \n");
 
-        sb.append("\t\t\t");
+        sb.append("\t");
         for (int i = 0; i < DTP_col_title.size(); i++) {
             sb.append(DTP_col_title.get(i) + "\t");
         }
@@ -129,12 +133,20 @@ public class DataHouse {
 
         sb.append("\n\nCorrection Factors :\n");
         for (int i = 0; i < CF_title.size(); i++) {
-            sb.append(CF_title.get(i) + "\t" + CF_value.get(i) + "\n");
+            if (CF_title.get(i).startsWith("Dead Time"))
+                sb.append(CF_title.get(i) + "\t" + CF_value.get(i) + "\n");
+            else if (CF_title.get(i).startsWith("Ip Normalize"))
+                sb.append(CF_title.get(i) + "\t\t" + CF_value.get(i) + "\n");
+            else
+                sb.append(CF_title.get(i) + "\t\t\t" + CF_value.get(i) + "\n");
         }
 
         sb.append("\n\nAcquisition Control Parameters :\n");
         for (int i = 0; i < ACP_title.size(); i++) {
-            sb.append(ACP_title.get(i) + "\t" + ACP_value.get(i) + "\n");
+            if (ACP_title.get(i).startsWith("Pre-sputtering"))
+                sb.append(ACP_title.get(i) + "" + ACP_value.get(i) + "\n");
+            else
+                sb.append(ACP_title.get(i) + "\t" + ACP_value.get(i) + "\n");
         }
 
         if (sputP_title.size() != 0) {
@@ -150,7 +162,7 @@ public class DataHouse {
         }
 
         sb.append("\n\nCumulated Results :\n");
-        sb.append("\t\t");
+        sb.append("\t");
         for (int i = 0; i < CR_col_title.size(); i++) {
             sb.append(CR_col_title.get(i) + "\t");
         }
@@ -159,22 +171,29 @@ public class DataHouse {
         for (int i = 0; i < CR_row_title.size(); i++) {
             sb.append(CR_row_title.get(i) + "\t");
             for (int j = 0; j < CR_Grid.get(i).size(); j++) {
-                sb.append(CR_Grid.get(i).get(j) + "\t");
+                if (j < 0)
+                    sb.append(CR_Grid.get(i).get(j) + "\t");
+                else
+                    sb.append(CR_Grid.get(i).get(j) + "\t\t");
             }
             sb.append("\n");
         }
 
-        sb.append("\n\nPrimary Results :\tStart : " + PR_start + "\tEnd : " + PR_end + "\n");
+        sb.append("\n\nPrimary Current :\tStart : " + PR_start + "\tEnd : " + PR_end + "\n");
 
         sb.append("\n\nBeam Centering Result :\n");
-        sb.append("\t\t\t\t");
+        sb.append("\t\t\t");
         for (int i = 0; i < BCR_col_title.size(); i++) {
             sb.append(BCR_col_title.get(i) + "\t");
         }
         sb.append("\n");
 
         for (int i = 0; i < BCR_row_title.size(); i++) {
-            sb.append(BCR_row_title.get(i) + "\t");
+            if (BCR_row_title.get(i).startsWith("Option"))
+                sb.append(BCR_row_title.get(i) + "\t");
+            else
+                sb.append(BCR_row_title.get(i) + "\t\t");
+            
             for (int j = 0; j < BCR_Grid.get(i).size(); j++) {
                 sb.append(BCR_Grid.get(i).get(j) + "\t");
             }
@@ -183,39 +202,57 @@ public class DataHouse {
 
         sb.append("\n\nRaw Data :\n");
         for (int i = 0; i < RD_col_title.size(); i++) {
-            sb.append(RD_col_title.get(i) + "\t");
+            if (i < 2)
+                sb.append(RD_col_title.get(i) + "\t");
+            else
+                sb.append(RD_col_title.get(i) + "\t\t");
         }
         sb.append("\n");
 
         for (int i = 0; i < RD_Grid.size(); i++) {
             for (int j = 0; j < RD_Grid.get(i).size(); j++) {
-                sb.append(RD_Grid.get(i).get(j) + "\t");
+                if (j < 2)
+                    sb.append(RD_Grid.get(i).get(j) + "\t");
+                else
+                    sb.append(RD_Grid.get(i).get(j) + "\t\t");
             }
             sb.append("\n");
         }
 
         sb.append("\n\nPrimary Intensity Data :\n");
         for (int i = 0; i < PID_col_title.size(); i++) {
-            sb.append(PID_col_title.get(i) + "\t");
+            if (i < 2)
+                sb.append(PID_col_title.get(i) + "\t");
+            else
+                sb.append(PID_col_title.get(i) + "\t\t");
         }
         sb.append("\n");
 
         for (int i = 0; i < PID_Grid.size(); i++) {
             for (int j = 0; j < PID_Grid.get(i).size(); j++) {
-                sb.append(PID_Grid.get(i).get(j) + "\t");
+                if (j < 2)
+                    sb.append(PID_Grid.get(i).get(j) + "\t");
+                else
+                    sb.append(PID_Grid.get(i).get(j) + "\t\t");
             }
             sb.append("\n");
         }
 
         sb.append("\n\nTiming Data :\n");
         for (int i = 0; i < TD_col_title.size(); i++) {
-            sb.append(TD_col_title.get(i) + "\t");
+            if (i < 2)
+                sb.append(TD_col_title.get(i) + "\t");
+            else
+                sb.append(TD_col_title.get(i) + "\t\t");
         }
         sb.append("\n");
 
         for (int i = 0; i < TD_Grid.size(); i++) {
             for (int j = 0; j < TD_Grid.get(i).size(); j++) {
-                sb.append(TD_Grid.get(i).get(j) + "\t");
+                if (j < 2)
+                    sb.append(TD_Grid.get(i).get(j) + "\t");
+                else
+                    sb.append(TD_Grid.get(i).get(j) + "\t\t");
             }
             sb.append("\n");
         }

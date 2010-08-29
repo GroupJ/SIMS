@@ -48,6 +48,7 @@ public class FileList extends javax.swing.JFrame {
         helpMenu = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("SIMS-2");
 
         jScrollPane1.setName("jScrollPane1"); // NOI18N
 
@@ -135,22 +136,32 @@ public class FileList extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void loadInputFileMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadInputFileMenuActionPerformed
-        DataHouse dh = ReadInput.pollInput();
+        DataHouse[] dh = ReadInput.pollInput();
         if (dh == null)
             return;
 
         DefaultListModel dlm = (DefaultListModel) fileList.getModel();
-        dlm.addElement(dh.SampleName);
-        files.add(dh);
+        
+        for (int i = 0; i < dh.length; i++) {
 
-        SIMS2App.outputWindow.displayData(dh);
+            if (dh[i] == null)
+                continue;
+            
+            System.err.println(dh[i].fileName);
+            
+            dlm.addElement(dh[i].fileName);
+            files.add(dh[i]);
 
-        if (!SIMS2App.outputWindow.isVisible())
-            SIMS2App.outputWindow.setVisible(true);
+            if (!SIMS2App.outputWindow.isVisible())
+                SIMS2App.outputWindow.setVisible(true);
 
-        SIMS2App.dataSummaryWindow.tableModel.addRow(dh);
+            SIMS2App.dataSummaryWindow.tableModel.addRow(dh[i]);
+        }
+
+        SIMS2App.outputWindow.displayData(dh[0]);
         SIMS2App.dataSummaryWindow.tableModel.fireTableDataChanged();
         SIMS2App.dataSummaryWindow.tableModel.fireTableStructureChanged();
+        SIMS2App.dataSummaryWindow.resetColWidth();
         if (!SIMS2App.dataSummaryWindow.isVisible())
             SIMS2App.dataSummaryWindow.setVisible(true);
     }//GEN-LAST:event_loadInputFileMenuActionPerformed
