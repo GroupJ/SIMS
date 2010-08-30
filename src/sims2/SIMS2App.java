@@ -4,8 +4,7 @@
 
 package sims2;
 
-import file_list.FileList;
-import data_summary.DataSummary;
+import file_list.FileListWindow;
 import org.jdesktop.application.Application;
 import org.jdesktop.application.SingleFrameApplication;
 
@@ -14,9 +13,7 @@ import org.jdesktop.application.SingleFrameApplication;
  */
 public class SIMS2App extends SingleFrameApplication {
 
-    public static FileOutputData outputWindow = new FileOutputData();
-    public static FileList fileListWindow = new FileList();
-    public static DataSummary dataSummaryWindow = new DataSummary();
+    public static FileListWindow fileListWindow = new FileListWindow();
 
     /**
      * At startup create and show the main frame of the application.
@@ -45,11 +42,7 @@ public class SIMS2App extends SingleFrameApplication {
      * Main method launching the application.
      */
     public static void main(String[] args) {
-        outputWindow.setVisible(true);
-        outputWindow.setLocation(0, 0);
         fileListWindow.setVisible(true);
         fileListWindow.setLocation(1000, 0);
-        dataSummaryWindow.setVisible(true);
-        dataSummaryWindow.setLocation(0, 600);
     }
 }
