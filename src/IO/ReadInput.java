@@ -4,9 +4,8 @@
  */
 package IO;
 
+import DataStructure.DataHouse;
 import java.io.*;
-import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileFilter;
 import java.util.*;
 
 /**
@@ -18,7 +17,6 @@ import java.util.*;
 public class ReadInput {
 
     private static BufferedReader br;
-    private static JFileChooser fc;
     private static DataHouse dh;
     private static final String[] sections = {"ACQUISITION PARAMETERS",
         "ANALYTICAL PARAMETERS",
@@ -82,57 +80,35 @@ public class ReadInput {
         }
     }
 
-    public static DataHouse[] pollInput() {
+    /**
+     * Reads a file and returns a Datahouse.
+     * @param file the file to read
+     * @return DataHouse info of the file
+     * @throws Exception If any IO errors occur. Currently unhandled.
+     */
+    public static DataHouse readInput(File file) throws Exception   {
+        br = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
+        readInput();
+        br.close();
 
-        FileFilter ff = new FormatFilter();
-        fc = new JFileChooser();
-        fc.setFileFilter(ff);
-        fc.setMultiSelectionEnabled(true);
+        br = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
+        readUnformated();
+        br.close();
 
-        DataHouse[] dhList;
+        dh.fileName = file.getName();
+        dh.absolutePath = file.getAbsolutePath();
+        cleanDataHouse(dh);
+        return dh;
+    }
 
-        int result = fc.showOpenDialog(null);
-        if (result == JFileChooser.APPROVE_OPTION) {
-
-            File[] file = fc.getSelectedFiles();
-
-            if (file == null)
-                return null;
-
-            dhList = new DataHouse[file.length];
-
-            for (int i = 0; i < file.length; i++)   {
-                
-                //System.err.println("Attempting to read file : " + file.getName());
-                //System.err.println("At : " + file.getAbsolutePath());
-
-                if (file[i] == null)
-                    continue;
-
-                dh = new DataHouse();
-
-                try {
-                    br = new BufferedReader(new InputStreamReader(new FileInputStream(file[i])));
-                    readInput();
-                    cleanDataHouse(dh);
-                    dh.fileName = file[i].getName();
-                    dh.absolutePath = file[i].getAbsolutePath();
-                    dhList[i] = dh;
-                    br.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    dhList[i] = null;
-                    try {
-                    br.close();
-                    } catch (Exception e1){}
-                }
-            }
-            
-        } else {
-            return null;
+    private static void readUnformated() throws Exception   {
+        String temp = br.readLine();
+        StringBuffer buffer = new StringBuffer();
+        while (temp != null)    {
+            buffer.append(temp + "\n");
+            temp = br.readLine();
         }
-
-        return dhList;
+        dh.unformattedContent = buffer.toString();
     }
 
     private static void readInput() throws Exception {

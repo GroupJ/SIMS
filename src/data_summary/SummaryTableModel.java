@@ -7,7 +7,6 @@ package data_summary;
 
 import javax.swing.table.DefaultTableModel;
 import java.util.*;
-import IO.*;
 
 /**
  *
@@ -15,12 +14,19 @@ import IO.*;
  */
 public class SummaryTableModel extends DefaultTableModel    {
 
+    // column data types
     private ArrayList<Class> types;
+    // column editable ?
     private ArrayList<Boolean> editable;
+    // 2D grid of table data
     private ArrayList<ArrayList<Object>> tableEntries;
+    // Column titles
     private ArrayList<String> titles;
 
-    public void resetDefault()  {
+    /**
+     * Resets table to default. ie. Clears the table
+     */
+    protected void resetDefault()  {
         types = new ArrayList<Class>();
         editable = new ArrayList<Boolean>();
         tableEntries = new ArrayList<ArrayList<Object>> ();
@@ -52,29 +58,21 @@ public class SummaryTableModel extends DefaultTableModel    {
 
     }
 
-    public SummaryTableModel()   {
+    /**
+     * Creates an empty SummaryTableModel
+     */
+    protected SummaryTableModel()   {
         resetDefault();
     }
 
-    public void addRow(Object[] input) {
-        tableEntries.add(new ArrayList<Object> ());
-        int size = tableEntries.size() - 1;
-        for (int i = 0; i < input.length; i++)
-            tableEntries.get(size).add(input[i]);
-    }
-
-    // adds new row full of nulls;
-    public void addRow() {
-        tableEntries.add(new ArrayList<Object> ());
-        int size = tableEntries.size() - 1;
-        int colSize = getColumnCount();
-        for (int i = 0; i < colSize; i++)
-            tableEntries.get(size).add(null);
-    }
-
-    public void addRow(DataHouse dh)    {
+    /**
+     * Add a row entry into the table model.
+     * @param arg0 Datahouse default parameters
+     * @param arg1 Datahouse R0 to Rn entries
+     */
+    protected void addRow(String[] arg0, String[] arg1)    {
         
-        int numRn = dh.CR_row_title.size();
+        int numRn = arg1.length/2;
         int colSize = getColumnCount();
 
         for (int i = 0; i < numRn - ((colSize - 7)/2); i++) {
@@ -86,14 +84,13 @@ public class SummaryTableModel extends DefaultTableModel    {
         row.add(new Integer(getRowCount() + 1));
         row.add(new Boolean(false));
         row.add(new Boolean(false));
-        row.add(dh.fileName);
-        row.add("(" + dh.x_pos + ", " + dh.y_pos + ")");
-        row.add("" + dh.PR_start);
-        row.add("" + dh.PR_end);
 
-        for (int i = 0; i < numRn; i++) {
-            row.add("" + dh.CR_Grid.get(i).get(0));
-            row.add("" + dh.CR_Grid.get(i).get(2));
+        for (int i = 0; i < arg0.length; i++)
+            row.add(arg0[i]);
+
+        for (int i = 0; i < numRn * 2; i += 2) {
+            row.add(arg1[i]);
+            row.add(arg1[i+1]);
         }
 
         for (int i = row.size(); i < colSize; i++)
@@ -102,7 +99,15 @@ public class SummaryTableModel extends DefaultTableModel    {
         tableEntries.add(row);
     }
 
-    public void setEditable(int row, int col, boolean value)   {
+    /**
+     * Sets a cell position as editable based on 'value'.
+     * Current implementation sets the entire column rather than
+     * cell.
+     * @param row
+     * @param col
+     * @param value
+     */
+    protected void setEditable(int row, int col, boolean value)   {
         editable.set(col, new Boolean(value));
     }
 
@@ -138,8 +143,10 @@ public class SummaryTableModel extends DefaultTableModel    {
         return titles.get(col);
     }
 
-    public void addColumn(String name, Class type, boolean editable)  {
-        int colSize = getColumnCount();
+    /*
+     * Adds a column to the table
+     */
+    private void addColumn(String name, Class type, boolean editable)  {
         int rowSize = getRowCount();
         titles.add(name);
         types.add(type);
