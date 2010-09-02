@@ -1,0 +1,232 @@
+
+<!--******************************************************************************************
+* File Info: $Id: imageMaps.html,v 1.1.1.1 2002/07/25 02:27:30 nathaniel_auvil Exp $
+* Copyright (C) 2000
+* Author: Nathaniel G. Auvil
+* Contributor(s):
+*
+* Copyright 2002 (C) Nathaniel G. Auvil. All Rights Reserved.
+*
+* Redistribution and use of this software and associated documentation
+* ("Software"), with or without modification, are permitted provided
+* that the following conditions are met:
+*
+* 1. Redistributions of source code must retain copyright
+*    statements and notices.  Redistributions must also contain a
+*    copy of this document.
+*
+* 2. Redistributions in binary form must reproduce the
+*    above copyright notice, this list of conditions and the
+*    following disclaimer in the documentation and/or other
+*    materials provided with the distribution.
+*
+* 3. The name "jCharts" or "Nathaniel G. Auvil" must not be used to
+* 	  endorse or promote products derived from this Software without
+* 	  prior written permission of Nathaniel G. Auvil.  For written
+*    permission, please contact nathaniel_auvil@users.sourceforge.net
+*
+* 4. Products derived from this Software may not be called "jCharts"
+*    nor may "jCharts" appear in their names without prior written
+*    permission of Nathaniel G. Auvil. jCharts is a registered
+*    trademark of Nathaniel G. Auvil.
+*
+* 5. Due credit should be given to the jCharts Project
+*    (http://jcharts.sourceforge.net/).
+*
+* THIS SOFTWARE IS PROVIDED BY Nathaniel G. Auvil AND CONTRIBUTORS
+* ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT
+* NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+* FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL
+* jCharts OR ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+* INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+* (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+**********************************************************************************************-->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+
+<html>
+<head>
+	<title>jCharts - Client Side Image Maps</title>
+	<link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+
+<body>
+
+
+<span class="pageTitle">Client Side Image Maps</span>
+
+<br/><br/>
+
+<table class="codeExampleTable">
+<tr>
+	<td>
+	All charts, except for Area and Stacked Area, can create a html client side image map. This allows your charts to be interactive!  
+	<br/><br/>
+	Client Side Image Maps are only supported through PNG and JPEG encoded images; SVG formatted charts will not work!
+	<br/><br/>
+	The server examples contained in the <span class="codeFragment">jChartsServletExamples.war</span> demo web application demonstrate this functionality. And of
+	course, the source is available to assist you!
+	<br/><br/>
+	There are several steps needed to get your chart to generate the image map data.  The process will require <b>two</b> trips to the server; one to create the chart
+	and generate map coordinates, and another to stream the chart back to your client.
+	</td>
+</tr>
+</table>
+<br/><br/>
+
+
+
+
+<a name="generation">
+<table class="codeExampleTable">
+<tr>
+	<td>
+	<span class="sectionTitle">Generating the Image Map Coordinates</span>
+	</td>
+</tr>
+<tr>
+	<td class="codeExplanationCell">
+	The first trip will create your chart Object, just as before (there are no properties to set), and render the chart into a buffer by calling: 
+	<span class="codeFragment">chart.renderWithImageMap();</span>, which will generate all the map coordinates.  You can use this trip to return the image
+	map coordinates by calling: <span class="codeFragment">chart.getImageMap();</span> and placing the returned ImageMap Object into the HttpServletRequest,
+	or just hit the chart in the HttpSession. 
+	You should also store the chart Object in	the HttpSession as the chart has been rendered into a buffer, so there is no need to re-render the chart when you 
+	want to pull it back to the client!	
+	<br/><br/>
+	</td>
+</tr>
+<tr>
+	<td class="codeExampleCell">
+		<i>//---create the chart Object same as always do; no special properties to set.</i><br>
+		Chart myChart= new AxisChart(...);<br>
+		<br/>
+		<i>//---HERE IS WHERE IT IS DIFFERENT...</i><br>
+		<i>//---this call will render the chart to an internal BufferedImage, creating all the image map coordinates</i><br>
+		chart.renderWithImageMap();<br>
+		<br>
+		<i>//---get the ImageMap information from the chart</i><br>
+		ImageMap imageMap= chart.getImageMap();<br>
+		<br>
+		<i>//---set the ImageMap into the HttpServletRequest so can get it out in JSP, or you could just pull the chart out of the HttpSession...</i><br>
+		httpServletRequest.setAttribute( ChartServlet.IMAGE_MAP, imageMap );<br>
+		<br>
+		<i>//---set the Chart into the HttpSession so we can stream it in another request without rendering again...</i><br>
+		<i>//---ChartServlet.CHART is the key i use in the demo to store my chart in the HttpSession...</i><br>		
+		httpServletRequest.getSession( true ).setAttribute( ChartServlet.CHART, chart );<br>	
+	</td>
+</tr>
+<tr>
+	<td class="codeExplanationCell">
+	<br>
+	<b>Notice I did not call the XXXEncoder.encode(...) method in the first server request. That will come in the second server trip.</b>	
+	<br><br>
+	</td>
+</tr>
+</table>
+</a>
+<br/><br/>
+
+
+
+<a name="backInYourJsp">
+<table class="codeExampleTable">
+<tr>
+	<td>
+	<span class="sectionTitle">Back In your JSP</span>
+	</td>
+</tr>
+<tr>
+	<td class="codeExplanationCell">
+	For The second part of this first trip to the server, we have the <span class="codeFragment">Chart</span>
+	in the HttpSession, and the ImageMap Object in the HttpServletRequest.
+	Our JSP needs to pull the <span class="codeFragment">ImageMap</span> out of the HttpServletRequest and render all the map areas from the Chart.
+	<br><br>
+	For maximum flexibility, the <span class="codeFragment">ImageMapArea</span> Object allows you to pass a String containing the non coordinate attributes of the HTML 'area' element.
+	In this example, I pass the 'href' element which calls a javascript method when the user clicks on the Image Map Area and displays the value,
+	legend label, and axis label.  You are free to pass 'onClick', 'mouserOver', and or any combination of the allowed HTML attributes. 
+	<br><br>
+	Also, we can not forget about the Chart Object sitting in the HttpSession.  Our JSP contains an 'img' tag which will call a Servlet to
+	stream the rendered Chart down to the browser; this is the second trip to the server.	
+	<br/><br/>
+	</td>
+</tr>
+<tr>
+	<td class="codeExampleCell">
+	...<br>
+	&lt;img border="0" src="ChartServlet" useMap="#chartMap"&gt;<br>
+	...<br>
+	&lt;map name="chartMap"&gt;<br>
+	&lt;%<br>
+	StringBuffer html= new StringBuffer( 100 );<br>
+	ImageMap imageMap= (ImageMap) request.getAttribute( ChartServlet.IMAGE_MAP );<br>
+	<br>
+	Iterator iterator= imageMap.getIterator();<br>
+	while( iterator.hasNext() )<br>
+	{<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;ImageMapArea imageMapArea= (ImageMapArea) iterator.next();<br>
+		<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;html.append( "href=\"javascript:showValues(" );<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;html.append( imageMapArea.getValue() );<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;html.append( ",'" );<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;html.append( imageMapArea.getLengendLabel() );<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;html.append( "','" );<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;html.append( imageMapArea.getXAxisLabel() );<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;html.append( "');\"" );<br>
+	%&gt;<br>
+		&lt;%= 	imageMapArea.toHTML( html.toString() ) %&gt;<br>
+	&lt;% <br>
+		&nbsp;&nbsp;&nbsp;&nbsp;//---reuse same StringBuffer Object<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;html.delete( 0, html.length() );<br>
+	} <br>
+	%&gt;<br>
+	&lt;/map&gt;<br>
+	...<br>	
+	</td>
+</tr>
+</table>
+</a>
+<br/><br/>
+
+
+<a name="encodeTheChart">
+<table class="codeExampleTable">
+<tr>
+	<td>
+	<span class="sectionTitle">Encode The Chart</span>
+	</td>
+</tr>
+<tr>
+	<td class="codeExplanationCell">
+	This is the last step! The previous step rendered the Chart into an internal buffer and wrote the HTML Image Map element out to our JSP.
+	Now we simply need to make a request to the server as normal server generated charts do.
+	<br><br>	
+	All you need to do is pull the rendered chart out of the HttpSession and call XXXEncoder.encode(...).  Internally, jCharts will simply
+	pull the chart from the buffer and stream it back to the client; it will not re-draw the chart.
+	<br/><br/>
+	</td>
+</tr>
+<tr>
+	<td class="codeExampleCell">
+	...<br>
+	public void service( HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse ) throws ServletException, IOException<br>
+	{<br>
+	&nbsp;&nbsp;&nbsp;&nbsp;Chart chart= (Chart) httpServletRequest.getSession().getAttribute( CHART );<br>
+	<br>
+	&nbsp;&nbsp;&nbsp;&nbsp;//---call encode just like you would normally<br>
+	&nbsp;&nbsp;&nbsp;&nbsp;JPEGEncoder13.encode( chart, 1.0f, httpServletResponse );<br>
+	<br>
+	&nbsp;&nbsp;&nbsp;&nbsp;httpServletRequest.getSession().removeAttribute( CHART );<br>
+	}<br>
+	</td>
+</tr>
+</table>
+</a>
+<br/><br/>
+
+</body>
+</html>

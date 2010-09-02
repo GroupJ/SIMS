@@ -111,6 +111,17 @@ public class SummaryTableModel extends DefaultTableModel    {
         editable.set(col, new Boolean(value));
     }
 
+    protected void removeRow(String fileName)   {
+        int index = -1;
+        int rows = getRowCount();
+        for (int i = 0; i < rows; i++)
+            if (fileName.compareTo((String)tableEntries.get(i).get(3)) == 0)
+                index = i;
+
+        if (index != -1)
+            tableEntries.remove(index);
+    }
+
     public Object getValueAt(int r, int c)   {
         return tableEntries.get(r).get(c);
     }

@@ -1,0 +1,176 @@
+
+<!--******************************************************************************************
+* File Info: $Id: lineChart.html,v 1.2 2003/03/13 02:33:00 nathaniel_auvil Exp $
+* Copyright (C) 2000
+* Author: Nathaniel G. Auvil
+* Contributor(s):
+*
+* Copyright 2002 (C) Nathaniel G. Auvil. All Rights Reserved.
+*
+* Redistribution and use of this software and associated documentation
+* ("Software"), with or without modification, are permitted provided
+* that the following conditions are met:
+*
+* 1. Redistributions of source code must retain copyright
+*    statements and notices.  Redistributions must also contain a
+*    copy of this document.
+*
+* 2. Redistributions in binary form must reproduce the
+*    above copyright notice, this list of conditions and the
+*    following disclaimer in the documentation and/or other
+*    materials provided with the distribution.
+*
+* 3. The name "jCharts" or "Nathaniel G. Auvil" must not be used to
+* 	  endorse or promote products derived from this Software without
+* 	  prior written permission of Nathaniel G. Auvil.  For written
+*    permission, please contact nathaniel_auvil@users.sourceforge.net
+*
+* 4. Products derived from this Software may not be called "jCharts"
+*    nor may "jCharts" appear in their names without prior written
+*    permission of Nathaniel G. Auvil. jCharts is a registered
+*    trademark of Nathaniel G. Auvil.
+*
+* 5. Due credit should be given to the jCharts Project
+*    (http://jcharts.sourceforge.net/).
+*
+* THIS SOFTWARE IS PROVIDED BY Nathaniel G. Auvil AND CONTRIBUTORS
+* ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT
+* NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+* FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL
+* jCharts OR ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+* INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+* (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+**********************************************************************************************-->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+
+<html>
+<head>
+	<title>jCharts - Line Chart</title>
+	<link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+
+<body>
+
+
+<span class="pageTitle">Line Chart</span>
+
+<br/><br/>
+
+<table class="codeExampleTable">
+<tr>
+	<td>
+	<span class="sectionTitle">Example</span>
+	</td>
+</tr>
+<tr>
+	<td class="codeExplanationCell">
+	Here is a simple Line Chart. If you would like to not have shapes plotted on the line, simply pass NULL
+	as the value on the Array index of Shapes to the LineChartProperties Object.
+	</td>
+</tr>
+<tr>
+	<td class="codeExampleCell">
+	String[] xAxisLabels= { "1998", "1999", "2000", "2001", "2002", "2003", "2004" };<br/>
+	String xAxisTitle= "Years";<br/>
+	String yAxisTitle= "Problems";<br/>
+	String title= "Micro$oft at Work";<br/>
+	DataSeries dataSeries = new DataSeries( xAxisLabels, xAxisTitle, yAxisTitle, title );<br/>
+	<br/>
+	double[][] data= new double[][]{ { 250, 45, -36, 66, 145, 80, 55  } };<br/>
+	String[] legendLabels= { "Bugs" };<br/>
+	Paint[] paints= TestDataGenerator.getRandomPaints( 1 );<br/>
+	<br/>
+	Stroke[] strokes= { LineChartProperties.DEFAULT_LINE_STROKE };<br/>
+	Shape[] shapes= { PointChartProperties.SHAPE_CIRCLE };<br/>
+	LineChartProperties lineChartProperties= new LineChartProperties( strokes, shapes );<br/>
+	<br/>
+	AxisChartDataSet axisChartDataSet= new AxisChartDataSet( data, legendLabels, paints, ChartType.LINE, lineChartProperties );<br/>
+	dataSeries.addIAxisPlotDataSet( axisChartDataSet );<br/>
+	<br/>
+	ChartProperties chartProperties= new ChartProperties();<br/>
+	AxisProperties axisProperties= new AxisProperties();<br/>
+	LegendProperties legendProperties= new LegendProperties();<br/>
+	<br/>
+	AxisChart axisChart= new AxisChart( dataSeries, chartProperties, axisProperties, legendProperties, AxisCharts.width, AxisCharts.height );<br/>
+	</td>
+</tr>
+<tr>
+	<td class="codeExampleImageCell">
+	<img src="images/lineCharts/basicChart.png"  width=500 height=300 border=0 alt=""/>
+	</td>
+</tr>
+</table>
+<br/><br/>
+
+
+<a name="lineStrokes">
+<table class="codeExampleTable">
+<tr>
+	<td>
+	<span class="sectionTitle">Line Strokes</span>
+	</td>
+</tr>
+<tr>
+	<td class="codeExplanationCell">
+	The lines in the chart use the <span class="codeFragment">java.awt.Stroke</span> Interface to
+	control their rendering appearance.  This is specified on the <span class="codeFragment">LineChartProperties</span> Object.
+	</td>
+</tr>
+<tr>
+	<td class="codeExampleCell">	
+	Stroke[] strokes= new Stroke[ 2 ];<br />
+	strokes[ 0 ]= new BasicStroke( 3.5f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 5f, new float[]{ 5f, 5f, 10f, 5f}, 4f );<br />
+	strokes[ 1 ]= new BasicStroke( 5.0f );<br />
+	<br/>
+	Shape[] shapes= { PointChartProperties.SHAPE_CIRCLE, null };<br/>
+	LineChartProperties lineChartProperties= new LineChartProperties( strokes, shapes );<br />
+	</td>
+</tr>
+<tr>
+	<td class="codeExampleImageCell">
+	<img src="images/lineCharts/strokes.png" width=500 height=300 border=0 alt=""/>
+	</td>
+</tr>
+</table>
+</a>
+
+<br/><br/>
+
+
+<a name="nullValues">
+<table class="codeExampleTable">
+<tr>
+	<td>
+	<span class="sectionTitle">Null Values</span>
+	</td>
+</tr>
+<tr>
+	<td class="codeExplanationCell">
+	You can show missing values on Line Charts by using Double.NaN values in your dataset.
+	</td>
+</tr>
+<tr>
+	<td class="codeExampleCell">
+	data[ 0 ][ 3 ]= Double.NaN<br/>
+	data[ 0 ][ 4 ]= Double.NaN<br/>
+	</td>
+</tr>
+<tr>
+	<td class="codeExampleImageCell">
+	<img src="images/lineCharts/missingValues.png" width=500 height=300 border=0 alt=""/>
+	</td>
+</tr>
+</table>
+</a>
+<br/><br/>
+
+
+
+</body>
+</html>

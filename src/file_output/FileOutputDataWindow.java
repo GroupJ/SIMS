@@ -11,6 +11,8 @@
 
 package file_output;
 
+import java.awt.*;
+
 /**
  * File Output GUI component.
  * Handles all GUI and eventlisteners.
@@ -20,8 +22,13 @@ public class FileOutputDataWindow extends javax.swing.JFrame {
 
     /** Creates new form FileOutputData */
     public FileOutputDataWindow() {
+        Toolkit tk = Toolkit.getDefaultToolkit();
+        Dimension d = tk.getScreenSize();
+        d.setSize(d.getWidth()/2, d.getHeight()/2);
         initComponents();
+
     }
+
 
     /** This method is called from within the constructor to
      * initialize the form.
@@ -40,6 +47,7 @@ public class FileOutputDataWindow extends javax.swing.JFrame {
         jScrollPane1.setName("jScrollPane1"); // NOI18N
 
         dataOutputArea.setColumns(20);
+        dataOutputArea.setEditable(false);
         dataOutputArea.setRows(5);
         dataOutputArea.setName("dataOutputArea"); // NOI18N
         jScrollPane1.setViewportView(dataOutputArea);

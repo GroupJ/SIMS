@@ -1,0 +1,213 @@
+<?xml version="1.0"?>
+
+<!-- Ant 1.4.1 build file -->
+<!-- http://jakarta.apache.org/ant/ -->
+<!-- $Id: build.xml,v 1.11 2003/06/29 13:31:08 nathaniel_auvil Exp $ -->
+
+<!--============================================================================================
+= environment variables needed:
+=
+=  J2EE_HOME - if you want to compile the example servlets
+=  TOMCAT_HOME - if you want to automatically build and deploy on TOMCAT
+=============================================================================================-->
+
+<project name="jCharts" default="compile" basedir=".">
+
+	<property environment="environment" />
+
+	<property name="project.name" value="jCharts" />
+	<property name="project.version" value="0.7.5" />
+
+
+	<property name="jar.jCharts" value="${project.name}-${project.version}.jar" />
+	<property name="zip.jCharts" value="${project.name}-${project.version}.zip" />
+
+	<property name="servletExamples" value="jChartsServletExamples" />
+	<property name="servletExamples.war" value="${servletExamples}.war" />
+
+	<property name="dir.release" value="delete_me/${project.name}-${project.version}" />
+
+	<property name="dir.src" value="src" />
+	<property name="dir.build" value="garbage" />
+	<property name="dir.tempRelease" value="release" />
+	<property name="dir.javadocs" value="javadocs" />
+	<property name="dir.servletsApp" value="demo/simpleServlet" />
+
+	<property name="batik.classpath" value="../lib/batik-svggen.jar;../lib/batik-dom.jar;../lib/batik-awt-util.jar" />
+	<property name="demo.classpath" value="${jar.jCharts};${environment.J2EE_HOME}/lib/j2ee.jar" />
+
+
+	<!--===============================================================================-->
+	<target name="prepare">
+		<tstamp/>
+		<delete dir="${dir.build}" />
+		<mkdir dir="${dir.build}" />
+	</target>
+
+
+	<!--===============================================================================-->
+	<target name="compile" depends="prepare">
+		<javac classpath="${batik.classpath};${environment.J2EE_HOME}/lib/j2ee.jar" srcdir="../${dir.src}" destdir="${dir.build}" />
+	</target>
+
+
+	<!--=================================================================================-->
+	<!-- Be aware of the excludes.  THis is only meant to check for jdk 1.4 dependencies -->
+	<target name="compile13" depends="prepare">
+		<javac classpath="${batik.classpath};${environment.J2EE_HOME}/lib/j2ee.jar"
+				 srcdir="../${dir.src}"
+				 destdir="${dir.build}"
+				 fork="yes"
+				 executable="${environment.JAVA13_HOME}/bin/javac">
+
+			<exclude name="**/encoders/JPEGEncoder.java" />
+			<exclude name="**/encoders/PNGEncoder.java" />
+         <exclude name="**/encoders/ServletEncoderHelper.java" />
+			<exclude name="**/test/*" />
+		</javac>
+	</target>
+
+
+	<!--===============================================================================-->
+	<target name="test" depends="compile">
+		<java	classname="org.jCharts.test.ChartTestDriver">
+				<arg value="" />
+				<classpath>
+					<pathelement path="${dir.build}"/>
+					<pathelement path="../lib"/>
+				</classpath>
+		</java>
+	</target>
+
+
+	<!--===============================================================================-->
+	<target name="jar" depends="compile">
+		<delete file="${jar.jCharts}" />
+		<jar jarfile="${jar.jCharts}" basedir="${dir.build}" />
+		<delete dir="${dir.build}" />
+	</target>
+
+
+	<!--===============================================================================-->
+	<target name="javadocs">
+		<delete dir="${dir.javadocs}" />
+		<mkdir dir="${dir.javadocs}" />
+		<javadoc sourcepath="../${dir.src}"
+					classpath="${batik.classpath};${environment.J2EE_HOME}/lib/j2ee.jar"
+					destdir="${dir.javadocs}"
+					packagenames="org.jCharts.*"
+					excludepackagenames="javax.*"
+					author="true"
+					private="true"
+					version="true"
+					windowtitle="${project.name}-${project.version} API"
+					doctitle="${project.name}-${project.version}">
+		</javadoc>
+	</target>
+
+
+	<!--===============================================================================-->
+	<!--===============================================================================-->
+	<!--===============================================================================-->
+	<target name="release" depends="jar,javadocs,packageExamples">
+
+		<delete dir="${dir.release}" />
+		<mkdir dir="${dir.release}" />
+
+
+		<!--======== jCharts.jar ==============================================-->
+		<move file="${jar.jCharts}" todir="${dir.release}" />
+
+		<!--======== jCharts source ===========================================-->
+		<copy todir="${dir.release}/${dir.src}">
+			<fileset dir="../${dir.src}">
+				<include name="**/*.java" />
+			</fileset>
+		</copy>
+
+
+		<copy todir="${dir.release}/demo">
+			<fileset dir="../demo">
+				<include name="**/*.java" />
+				<include name="**/*.xml" />
+			</fileset>
+		</copy>
+
+
+		<!--======== servlet examples war =====================================-->
+		<move file="${servletExamples.war}" todir="${dir.release}" />
+
+		<!--======== servlet examples source ==================================-->
+		<copy todir="${dir.release}/${dir.servletsApp}">
+			<fileset dir="../demo/simpleServlet/">
+				<exclude name="**/*.class" />
+				<exclude name="**/*.jar" />
+			</fileset>
+		</copy>
+
+
+		<!--======== java docs =================================================-->
+		<move todir="${dir.release}/${dir.javadocs}">
+			<fileset dir="${dir.javadocs}"/>
+		</move>
+
+		<!--======== build directory ===========================================-->
+		<mkdir dir="${dir.release}/build" />
+		<copy file="build.xml" todir="${dir.release}/build" />
+
+		<!--======== docs directory ============================================-->
+		<copy todir="${dir.release}/docs">
+			<fileset dir="../docs" />
+		</copy>
+
+
+		<!--======== lib directory ============================================-->
+		<copy todir="${dir.release}/lib">
+			<fileset dir="../lib" />
+		</copy>
+
+
+		<!--======== make the ZIP file =========================================-->
+		<delete file="${zip.jCharts}" />
+		<zip zipfile="${zip.jCharts}">
+			<fileset dir="${dir.release}/.." />
+		</zip>
+		<delete dir="${dir.release}/.." />
+	</target>
+
+
+	<!--===============================================================================-->
+	<!--===============================================================================-->
+	<!--===============================================================================-->
+	<target name="compileExamples" depends="jar">
+		<javac classpath="${demo.classpath}" srcdir="../${dir.servletsApp}/WEB-INF/classes" />
+	</target>
+
+
+	<!--===============================================================================-->
+	<!--===============================================================================-->
+	<!--===============================================================================-->
+	<target name="packageExamples" depends="compileExamples">
+		<delete file="${servletExamples.war}" />
+
+		<copy file="${jar.jCharts}" todir="../${dir.servletsApp}/WEB-INF/lib" />
+      <copy todir="../${dir.servletsApp}/WEB-INF/lib">
+			<fileset dir="../lib" />
+		</copy>
+
+		<war warfile="${servletExamples.war}" webxml="../${dir.servletsApp}/WEB-INF/web.xml">
+			<fileset dir="../${dir.servletsApp}" >
+				<exclude name="**/WEB-INF/**" />
+			</fileset>
+			<lib dir="../${dir.servletsApp}/WEB-INF/lib" />
+			<classes dir="../${dir.servletsApp}/WEB-INF/classes"/>
+		</war>
+	</target>
+
+	<target name="deployTomcat" depends="packageExamples">
+		<delete dir="${environment.TOMCAT_HOME}/webapps/${servletExamples}" />
+		<delete file="${environment.TOMCAT_HOME}/webapps/${servletExamples.war}" />
+		<copy file="${servletExamples.war}" todir="${environment.TOMCAT_HOME}/webapps" />
+	</target>
+
+</project>

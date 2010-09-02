@@ -12,8 +12,8 @@
 package file_list;
 
 import DataStructure.DataHouse;
-import javax.swing.DefaultListModel;
 import java.util.*;
+import javax.swing.*;
 
 /**
  * GUI component of file list subsystem. This is the main window
@@ -37,17 +37,32 @@ public class FileListWindow extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        fileListPopupMenu = new javax.swing.JPopupMenu();
+        removeItem = new javax.swing.JMenuItem();
         jScrollPane1 = new javax.swing.JScrollPane();
         fileList = new javax.swing.JList();
         jMenuBar1 = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         loadInputFileMenu = new javax.swing.JMenuItem();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        resetTable = new javax.swing.JMenuItem();
+        saveListMenuItem = new javax.swing.JMenuItem();
+        loadListMenuItem = new javax.swing.JMenuItem();
         exitItem = new javax.swing.JMenuItem();
         windowMenu = new javax.swing.JMenu();
         showOutputMenuItem = new javax.swing.JMenuItem();
         showSpreadsheetMenuItem = new javax.swing.JMenuItem();
         helpMenu = new javax.swing.JMenu();
+
+        fileListPopupMenu.setName("fileListPopupMenu"); // NOI18N
+
+        removeItem.setText("Remove File");
+        removeItem.setName("removeItem"); // NOI18N
+        removeItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeItemActionPerformed(evt);
+            }
+        });
+        fileListPopupMenu.add(removeItem);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("SIMS-2");
@@ -55,10 +70,14 @@ public class FileListWindow extends javax.swing.JFrame {
         jScrollPane1.setName("jScrollPane1"); // NOI18N
 
         fileList.setModel(new DefaultListModel());
+        fileList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         fileList.setName("fileList"); // NOI18N
         fileList.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 fileListMouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                fileListMousePressed(evt);
             }
         });
         jScrollPane1.setViewportView(fileList);
@@ -77,14 +96,32 @@ public class FileListWindow extends javax.swing.JFrame {
         });
         fileMenu.add(loadInputFileMenu);
 
-        jMenuItem1.setText("ResetTable");
-        jMenuItem1.setName("jMenuItem1"); // NOI18N
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        resetTable.setText("ResetTable");
+        resetTable.setName("resetTable"); // NOI18N
+        resetTable.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                resetTableActionPerformed(evt);
             }
         });
-        fileMenu.add(jMenuItem1);
+        fileMenu.add(resetTable);
+
+        saveListMenuItem.setText("Save List");
+        saveListMenuItem.setName("saveListMenuItem"); // NOI18N
+        saveListMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveListMenuItemActionPerformed(evt);
+            }
+        });
+        fileMenu.add(saveListMenuItem);
+
+        loadListMenuItem.setText("Load List");
+        loadListMenuItem.setName("loadListMenuItem"); // NOI18N
+        loadListMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loadListMenuItemActionPerformed(evt);
+            }
+        });
+        fileMenu.add(loadListMenuItem);
 
         exitItem.setText("Exit");
         exitItem.setName("exitItem"); // NOI18N
@@ -151,6 +188,7 @@ public class FileListWindow extends javax.swing.JFrame {
         if (dh == null)
             return;
 
+        dh = FileListFunctions.removeRedundancies(dh,files);
         boolean firstDisplayed = false;
 
         DefaultListModel dlm = (DefaultListModel) fileList.getModel();
@@ -196,24 +234,58 @@ public class FileListWindow extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_fileListMouseClicked
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        FileListFunctions.resetTable();
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    private void resetTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetTableActionPerformed
+        FileListFunctions.resetTable(this);
+    }//GEN-LAST:event_resetTableActionPerformed
+
+    private void removeItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeItemActionPerformed
+        int index = fileList.getSelectedIndex();
+        if (FileListFunctions.requestRemove(files.get(index)))   {          
+            ((DefaultListModel)fileList.getModel()).remove(index);
+            FileListFunctions.removeFromSystem(files.get(index).fileName, this);
+        }
+    }//GEN-LAST:event_removeItemActionPerformed
+
+    private void fileListMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fileListMousePressed
+        if (evt.isPopupTrigger()) {
+            fileList.setSelectedIndex(fileList.locationToIndex(evt.getPoint()));
+            fileListPopupMenu.show(fileList, evt.getX(), evt.getY());
+        }
+    }//GEN-LAST:event_fileListMousePressed
+
+    private void saveListMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveListMenuItemActionPerformed
+        FileListFunctions.saveFileList(files);
+    }//GEN-LAST:event_saveListMenuItemActionPerformed
+
+    private void loadListMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadListMenuItemActionPerformed
+        FileListFunctions.loadFileList(this);
+    }//GEN-LAST:event_loadListMenuItemActionPerformed
+
+    protected void updateList()    {
+        int size = files.size();
+        ((DefaultListModel)fileList.getModel()).clear();
+        for (int i = 0; i < size; i++)
+            ((DefaultListModel)fileList.getModel()).addElement(files.get(i).fileName);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem exitItem;
     private javax.swing.JList fileList;
+    private javax.swing.JPopupMenu fileListPopupMenu;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenu helpMenu;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JMenuItem loadInputFileMenu;
+    private javax.swing.JMenuItem loadListMenuItem;
+    private javax.swing.JMenuItem removeItem;
+    private javax.swing.JMenuItem resetTable;
+    private javax.swing.JMenuItem saveListMenuItem;
     private javax.swing.JMenuItem showOutputMenuItem;
     private javax.swing.JMenuItem showSpreadsheetMenuItem;
     private javax.swing.JMenu windowMenu;
     // End of variables declaration//GEN-END:variables
 
-    private ArrayList<DataHouse> files = new ArrayList<DataHouse> ();
+    protected ArrayList<DataHouse> files = new ArrayList<DataHouse> ();
     private int lastIndex = -1;
 }

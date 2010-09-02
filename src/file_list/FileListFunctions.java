@@ -5,19 +5,85 @@
 
 package file_list;
 
+import DataStructure.DataHouse;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import java.io.*;
-import DataStructure.*;
 import IO.*;
 import data_summary.*;
 import file_output.*;
+import java.util.*;
 
 /**
  * Implements the functionalities for file_list subsystem.
  * @author 20378332
  */
 public class FileListFunctions {
+
+    protected static void saveFileList(ArrayList<DataHouse> list)   {
+        JFileChooser fc = new JFileChooser();
+        FileFilter ff = new SimsFormatFilter();
+        fc.setFileFilter(ff);
+        fc.setMultiSelectionEnabled(false);
+        
+        int result = fc.showSaveDialog(null);
+
+        if (result == fc.APPROVE_OPTION)    {
+            File dest = fc.getSelectedFile();
+
+            if (dest.exists())  {
+                // do nothing
+            } else  {
+                ListIO.saveFileList(list, dest.getAbsolutePath() + ".sims");
+            }
+        }
+    }
+
+    protected static void loadFileList(FileListWindow flw)    {
+        JFileChooser fc = new JFileChooser();
+        FileFilter ff = new SimsFormatFilter();
+        fc.setFileFilter(ff);
+        fc.setMultiSelectionEnabled(false);
+
+        int result = fc.showSaveDialog(null);
+
+        if (result == fc.APPROVE_OPTION)    {
+            File dest = fc.getSelectedFile();
+            DataHouse[] dh = ListIO.loadFileList(dest.getAbsolutePath());
+
+            resetTable(flw);
+
+            ArrayList<DataHouse> retVal = new ArrayList<DataHouse> ();
+            for (int i = 0; i < dh.length; i++) {
+                retVal.add(dh[i]);
+                addToSummary(dh[i]);
+            }
+
+            flw.files = retVal;
+            flw.updateList();
+            displayData(dh[0]);
+
+            updateTable();
+            showOutputWindow();
+            showSummaryWindow();
+        }
+    }
+
+    /**
+     * Removes an input file from the entire system and updates
+     * the required GUI components.
+     * @param fileName the name of the file
+     * @param flw a FileListWindow
+     */
+    protected static void removeFromSystem(String fileName, FileListWindow flw) {
+        DSFrontEnd.removeRow(fileName);
+        DSFrontEnd.updateSummaryTable();
+        DataHouse dh = new DataHouse();
+        dh.fileName = fileName;
+        int index = flw.files.indexOf(dh);
+        flw.files.remove(index);
+        flw.updateList();
+    }
 
     /**
      * Add data house into summary table.
@@ -27,22 +93,26 @@ public class FileListFunctions {
         String[] arg0,arg1;
         arg0 = getDefaultParam(dh);
         arg1 = getR0ToRn(dh);
-        DataSummaryFrontEnd.addRow(arg0, arg1);
+        
+        DSFrontEnd.addRow(arg0, arg1);
         showSummaryWindow();
     }
 
     /**
-     * Clears the summary table.
+     * Clears the every loaded input file.
      */
-    protected static void resetTable()  {
-        DataSummaryFrontEnd.resetTable();
+    protected static void resetTable(FileListWindow flw)  {
+        DSFrontEnd.resetTable();
+        flw.files = new ArrayList<DataHouse> ();
+        flw.updateList();
+        FileOutputFrontEnd.displayData("");
     }
 
     /**
      * Displays the summary table window.
      */
     protected static void showSummaryWindow()   {
-        DataSummaryFrontEnd.showWindow();
+        DSFrontEnd.showWindow();
     }
 
     /**
@@ -73,7 +143,7 @@ public class FileListFunctions {
      * Update the summary table. This is required after every update.
      */
     protected static void updateTable() {
-        DataSummaryFrontEnd.updateSummaryTable();
+        DSFrontEnd.updateSummaryTable();
     }
 
     /**
@@ -154,5 +224,60 @@ public class FileListFunctions {
         }
 
         return dh;
+    }
+
+    /**
+     * Prompts user if they want to remove file. This
+     * only prompts the user, it does not remove the file.
+     * @param dh the file that they want to remove
+     * @return true if user selects ok false otherwise
+     */
+    protected static boolean requestRemove(DataHouse dh)    {
+        String mgs = "Would you like to remove " + dh.fileName + " from the list?";
+        int result = javax.swing.JOptionPane.showConfirmDialog(null, mgs, "Remove File", javax.swing.JOptionPane.OK_CANCEL_OPTION);
+        return result == javax.swing.JOptionPane.YES_OPTION;
+    }
+
+    /**
+     * Scans and removes already loaded files. The user is asked
+     * before a file is overwritten.
+     * @param dh a list of new imported files
+     * @param alreadyImported an arraylist of already imported files
+     * @return DataHouse[] an array of new files to be added.
+     */
+    protected static DataHouse[] removeRedundancies(DataHouse[] dh, ArrayList<DataHouse> alreadyImported) {
+
+        int index = -1;
+        ArrayList<Integer> use = new ArrayList<Integer> ();
+
+        for (int i = 0; i < dh.length; i++) {
+
+            index = alreadyImported.indexOf(dh[i]);
+
+            if (index != -1)    {
+                if (requestActionForRedundantFiles(dh[i].fileName)) {
+                    int fileIndex = alreadyImported.indexOf(dh[i]);
+                    // overwrite previous file;
+                    alreadyImported.set(fileIndex, dh[i]);
+                }
+            } else  {
+                use.add(i);
+            }
+        }
+
+        DataHouse[] result = new DataHouse[use.size()];
+        for (int i = 0; i < result.length; i++)
+            result[i] = dh[use.get(i)];
+        
+        return result;
+    }
+
+    /**
+     * Prompts user for permission to overwrite previously imported files.
+     */
+    private static boolean requestActionForRedundantFiles(String fileName)   {
+        String mgs = "File " + fileName + " is already imported. Would you like to update its contents?";
+        int result = javax.swing.JOptionPane.showConfirmDialog(null, mgs, "File Already Found", javax.swing.JOptionPane.OK_CANCEL_OPTION);
+        return result == javax.swing.JOptionPane.YES_OPTION;
     }
 }

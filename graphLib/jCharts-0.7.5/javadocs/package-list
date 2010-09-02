@@ -1,0 +1,17 @@
+org.jCharts
+org.jCharts.axisChart
+org.jCharts.axisChart.axis
+org.jCharts.axisChart.axis.scale
+org.jCharts.axisChart.customRenderers.axisValue
+org.jCharts.axisChart.customRenderers.axisValue.renderers
+org.jCharts.chartData
+org.jCharts.chartData.interfaces
+org.jCharts.chartData.processors
+org.jCharts.chartText
+org.jCharts.encoders
+org.jCharts.imageMap
+org.jCharts.nonAxisChart
+org.jCharts.properties
+org.jCharts.properties.util
+org.jCharts.test
+org.jCharts.types

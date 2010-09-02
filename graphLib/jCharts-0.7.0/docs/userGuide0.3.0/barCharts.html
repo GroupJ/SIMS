@@ -1,0 +1,422 @@
+
+<!--******************************************************************************************
+* File Info: $Id: barCharts.html,v 1.5 2003/03/16 01:07:28 nathaniel_auvil Exp $
+* Copyright (C) 2000
+* Author: Nathaniel G. Auvil
+* Contributor(s):
+*
+* Copyright 2002 (C) Nathaniel G. Auvil. All Rights Reserved.
+*
+* Redistribution and use of this software and associated documentation
+* ("Software"), with or without modification, are permitted provided
+* that the following conditions are met:
+*
+* 1. Redistributions of source code must retain copyright
+*    statements and notices.  Redistributions must also contain a
+*    copy of this document.
+*
+* 2. Redistributions in binary form must reproduce the
+*    above copyright notice, this list of conditions and the
+*    following disclaimer in the documentation and/or other
+*    materials provided with the distribution.
+*
+* 3. The name "jCharts" or "Nathaniel G. Auvil" must not be used to
+* 	  endorse or promote products derived from this Software without
+* 	  prior written permission of Nathaniel G. Auvil.  For written
+*    permission, please contact nathaniel_auvil@users.sourceforge.net
+*
+* 4. Products derived from this Software may not be called "jCharts"
+*    nor may "jCharts" appear in their names without prior written
+*    permission of Nathaniel G. Auvil. jCharts is a registered
+*    trademark of Nathaniel G. Auvil.
+*
+* 5. Due credit should be given to the jCharts Project
+*    (http://jcharts.sourceforge.net/).
+*
+* THIS SOFTWARE IS PROVIDED BY Nathaniel G. Auvil AND CONTRIBUTORS
+* ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT
+* NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+* FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL
+* jCharts OR ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+* INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+* (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+**********************************************************************************************-->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+
+<html>
+<head>
+	<title>jCharts - Bar Charts</title>
+	<link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+
+<body>
+
+
+<span class="pageTitle">Bar Charts</span>
+
+<br/><br/>
+
+<table class="codeExampleTable">
+<tr>
+	<td>
+	All of the bar charts can be plotted horizontally.  To do this, simply pass a 'true' boolean to the <span class="codeFragment">AxisProperties</span> Constructor. However,
+	only the Bar and Clustered Bar can have value labels on the plot area.
+	</td>
+</tr>
+</table>
+<br/><br/>
+
+
+<table class="codeExampleTable">
+<tr>
+	<td>
+	<span class="sectionTitle">Example</span>
+	</td>
+</tr>
+<tr>
+	<td class="codeExplanationCell">
+	Here is a simple Vertical Bar Chart. This chart can be plotted horizontally by simply passing 'true' to the AxisProperties Constructor.
+	</td>
+</tr>
+<tr>
+	<td class="codeExampleCell">
+	String[] xAxisLabels= { "1998", "1999", "2000", "2001", "2002", "2003", "2004" };<br/>
+	String xAxisTitle= "Years";<br/>
+	String yAxisTitle= "Problems";<br/>
+	String title= "Micro$oft at Work";<br/>
+	DataSeries dataSeries = new DataSeries( xAxisLabels, xAxisTitle, yAxisTitle, title );<br/>
+	<br/>
+   double[][] data= new double[][]{ { 250, 45, -36, 66, 145, 80, 55  } };<br/>
+	String[] legendLabels= { "Bugs" };<br/>
+	Paint[] paints= new Paint[]{ Color.blue.darker() };<br/>
+	BarChartProperties barChartProperties= new BarChartProperties();<br/>
+	AxisChartDataSet axisChartDataSet= new AxisChartDataSet( data, legendLabels, paints, ChartType.BAR, barChartProperties );<br/>
+	dataSeries.addIAxisPlotDataSet( axisChartDataSet );<br/>
+	<br/>
+	ChartProperties chartProperties= new ChartProperties();<br/>
+	<br/>
+	<i>//---to make this plot horizontally, pass true to the AxisProperties Constructor</i><br/>
+	//AxisProperties axisProperties= new AxisProperties( true );<br/>
+	AxisProperties axisProperties= new AxisProperties();<br/>
+	LegendProperties legendProperties= new LegendProperties();<br/>
+	AxisChart axisChart= new AxisChart( dataSeries, chartProperties, axisProperties, legendProperties, AxisCharts.width, AxisCharts.height );<br/>
+	</td>
+</tr>
+<tr>
+	<td class="codeExampleImageCell">
+	<img src="images/barCharts/barChart.png"  width=500 height=300 border=0 alt=""/>
+	</td>
+</tr>
+</table>
+<br/><br/>
+
+
+<a name="clusteredBars">
+<table class="codeExampleTable">
+<tr>
+	<td>
+	<span class="sectionTitle">Clustered Bars</span>
+	</td>
+</tr>
+<tr>
+	<td class="codeExplanationCell">
+	Here is an example of a Clustered Bar Chart. Notice it is the same as a regular Bar Chart except for the ChartType and the chart specific properties.
+ 	This chart can be plotted horizontally by simply passing 'true' to the AxisProperties Constructor.
+	</td>
+</tr>
+<tr>
+	<td class="codeExampleCell">
+	String[] xAxisLabels= { "1998", "1999", "2000", "2001", "2002", "2003", "2004" };<br/>
+	String xAxisTitle= "Years";<br/>
+	String yAxisTitle= "Problems";<br/>
+	String title= "Micro$oft at Work";<br/>
+	DataSeries dataSeries = new DataSeries( xAxisLabels, xAxisTitle, yAxisTitle, title );<br/>
+	<br/>
+	double[][] data= new double[][]{ { 250, 45, -36, 66, 145, 80, 55  }, { 150, 15, 6, 62, -54, 10, 84  }, { 20, 145, 36, 6, 45, 18, 5  } };<br/>
+	String[] legendLabels= { "Bugs", "Security Holes", "Backdoors" };<br/>
+	Paint[] paints= TestDataGenerator.getRandomPaints( 3 );<br/>
+	ClusteredBarChartProperties clusteredBarChartProperties= new ClusteredBarChartProperties();<br/>
+	AxisChartDataSet axisChartDataSet= new AxisChartDataSet( data, legendLabels, paints, ChartType.BAR_CLUSTERED, clusteredBarChartProperties );<br/>
+	dataSeries.addIAxisPlotDataSet( axisChartDataSet );<br/>
+	<br/>
+	ChartProperties chartProperties= new ChartProperties();<br/>
+	<br/>
+	<i>//---to make this plot horizontally, pass true to the AxisProperties Constructor</i><br/>
+	//AxisProperties axisProperties= new AxisProperties( true );<br/>
+	AxisProperties axisProperties= new AxisProperties();<br/>
+	LegendProperties legendProperties= new LegendProperties();<br/>
+	AxisChart axisChart= new AxisChart( dataSeries, chartProperties, axisProperties, legendProperties, AxisCharts.width, AxisCharts.height );<br/>
+	</td>
+</tr>
+<tr>
+	<td class="codeExampleImageCell">
+	<img src="images/barCharts/clusteredBarChart.png" width=500 height=300 border=0 alt=""/>
+	</td>
+</tr>
+</table>
+</a>
+
+
+
+<a name="stackedBars">
+<table class="codeExampleTable">
+<tr>
+	<td>
+	<span class="sectionTitle">Stacked Bars</span>
+	</td>
+</tr>
+<tr>
+	<td class="codeExplanationCell">
+	Here is an example of a Stacked Bar Chart. Notice it is the same as a regular Bar Chart except for the ChartType and the chart specific properties.
+ 	This chart can be plotted horizontally by simply passing 'true' to the AxisProperties Constructor.
+	</td>
+</tr>
+<tr>
+	<td class="codeExampleCell">
+	String[] xAxisLabels= { "1998", "1999", "2000", "2001", "2002", "2003", "2004" };<br/>
+	String xAxisTitle= "Years";<br/>
+	String yAxisTitle= "Problems";<br/>
+	String title= "Micro$oft at Work";<br/>
+	DataSeries dataSeries = new DataSeries( xAxisLabels, xAxisTitle, yAxisTitle, title );<br/>
+	<br/>
+	double[][] data= new double[][]{ { 250, 45, 36, 66, 145, 80, 55  }, { 150, 15, 6, 62, 54, 10, 84  }, { 250, 45, 36, 66, 145, 80, 55  } };<br/>
+	String[] legendLabels= { "Bugs", "Security Holes", "Backdoors" };<br/>
+	Paint[] paints= TestDataGenerator.getRandomPaints( 3 );<br/>
+	StackedBarChartProperties stackedBarChartProperties= new StackedBarChartProperties();<br/>
+	AxisChartDataSet axisChartDataSet= new AxisChartDataSet( data, legendLabels, paints, ChartType.BAR_STACKED, stackedBarChartProperties );<br/>
+	dataSeries.addIAxisPlotDataSet( axisChartDataSet );<br/>
+	<br/>
+	ChartProperties chartProperties= new ChartProperties();<br/>
+	<br/>
+	<i>//---to make this plot horizontally, pass true to the AxisProperties Constructor</i><br/>
+	//AxisProperties axisProperties= new AxisProperties( true );<br/>	
+	AxisProperties axisProperties= new AxisProperties();<br/>
+	LegendProperties legendProperties= new LegendProperties();<br/>
+	AxisChart axisChart= new AxisChart( dataSeries, chartProperties, axisProperties, legendProperties, AxisCharts.width, AxisCharts.height );<br/>	
+	</td>
+</tr>
+<tr>
+	<td class="codeExampleImageCell">
+	<img src="images/barCharts/stackedBarChart.png" width=500 height=300 border=0 alt=""/>
+	</td>
+</tr>
+</table>
+</a>
+<br/><br/>
+
+
+
+<a name="barWidths">
+<table class="codeExampleTable">
+<tr>
+	<td>
+	<span class="sectionTitle">Bar Widths</span>
+	</td>
+</tr>
+<tr>
+	<td class="codeExplanationCell">
+	jCharts allows you to specify the width of the bars in the chart relative to the amount of space allocated
+	to each scale item. This is specifed by a percentage value, 1=100%, .5=50%, etc...<br/>
+	<br/>
+	This feature works the same in all of the Bar Chart Types, as all their chart specific properties extend BarChartProperties.
+	</td>
+</tr>
+<tr>
+	<td class="codeExampleCell">
+	BarChartProperties barChartProperties= new BarChartProperties();<br/>
+	barChartProperties.setWidthPercentage( 1f );<br/>
+	</td>
+</tr>
+<tr>
+	<td class="codeExampleImageCell">
+	<img src="images/barCharts/barChartWidths.png" width=500 height=300 border=0 alt=""/>
+	</td>
+</tr>
+</table>
+</a>
+<br/><br/>
+
+
+
+<a name="barOutlines">
+<table class="codeExampleTable">
+<tr>
+	<td>
+	<span class="sectionTitle">Bar Outlines</span>
+	</td>
+</tr>
+<tr>
+	<td class="codeExplanationCell">
+	jCharts allows you to specify the 'outline' properties of the bars. The default values are to show
+	a one pixel wide, black outline.<br/>
+	<br/>
+	This feature works the same in all of the Bar Chart Types, as all their chart specific properties extend BarChartProperties.
+	</td>
+</tr>
+<tr>
+	<td class="codeExampleCell">
+	BarChartProperties barChartProperties= new BarChartProperties();<br/>
+	barChartProperties.setShowOutlinesFlag( true );<br/>
+	ChartStroke outlineChartStroke= new ChartStroke( new BasicStroke( 2.0f ), Color.red );<br/>
+	barChartProperties.setBarOutlineStroke( outlineChartStroke );<br/>
+	</td>
+</tr>
+<tr>
+	<td class="codeExampleImageCell">
+	<img src="images/barCharts/barChartOutlines.png" width=500 height=300 border=0 alt=""/>
+	</td>
+</tr>
+</table>
+</a>
+<br/><br/>
+
+
+<a name="barLabels">
+<table class="codeExampleTable">
+<tr>
+	<td>
+	<span class="sectionTitle">Value Labels</span>
+	</td>
+</tr>
+<tr>
+	<td class="codeExplanationCell">
+	It is now possible to display value labels on your Bar and Clustered Bar charts, but not Stacked Bar Charts. To do this, add a 
+	<span class="codeFragment">ValueLabelRenderer</span> to the <span class="codeFragment">BarChartProperties</span> or 
+	<span class="codeFragment">ClusteredBarChartProperties</span> Object by calling the 
+	<span class="codeFragment">addPostRenderEventListener( PostAxisValueRenderListener )</span> method.
+	<br/><br/>
+	You can set the <span class="codeFragment">Font</span> and <span class="codeFragment">Paint</span> used for the Values on the <span class="codeFragment">ValueLabelRenderer</span> Object.
+	</td>
+</tr>
+<tr>
+	<td class="codeExampleCell">
+	String[] xAxisLabels= { "1998", "1999", "2000", "2001", "2002", "2003", "2004" };<br/>
+	String xAxisTitle= "Years";<br/>
+	String yAxisTitle= "Problems";<br/>
+	String title= "Micro$oft at Work";<br/>
+	DataSeries dataSeries = new DataSeries( xAxisLabels, xAxisTitle, yAxisTitle, title );<br/>
+	<br/>
+   double[][] data= new double[][]{ { 250, 45, -36, 66, 145, 80, 55  } };<br/>
+	String[] legendLabels= { "Bugs" };<br/>
+	Paint[] paints= new Paint[]{ Color.yellow };<br/>
+	<br/>
+	BarChartProperties barChartProperties= new BarChartProperties();<br/>
+	ValueLabelRenderer valueLabelRenderer = new ValueLabelRenderer( false, true, -1 );<br/>
+	valueLabelRenderer.setValueLabelPosition( ValueLabelPosition.ON_TOP );<br/>
+	valueLabelRenderer.useVerticalLabels( false );<br/>
+	barChartProperties.addPostRenderEventListener( valueLabelRenderer );<br/>
+	<br/>
+	AxisChartDataSet axisChartDataSet= new AxisChartDataSet( data, legendLabels, paints, ChartType.BAR, barChartProperties );<br/>
+	dataSeries.addIAxisPlotDataSet( axisChartDataSet );<br/>
+	<br/>
+	ChartProperties chartProperties= new ChartProperties();<br/>
+	<br/>
+	<i>//---to make this plot horizontally, pass true to the AxisProperties Constructor</i><br/>
+	AxisProperties axisProperties= new AxisProperties( true );<br/>
+	LegendProperties legendProperties= new LegendProperties();<br/>
+	AxisChart axisChart= new AxisChart( dataSeries, chartProperties, axisProperties, legendProperties, AxisCharts.width, AxisCharts.height );<br/>
+	</td>
+</tr>
+<tr>
+	<td class="codeExampleImageCell">
+	<img src="images/barCharts/barLabels.png" width=500 height=300 border=0 alt=""/>
+	</td>
+</tr>
+</table>
+</a>
+<br/><br/>
+
+
+<a name="barBackground">
+<table class="codeExampleTable">
+<tr>
+	<td>
+	<span class="sectionTitle">Bar Backgrounds</span>
+	</td>
+</tr>
+<tr>
+	<td class="codeExplanationCell">
+	A implementation of the <span class="codeFragment">PreAxisValueRenderListener</span> is provided to apply Paint Objects to the Bar and Clustered Bar backgrounds, but not Stacked Bars. 
+	To do this, add a <span class="codeFragment">BackgroundRenderer</span> to the <span class="codeFragment">BarChartProperties</span> or 
+	<span class="codeFragment">ClusteredBarChartProperties</span> Object by calling the 
+	<span class="codeFragment">addPreRenderEventListener( PreAxisValueRenderListener )</span> method.
+	<br/><br/>
+	You can set the <span class="codeFragment">Paint</span> used for on the <span class="codeFragment">BackgroundRenderer</span> Object.
+	</td>
+</tr>
+<tr>
+	<td class="codeExampleCell">
+	String[] xAxisLabels= { "1998", "1999", "2000", "2001", "2002", "2003", "2004" };<br/>
+	String xAxisTitle= "Years";<br/>
+	String yAxisTitle= "Problems";<br/>
+	String title= "Micro$oft at Work";<br/>
+	DataSeries dataSeries = new DataSeries( xAxisLabels, xAxisTitle, yAxisTitle, title );<br/>
+	<br/>
+   double[][] data= new double[][]{ { 250, 45, -36, 66, 145, 80, 55  } };<br/>
+	String[] legendLabels= { "Bugs" };<br/>
+	Paint[] paints= new Paint[]{ Color.yellow };<br/>
+	<br/>
+	BarChartProperties barChartProperties= new BarChartProperties();<br/>
+	<br/>
+	<i>//---paints over the background of every other bar area.</i><br/>
+	BackgroundRenderer backgroundRenderer = new BackgroundRenderer( new Color( 20, 20, 20, 50 ) );<br/>
+	barChartProperties.addPreRenderEventListener( backgroundRenderer );<br/>
+	<br/>
+	AxisChartDataSet axisChartDataSet= new AxisChartDataSet( data, legendLabels, paints, ChartType.BAR, barChartProperties );<br/>
+	dataSeries.addIAxisPlotDataSet( axisChartDataSet );<br/>
+	<br/>
+	ChartProperties chartProperties= new ChartProperties();<br/>
+	<br/>
+	<i>//---to make this plot horizontally, pass true to the AxisProperties Constructor</i><br/>
+	AxisProperties axisProperties= new AxisProperties( true );<br/>
+	LegendProperties legendProperties= new LegendProperties();<br/>
+	AxisChart axisChart= new AxisChart( dataSeries, chartProperties, axisProperties, legendProperties, AxisCharts.width, AxisCharts.height );<br/>
+	</td>
+</tr>
+<tr>
+	<td class="codeExampleImageCell">
+	<img src="images/barCharts/barBackground.png" width=500 height=300 border=0 alt=""/>
+	</td>
+</tr>
+</table>
+</a>
+<br/><br/>
+
+
+<a name="otherCustomRenderers">
+<table class="codeExampleTable">
+<tr>
+	<td>
+	<span class="sectionTitle">Other Custom Renderers</span>
+	</td>
+</tr>
+<tr>
+	<td class="codeExplanationCell">
+	By now you should see the flexibility of the render event listeners.  They allow you to create custom renderers for your charts without having
+	to hack the source of jCharts. This feature will be rolled through other charts and no doubt be copied by certain other charting libraries.<br/>
+	<br/>
+	Consult the javadocs for more information on the interfaces required for your own custom renderers and please, donate the code back to 
+	jCharts if you come up with something cool.
+	</td>
+</tr>
+<tr>
+	<td class="codeExampleCell">
+	</td>
+</tr>
+<tr>
+	<td class="codeExampleImageCell">
+	</td>
+</tr>
+</table>
+</a>
+<br/><br/>
+
+
+</body>
+</html>

@@ -1,0 +1,313 @@
+
+<!--******************************************************************************************
+* File Info: $Id: allCharts.html,v 1.3 2003/03/14 03:17:21 nathaniel_auvil Exp $
+* Copyright (C) 2000
+* Author: Nathaniel G. Auvil
+* Contributor(s):
+*
+* Copyright 2002 (C) Nathaniel G. Auvil. All Rights Reserved.
+*
+* Redistribution and use of this software and associated documentation
+* ("Software"), with or without modification, are permitted provided
+* that the following conditions are met:
+*
+* 1. Redistributions of source code must retain copyright
+*    statements and notices.  Redistributions must also contain a
+*    copy of this document.
+*
+* 2. Redistributions in binary form must reproduce the
+*    above copyright notice, this list of conditions and the
+*    following disclaimer in the documentation and/or other
+*    materials provided with the distribution.
+*
+* 3. The name "jCharts" or "Nathaniel G. Auvil" must not be used to
+* 	  endorse or promote products derived from this Software without
+* 	  prior written permission of Nathaniel G. Auvil.  For written
+*    permission, please contact nathaniel_auvil@users.sourceforge.net
+*
+* 4. Products derived from this Software may not be called "jCharts"
+*    nor may "jCharts" appear in their names without prior written
+*    permission of Nathaniel G. Auvil. jCharts is a registered
+*    trademark of Nathaniel G. Auvil.
+*
+* 5. Due credit should be given to the jCharts Project
+*    (http://jcharts.sourceforge.net/).
+*
+* THIS SOFTWARE IS PROVIDED BY Nathaniel G. Auvil AND CONTRIBUTORS
+* ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT
+* NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+* FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL
+* jCharts OR ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+* INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+* (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+**********************************************************************************************-->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+
+<html>
+<head>
+	<title>jCharts 0.7.0 - All Charts</title>
+	<link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+
+<body>
+
+
+<span class="pageTitle">All Charts</span>
+
+<br/><br/>
+
+<table class="codeExampleTable">
+<tr>
+	<td>
+	For many of the 'general' examples, I will simply use an Area Chart. 
+	Please be aware the following chart features are the same across all chart types. 
+	</td>
+</tr>
+</table>
+<br/><br/>
+
+
+
+<table class="codeExampleTable">
+<tr>
+	<td>
+	<span class="sectionTitle">Exporting Images</span>
+	</td>
+</tr>
+<tr>
+	<td class="codeExplanationCell">
+	jCharts exports to the following formats: <b>PNG</b>, <b>JPEG</b>, and <b>SVG</b>, via encoder objects located in the 
+	<span class="codeFragment">org.jCharts.encoders</span> package. Each of these encoders has a couple of methods 
+	to encode you charts. <br/><br/>
+	<span class="codeFragment">encode( Chart chart, OutputStream outputStream )</span> - a more generic version so   
+	you can pass any implementation of	OutputStream through this method, such as ServletOutputStream or FileOutputStream.
+	<br /><br />
+	<b>PNG</b> and <b>JPEG</b> support is provided through the JSDK 1.4. In other words, you need the JSDK 1.4 to use the 
+	provided jCharts image encoders. However, there is now a <span class="codeFragment">JPEGEncoder13</span> class for legacy support of older jdks
+	<br /><br />	
+	<b>SVG</b> support is provided via the Apache XML project: Batik.  Please visit: <a href="http://xml.apache.org/batik/" target="_blank">http://xml.apache.org/batik/</a> 
+	<br /><br />
+	</td>
+</tr>
+<tr>
+	<td class="codeExampleCell">
+	PNGEncoder.encode( axisChart, outputStream );
+	</td>
+</tr>
+<tr>
+	<td class="codeExampleImageCell">
+	<img src="images/allCharts/exportPng.png" width=500 height=300 alt="" border=0/>
+	</td>
+</tr>
+</table>
+<br/><br/>
+
+
+<a name="exportingImagesFromServlets">
+<table class="codeExampleTable">
+<tr>
+	<td>
+	<span class="sectionTitle">Exporting Images From Servlets</span>
+	</td>
+</tr>
+<tr>
+	<td class="codeExplanationCell">
+	There has been a helper Class, <span class="codeFragment">org.jCharts.encoders.ServletEncoderHelper</span>, added for exporting charts from Servlets and JSP's. There
+	are methods on this class to export to any of the jCharts supported formats, with the added benefit of automatically setting the MIME type 
+	of the chart for your browser so that the browser knows how to render the image correctly.<br/>
+	<br/>
+	I don't know about you, but I always had trouble remembering the MIME types for different file formats.
+	<br /><br />
+	</td>
+</tr>
+<tr>
+	<td class="codeExampleImageCell">
+	</td>
+</tr>
+</table>
+</a>
+<br/><br/>
+
+
+<a name="noXServer">
+<table class="codeExampleTable">
+<tr>
+	<td>
+	<span class="sectionTitle">Charts Without Running an X Server</span>
+	</td>
+</tr>
+<tr>
+	<td class="codeExplanationCell">
+	The JSDK 1.4 allows jCharts to run on a headless *nix box without a virtual frame buffer! Set the follow property may be specified at the java command line: 
+  	<span class="codeFragment">-Djava.awt.headless=true</span> or a less flexible placement in your code: <span class="codeFragment">System.setProperty("java.awt.headless","true");</span>
+	<br /><br />
+	Otherwise, if you are running pre JDK 1.4, you will have to use a virtual frame buffer, like: xvfb.
+	<br /><br />
+	</td>
+</tr>
+<tr>
+	<td class="codeExampleImageCell">
+	</td>
+</tr>
+</table>
+</a>
+<br/><br/>
+
+
+<a name="chartTitle">
+<table class="codeExampleTable">
+<tr>
+	<td>
+	<span class="sectionTitle">Chart Title</span>
+	</td>
+</tr>
+<tr>
+	<td class="codeExplanationCell">
+	You can display a title on your charts via an argument to the DataSeries and PieChartDataSet Constructors. If you
+	pass <b>NULL</b>, no title will be shown.  There are Font and Paint attributes for the chart title on the 
+	ChartProperties Object.
+	<br /><br />
+	</td>
+</tr>
+<tr>
+	<td class="codeExampleCell">
+	DataSeries dataSeries = new DataSeries( xAxisLabels, xAxisTitle, yAxisTitle, null );
+	</td>
+</tr>
+<tr>
+	<td class="codeExampleImageCell">
+	<img src="images/allCharts/chartTitle.png" width=500 height=300 alt="" border=0>
+	</td>
+</tr>
+<tr>
+	<td class="codeExplanationCell">
+	<br />
+	If your chart title is really long, it will wrap to the next line as in:
+	<br /><br />
+	</td>
+</tr>
+<tr>
+	<td class="codeExampleImageCell">
+	<img src="images/allCharts/chartTitleWrapping.png" width=500 height=300 alt="" border=0>
+	</td>
+</tr>
+</table>
+</a>
+<br/><br/>
+
+
+<a name="backgroundPaint">
+<table class="codeExampleTable">
+<tr>
+	<td>
+	<span class="sectionTitle">Background Paints</span>
+	</td>
+</tr>
+<tr>
+	<td class="codeExplanationCell">
+	The background of all chart types use the <span class="codeFragment">java.awt.Paint</span> Interface to
+	control its appearance. There are several implementations of the <span class="codeFragment">java.awt.Paint</span> Interface 
+	in the <span class="codeFragment">java.awt</span> Package to choose from.
+	<br /><br/>
+	The default background Paint is: <span class="codeFragment">java.awt.Color.white</span> for all chart types.
+	To change this, use the <span class="codeFragment">setBackgroundPaint( java.awt.Paint )</span> method on the ChartProperties Object.
+	<br /><br />
+	</td>
+</tr>
+<tr>
+	<td class="codeExampleCell">
+	chartProperties.setBackgroundPaint( Color.gray );
+	</td>
+</tr>
+<tr>
+	<td class="codeExampleImageCell">
+	<img src="images/allCharts/backgroundPaint.png" width=500 height=300 alt="" border=0/>
+	</td>
+</tr>
+</table>
+</a>
+<br/><br/>
+
+
+<a name="chartBorder">
+<table class="codeExampleTable">
+<tr>
+	<td>
+	<span class="sectionTitle">Chart Border</span>
+	</td>
+</tr>
+<tr>
+	<td class="codeExplanationCell">
+	No border is drawn around the charts by default. If you would like to create a border around your chart,
+	set the ChartStroke Object on the ChartProperties Object. By deafault the border will be black, but this is also
+	configurable.
+	<br /><br />
+	</td>
+</tr>
+<tr>
+	<td class="codeExampleCell">
+	ChartStroke borderStroke= new ChartStroke( new BasicStroke( 1.0f ), Color.black );<br/>
+	chartProperties.setBorderStroke( borderStroke );
+	</td>
+</tr>
+<tr>
+	<td class="codeExplanationCell">
+	<br />
+	** OR **<br />
+	<br />
+	You can use the static default instance of ChartStroke for chart outlines.
+	<br /><br />
+	</td>
+</tr>
+<tr>
+	<td class="codeExampleCell">
+	chartProperties.setBorderStroke( ChartStroke.DEFAULT_CHART_OUTLINE );
+	</td>
+</tr>
+<tr>
+	<td class="codeExampleImageCell">
+	<img src="images/allCharts/chartBorder.png" width=500 height=300 alt="" border=0>
+	</td>
+</tr>
+</table>
+</a>
+<br/><br/>
+
+
+
+<a name="edgePadding">
+<table class="codeExampleTable">
+<tr>
+	<td>
+	<span class="sectionTitle">Edge Padding</span>
+	</td>
+</tr>
+<tr>
+	<td class="codeExplanationCell">
+	All charts by default have a border of 5 pixels surrounding the image.  This is configurable by
+	using a method on the ChartProperties Object.
+	<br /><br />
+	</td>
+</tr>
+<tr>
+	<td class="codeExampleCell">
+	chartProperties.setEdgePadding( 20f );
+	</td>
+</tr>
+<tr>
+	<td class="codeExampleImageCell">
+	<img src="images/allCharts/edgePadding.png" width=500 height=300 alt="" border=0>
+	</td>
+</tr>
+</table>
+</a>
+<br/><br/>
+
+</body>
+</html>

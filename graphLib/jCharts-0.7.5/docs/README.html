@@ -1,0 +1,384 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--***************************************************************************************
+* CVS Info: $Id: README.html,v 1.21 2003/11/02 13:24:34 nathaniel_auvil Exp $
+****************************************************************************************-->
+
+<html>
+<head>
+	<title>jCharts - 0.7.5</title>
+</head>
+
+<STYLE>
+	.HEADER_TABLE
+	{
+		border: 1px solid Black;
+	}
+
+	.HEADER_TEXT
+	{
+		font : bold 14pt Arial Narrow;
+	}
+
+	.OUTER_TABLE
+	{
+		border: 1px solid Black;
+	}
+</STYLE>
+
+<body rightmargin="0" leftmargin="0" topmargin="0">
+
+<TABLE WIDTH="100%" CELLSPACING="0" CELLPADDING="4" STYLE="HEADER_TABLE">
+<TR>
+	<TD BGCOLOR="#C0C0C0" STYLE="border-bottom: 1px solid Black;">
+	<DIV STYLE="font: bold 14pt Arial Narrow;">jCharts</DIV>
+	</TD>
+	<TD ALIGN="right" BGCOLOR="#C0C0C0" STYLE="border-bottom: 1px solid Black;">
+	  <DIV STYLE="font: bold 12pt Arial Narrow;">Release 0.7.5</DIV>
+	</TD>
+</TR>
+</TABLE>
+
+<BR>
+
+<table WIDTH="98%" CELLSPACING="0" CELLPADDING="5" align="center" class="OUTER_TABLE">
+<tr>
+	<td bgcolor="#ECEAFF" style="border-bottom: 1px solid Black; font-weight: bold;">jCharts 0.7.5</td>
+</tr>
+<tr>
+	<td valign="top">
+	<p>Welcome to the 0.7.5 release of jCharts!</p>
+	<p>Please be aware, there have been significant changes in the Properties model in this Release, and some minor tweaks to the data interfaces.  You CAN NOT simply replace the 0.6 jar with the 0.7
+		jar and have your chart work. Please consult the java docs, examples, test framework, and User Guide for the changes.</p>
+	<p>Do NOT be alarmed, as the changes will **NOT** require a complete rewrite of your code.</p>
+	<p>jCharts 0.7.5 **REQUIRES** the JDK 1.4.x for the PNG and JPEG encoders to work, however, legacy support is provided via the JPEGEncoder13 class</p>
+	<br/>
+	</td>
+</tr>
+</table>
+
+<br>
+
+<table width="98%" cellspacing="0" cellpadding="3" align="center" CLASS="OUTER_TABLE">
+<tr>
+	<td bgcolor="#FFCCFF" style="border-bottom: 1px solid Black; font-weight: bold;">jCharts Contents</TD>
+</tr>
+<tr>
+<td valign="top">
+<pre>
+jCharts0.7.5
++--build
+	--build.xml - ant build script
++--demo
+	+--servletsApp - the demo servlet source
++--docs
+	--jCharts_license.txt - the jCharts License
+	--apache_license.txt - the Apache License
+	--README.html - this document
++--javadocs - complete javadocs of jCharts packages
++--lib - Apache XML Batik libraries needed for encoding to SVG
++--src - all of the source code
+--jCharts-0.7.5.jar - the jCharts compiled code base
+--jChartsExampleServlets.war - demo web archive. Put it in your Servlet container's 'webapps' directory
+</pre>
+</td>
+</tr>
+</table>
+<br/>
+
+
+<table width="98%" border="0" cellspacing="0" cellpadding="3" align="center" bordercolor="Black" class="OUTER_TABLE">
+<tr>
+	<td bgcolor="#CAFFC4" style="border-bottom: 1px solid Black; font-weight: bold;">0.7.5</td>
+</tr>
+<tr>
+	<td valign="top">
+   * Line and Point charts no longer start their plots at the y-axis.
+	</td>
+</tr>
+<tr>
+	<td valign="top">
+   * Fixed defect in ScatterPlot image map coordinate generation.
+	</td>
+</tr>
+</table>
+<br/>
+
+
+
+<table width="98%" border="0" cellspacing="0" cellpadding="3" align="center" bordercolor="Black" class="OUTER_TABLE">
+<tr>
+	<td bgcolor="#CAFFC4" style="border-bottom: 1px solid Black; font-weight: bold;">0.7.4</td>
+</tr>
+<tr>
+	<td valign="top">
+   * Fixed Bug: The Y-Axis Title was not centering itself on the y-axis correctly.
+	</td>
+</tr>
+<tr>
+	<td valign="top">
+   * Fixed bug: multi-line chart title not computing its height correctly.
+	</td>
+</tr>
+</table>
+<br/>
+
+
+
+<table width="98%" border="0" cellspacing="0" cellpadding="3" align="center" bordercolor="Black" class="OUTER_TABLE">
+<tr>
+	<td bgcolor="#CAFFC4" style="border-bottom: 1px solid Black; font-weight: bold;">0.7.3</td>
+</tr>
+<tr>
+	<td valign="top">
+   * fixed bug in Scatter Plots where x-axis labels were not being drawn correctly.
+	</td>
+</tr>
+<tr>
+	<td valign="top">
+   * fixed bug where the y-axis grid lines were not using the specified ChartStroke.
+	</td>
+</tr>
+</table>
+<br/>
+
+
+
+<table width="98%" border="0" cellspacing="0" cellpadding="3" align="center" bordercolor="Black" class="OUTER_TABLE">
+<tr>
+	<td bgcolor="#CAFFC4" style="border-bottom: 1px solid Black; font-weight: bold;">0.7.2</td>
+</tr>
+<tr>
+	<td valign="top">
+	* JDK 1.4 dependent code removed from BarChartProperties, ChartDataException and Legend.
+	</td>
+</tr>
+<tr>
+	<td valign="top">
+	* added an Ant target: compile13, which compiles using jdk 1.3.  Be aware of the excludes in this task.  This helps
+		to keep the JDK 1.4 dependencies isolated to the encoders package and the test packages.
+	</td>
+</tr>
+<tr>
+	<td valign="top">
+	* Percentage display on Numeric Axis now works.  Be aware, Java's NumberFormat Object will multiply your value by 100 before
+	displaying it in your locale specific percent.
+	</td>
+</tr>
+</table>
+<br/>
+
+
+
+<table width="98%" border="0" cellspacing="0" cellpadding="3" align="center" bordercolor="Black" class="OUTER_TABLE">
+<tr>
+	<td bgcolor="#CAFFC4" style="border-bottom: 1px solid Black; font-weight: bold;">0.7.1</td>
+</tr>
+<tr>
+	<td valign="top">
+	* Horizontal Plots not starting the ticks at the y-axis, were offset.  This was because some code for the next release
+		accidently was inserted into the code base.
+	</td>
+</tr>
+<tr>
+	<td valign="top">
+	* Code accidentally added which caused the above bug, has: Area, Line, and, Point, charts plot start along the y-axis rather than offset, so
+	those plots fill the entire plot area.
+	</td>
+</tr>
+</table>
+<br/>
+
+
+<table width="98%" border="0" cellspacing="0" cellpadding="3" align="center" bordercolor="Black" class="OUTER_TABLE">
+<tr>
+	<td bgcolor="#CAFFC4" style="border-bottom: 1px solid Black; font-weight: bold;">0.7.0</td>
+</tr>
+<tr>
+	<td valign="top">* Nothing has changed since Beta 3!</td>
+</tr>
+</table>
+<br/>
+
+
+<table width="98%" border="0" cellspacing="0" cellpadding="3" align="center" bordercolor="Black" class="OUTER_TABLE">
+<tr>
+	<td bgcolor="#CAFFC4" style="border-bottom: 1px solid Black; font-weight: bold;">0.7.0 - Beta 3</td>
+</tr>
+<tr>
+	<td valign="top">* Legend icon borders now are drawn; this was commented out by accident in the code</td>
+</tr>
+<tr>
+	<td valign="top">* Pie Charts with a single item are now drawn correctly.</td>
+</tr>
+</table>
+<br/>
+
+
+<table width="98%" border="0" cellspacing="0" cellpadding="3" align="center" bordercolor="Black" class="OUTER_TABLE">
+<tr>
+	<td bgcolor="#CAFFC4" style="border-bottom: 1px solid Black; font-weight: bold;">0.7.0 - Beta 2</td>
+</tr>
+<tr>
+	<td valign="top">* Fixed NullPointerException when not displaying labels on Axis Charts.</td>
+</tr>
+<tr>
+	<td valign="top">* Point Charts now show the shape for each data set in the Legend.</td>
+</tr>
+</table>
+<br/>
+
+
+<table width="98%" border="0" cellspacing="0" cellpadding="3" align="center" bordercolor="Black" class="OUTER_TABLE">
+<tr>
+	<td bgcolor="#CAFFC4" style="border-bottom: 1px solid Black; font-weight: bold;">0.7.0 - Beta 1</td>
+</tr>
+<tr>
+	<td valign="top">* Added a Validation which will check each Axis Label for NULL and throw a ChartDataException if found.</td>
+</tr>
+<tr>
+	<td valign="top">
+	* Changed default setting for ChartProperties.validate to true.  If you want to spare some CPU cycles after
+		development, set this to false to skip the validations.
+	</td>
+</tr>
+<tr>
+	<td valign="top">* Pie Charts now support legend placement on all sides of plot.</td>
+</tr>
+<tr>
+	<td valign="top">* You can now toggle axis scale labels on both axis independently.</td>
+</tr>
+<tr>
+	<td valign="top">* The x-axis label overlap was not being calculated correctly so labels could overlap.  This has been fixed.</td>
+</tr>
+<tr>
+	<td valign="top">* In order to break the runtime dependency on j2ee.jar, all references to HttpServletResponse have been removed from
+		the encoders.  The shortcut methods for outputting from a Servlet or JSP are now located in the org.jCharts.encoders.ServletEncoderHelper Class.</td>
+</tr>
+</table>
+
+<br/>
+
+<table width="98%" border="0" cellspacing="0" cellpadding="3" align="center" bordercolor="Black" class="OUTER_TABLE">
+<tr>
+	<td bgcolor="#CAFFC4" style="border-bottom: 1px solid Black; font-weight: bold;">0.7.0 - Alpha 2</td>
+</tr>
+<tr>
+	<td valign="top">* Fixed bug in alpha 1: NullPointer when trying to render an AxisChart without a legend</td>
+</tr>
+<tr>
+	<td valign="top">* Fixed bug in alpha 1: XAxis was rendering a grid line over the y-axis on a horizontal plot, so axis was always gray.</td>
+</tr>
+<tr>
+	<td valign="top">* Copied the SwingTest.java from the test code to the demo package and named it SwingDemo.java</td>
+</tr>
+<tr>
+	<td valign="top">* Bar and Clustered Bar, both vertical and horiztonal, allow value labels to be placed on them. Run the examples web app and look at the Bar Chart to see this. The source is in the demo package.</td>
+</tr>
+</table>
+
+
+<br>
+
+<table width="98%" border="0" cellspacing="0" cellpadding="3" align="center" bordercolor="Black" class="OUTER_TABLE">
+  <tr>
+    <td bgcolor="#CAFFC4" style="border-bottom: 1px solid Black; font-weight: bold;">0.7.0 - Alpha 1</td>
+  </tr>
+  <tr>
+    <td valign="top">
+    * Added a Validation framework to assist developers in tracking down data problems. The Chart Properties Object now
+    contains a method <i>setValidate( boolean )</i> which allows developers to toggle the validations for speed.  The IDataSeries
+    interface has a new method: <i>public void validate() throws PropertyException</i>
+    </td>
+  </tr>
+  <tr>
+    <td valign="top">* Removed all 'transient' data members and made everything Serializable.</td>
+  </tr>
+  <tr>
+    <td valign="top">* The encode( Chart chart, HttpServletResponse httpServletResponse ) method has been renamed to encodeServlet</td>
+  </tr>
+  <tr>
+    <td valign="top">
+    * A framework has been introduce which allows for custom scale increment code to be included in Axis Charts. Simply
+    	extend the org.jCharts.axisCharts.scale.AutomaticScaleCalculator Class and override the computeIncrement( int ) method.
+    </td>
+  </tr>
+  <tr>
+    <td valign="top">* Bug fix: x-axis labels will no longer go off the right edge of the chart image.</td>
+  </tr>
+  <tr>
+    <td valign="top">* Horizontal Bar, Stacked Bar, and Clustered Bars have been added.</td>
+  </tr>
+  <tr>
+    <td valign="top">* Scatter Plot Charts have been added.</td>
+  </tr>
+  <tr>
+    <td valign="top">* Servlet demos have been updated to be easier for non-java programers to understand as many have requested this.  
+	 So inheritance has been avoided and the code is self contained so you can just change values and use them as they are.</td>
+  </tr>  
+</table>
+
+
+<br/>
+<table width="98%" cellspacing="0" cellpadding="3" align="center" class="OUTER_TABLE">
+<tr>
+	<td bgcolor="#FFD5AA" style="border-bottom: 1px solid Black; font-weight: bold;">Known Issues</td>
+</tr>
+<tr>
+	<td>
+	Apache XML Batik, which jCharts uses to output SVG formatted charts, does not display vertical axis labels.  This has been
+	reported to them as of 6-23-2002 and hopefully a solution will be found soon; horizontal axis labels work in SVG.
+	I tried 1.1.1 and 1.5 beta 3.
+	<br/><br/></td>
+</tr>
+</table>
+
+
+<br/>
+
+<table width="98%" cellspacing="0" cellpadding="3" align="center" class="OUTER_TABLE">
+  <tr>
+    <td bgcolor="#FFF8C4" style="border-bottom: 1px solid Black; font-weight: bold;">Having Problems?</td>
+  </tr>
+  <tr>
+    <td><a href="http://sourceforge.net/bugs/?group_id=16161">Bugs</a></td>
+  </tr>
+</table>
+
+<br/>
+
+<table width="98%" cellspacing="0" cellpadding="3" align="center" class="OUTER_TABLE">
+  <tr>
+    <td bgcolor="#FFF8C4" style="border-bottom: 1px solid Black; font-weight: bold;">Links</td>
+  </tr>
+  <tr>
+    <td><a href="http://lists.sourceforge.net/lists/listinfo/jcharts-users" target="_blank">User's Mail List</a></td>
+  </tr>     
+  <tr>
+    <td><a href="http://www.sourceforge.net/projects/jcharts/" target="_blank">jCharts Project Page</a></td>
+  </tr>
+  <tr>
+    <td><a href="http://www.sourceforge.net/projects/jcharts/">Feature Requests</a></td>
+  </tr>
+</table>
+
+
+<br/>
+
+<table width="98%" cellspacing="0" cellpadding="3" align="center" class="OUTER_TABLE">
+<tr>
+	<td bgcolor="#FFD5AA" style="border-bottom: 1px solid Black; font-weight: bold;">Bundled Software</td>
+</tr>
+<tr>
+	<td>This product includes software developed by the Apache Software Foundation  (<a href="http://www.apache.org/" target="_blank">http://www.apache.org/</a>), namely the Apache XML <a href="http://xml.apache.org/batik/index.html">Batik</a> Project<br/><br/></td>
+</tr>
+<tr>
+	<td>jCharts uses the Ant build system developed by the Apache Software Foundation  (<a href="http://ant.apache.org/" target="_blank">http://ant.apache.org</a>)<br/><br/></td>
+</tr>
+</table>
+
+<br/><br/><br/>
+
+</body>
+</html>
+

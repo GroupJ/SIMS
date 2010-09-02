@@ -1,0 +1,185 @@
+
+<!--******************************************************************************************
+* File Info: $Id: pieChart.html,v 1.1.1.1 2002/07/25 02:27:34 nathaniel_auvil Exp $
+* Copyright (C) 2000
+* Author: Nathaniel G. Auvil
+* Contributor(s):
+*
+* Copyright 2002 (C) Nathaniel G. Auvil. All Rights Reserved.
+*
+* Redistribution and use of this software and associated documentation
+* ("Software"), with or without modification, are permitted provided
+* that the following conditions are met:
+*
+* 1. Redistributions of source code must retain copyright
+*    statements and notices.  Redistributions must also contain a
+*    copy of this document.
+*
+* 2. Redistributions in binary form must reproduce the
+*    above copyright notice, this list of conditions and the
+*    following disclaimer in the documentation and/or other
+*    materials provided with the distribution.
+*
+* 3. The name "jCharts" or "Nathaniel G. Auvil" must not be used to
+* 	  endorse or promote products derived from this Software without
+* 	  prior written permission of Nathaniel G. Auvil.  For written
+*    permission, please contact nathaniel_auvil@users.sourceforge.net
+*
+* 4. Products derived from this Software may not be called "jCharts"
+*    nor may "jCharts" appear in their names without prior written
+*    permission of Nathaniel G. Auvil. jCharts is a registered
+*    trademark of Nathaniel G. Auvil.
+*
+* 5. Due credit should be given to the jCharts Project
+*    (http://jcharts.sourceforge.net/).
+*
+* THIS SOFTWARE IS PROVIDED BY Nathaniel G. Auvil AND CONTRIBUTORS
+* ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT
+* NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+* FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL
+* jCharts OR ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+* INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+* (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+**********************************************************************************************-->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+
+<html>
+<head>
+	<title>jCharts - Pie Chart</title>
+	<link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+
+<body>
+
+
+<span class="pageTitle">Pie Chart</span>
+
+<br/><br/>
+
+<table class="codeExampleTable">
+<tr>
+	<td>
+	<span class="sectionTitle">Example</span>
+	</td>
+</tr>
+<tr>
+	<td class="codeExplanationCell">
+	Here is a simple Pie Chart.
+	</td>
+</tr>
+<tr>
+	<td class="codeExampleCell">
+	double[] data= { 81d, 55d, 39d, 20.6d };<br>
+	String[] labels= { "BMW M5", "BMW M3", "Viper GTS-R", "Corvette Z06" };<br>
+	Paint[] paints= { Color.lightGray, Color.green, Color.blue, Color.red };<br>
+	<br>
+	PieChart2DProperties pieChart2DProperties= new PieChart2DProperties();<br>
+	PieChartDataSet pieChartDataSet= new PieChartDataSet( "Cars That Own", data, labels, paints, pieChart2DProperties );<br>
+	<br>
+	PieChart2D pieChart2D= new PieChart2D( pieChartDataSet, new LegendProperties(), new ChartProperties(), 320, 320 );<br>
+	</td>
+</tr>
+<tr>
+	<td class="codeExampleImageCell">
+	<img src="images/pieCharts/pieChartBasic.png" width=400 height=350 border=0 alt=""/>
+	</td>
+</tr>
+</table>
+
+
+<br/><br/>
+
+<a name="zeroDegreeOffset">
+<table class="codeExampleTable">
+<tr>
+	<td>
+	<span class="sectionTitle">Zero Degree Offset</span>
+	</td>
+</tr>
+<tr>
+	<td class="codeExplanationCell">
+	If we would like to have the 'first' slice of the pie start at somewhere besides zero degrees,
+	we could add the following code to make it start at 45 degrees.  Note where the blue slice starts.
+	</td>
+</tr>
+<tr>
+	<td class="codeExampleCell">
+	pieChart2DProperties.setZeroDegreeOffset( 45f );<br/>
+	</td>
+</tr>
+<tr>
+	<td class="codeExampleImageCell">
+	<img src="images/pieCharts/pieChartZeroOffset.png"  width=400 height=350 border=0 alt=""/>
+	</td>
+</tr>
+</table>
+</a>
+
+<br/><br/>
+
+<a name="borderStroke">
+<table class="codeExampleTable">
+<tr>
+	<td>
+	<span class="sectionTitle">Border Stroke</span>
+	</td>
+</tr>
+<tr>
+	<td class="codeExplanationCell">
+	The border of the Pie Chart uses the <span class="codeFragment">java.awt.Stroke</span> Interface to
+	control its rendering properties. There are several implementations of the <span class="codeFragment">java.awt.Stroke</span> Interface 
+	in the <span class="codeFragment">java.awt</span> Package to choose from.
+	</td>
+</tr>
+<tr>
+	<td class="codeExampleCell">
+	pieChart2DProperties.setBorderStroke( new BasicStroke( 4f ) );<br />
+	</td>
+</tr>
+<tr>
+	<td class="codeExampleImageCell">
+	<img src="images/pieCharts/pieChartBorderStroke.png"  width=400 height=350 border=0 alt=""/>
+	</td>
+</tr>
+</table>
+</a>
+
+<br/><br/>
+
+<a name="borderPaint">
+<table class="codeExampleTable">
+<tr>
+	<td>
+	<span class="sectionTitle">Border Paint</span>
+	</td>
+</tr>
+<tr>
+	<td class="codeExplanationCell">
+	The border of the Pie Chart uses the <span class="codeFragment">java.awt.Paint</span> interface to
+	control its rendering properties. There are several implementations of the <span class="codeFragment">java.awt.Paint</span> Interface 
+	in the <span class="codeFragment">java.awt</span> Package to choose from.
+	</td>
+</tr>
+<tr>
+	<td class="codeExampleCell">
+	pieChart2DProperties.setBorderPaint( Color.gray );<br />
+	</td>
+</tr>
+<tr>
+	<td class="codeExampleImageCell">
+	<img src="images/pieCharts/pieChartBorderPaint.png"  width=400 height=350 border=0 alt=""/>
+	</td>
+</tr>
+</table>
+</a>
+
+<br/><br/>
+
+</body>
+</html>

@@ -80,6 +80,11 @@ public class DataHouse {
     public ArrayList<String> TD_col_title = new ArrayList<String>();
     public ArrayList<ArrayList<String>> TD_Grid = new ArrayList<ArrayList<String>>();
 
+    public boolean equals(Object obj)   {
+        DataHouse dh = (DataHouse) obj;
+        return this.fileName.compareTo(dh.fileName) == 0;
+    }
+
     public String toString() {
 
         if (true)
