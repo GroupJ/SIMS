@@ -43,6 +43,8 @@ public class DSWindow extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         exportMenu = new javax.swing.JMenuItem();
 
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance().getContext().getResourceMap(DSWindow.class);
+        setTitle(resourceMap.getString("Form.title")); // NOI18N
         setName(""); // NOI18N
 
         jScrollPane1.setName("jScrollPane1"); // NOI18N

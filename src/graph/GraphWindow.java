@@ -54,6 +54,7 @@ public class GraphWindow extends javax.swing.JFrame {
     private void initComponents() {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Graph");
         addMouseWheelListener(new java.awt.event.MouseWheelListener() {
             public void mouseWheelMoved(java.awt.event.MouseWheelEvent evt) {
                 formMouseWheelMoved(evt);
@@ -93,7 +94,7 @@ public class GraphWindow extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentResized
-        image = GraphFunctions.readImage();
+        image = GraphFunctions.getImage(ac);
         image = GraphFunctions.setSize(image, this.getWidth() - 20, this.getHeight() - 40);
     }//GEN-LAST:event_formComponentResized
 
@@ -117,7 +118,7 @@ public class GraphWindow extends javax.swing.JFrame {
         else {
             int newY = evt.getY();
             double scaleIncrease = (double)Math.abs(previousY - newY) / (double)this.getHeight();
-            scaleIncrease *= 2;
+            scaleIncrease *= 13;
 
             if (newY > previousY)   {
                 offset -= scaleIncrease;
@@ -131,6 +132,8 @@ public class GraphWindow extends javax.swing.JFrame {
                 image = GraphFunctions.setSize(image, this.getWidth() - 20, this.getHeight() - 40);
                 paint(this.getGraphics());
             }
+
+            previousY = newY;
         }
     }//GEN-LAST:event_formMouseDragged
 

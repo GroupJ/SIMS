@@ -8,12 +8,9 @@ import DataStructure.Rx_DataSet;
 import org.jCharts.chartData.*;
 import org.jCharts.properties.*;
 import org.jCharts.axisChart.*;
-import org.jCharts.encoders.*;
 import java.awt.*;
 import java.awt.geom.*;
-import java.io.*;
 import java.awt.image.*;
-import javax.imageio.ImageIO;
 
 /**
  * Provides the functions for graphing
@@ -21,23 +18,12 @@ import javax.imageio.ImageIO;
  */
 public class GraphFunctions {
 
-    private static int numOfGraphs = 0;
     private static int graphWidth = 300;
     private static int graphHeight = 450;
 
     protected static void setSize(int w, int h) {
         graphWidth = w;
         graphHeight = h;
-    }
-
-    protected static BufferedImage readImage() {
-        BufferedImage bi = null;
-        try {
-            bi = ImageIO.read(new File("temp.jpg"));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return bi;
     }
 
     protected static BufferedImage setSize(BufferedImage bi, int width, int height) {
@@ -142,15 +128,31 @@ public class GraphFunctions {
         return axisChart;
     }
 
-    protected static BufferedImage getImage(AxisChart axisChart)  {
-        try {
-            FileOutputStream os = new FileOutputStream(new File("temp.jpg"));
-            JPEGEncoder.encode(axisChart, (float) 1.0, os);
-            os.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+    /**
+     * Code taken from org.jCharts.encoders.BinaryEncoderUtil
+     * @param chart
+     * @return
+     */
+    protected static BufferedImage getImage(AxisChart chart)  {
+
+        BufferedImage bufferedImage = null;
+
+        //---if we use an ImageMap, we already have rendered the chart byt the time we get here so,
+        //---	simply return the rendered image.
+        if (chart.getGenerateImageMapFlag()) {
+            bufferedImage = chart.getBufferedImage();
+        } //---else, create a new BufferedImage and set the Graphics2D onto the chart.
+        else {
+            bufferedImage = new BufferedImage(chart.getImageWidth(), chart.getImageHeight(), BufferedImage.TYPE_INT_RGB);
+            chart.setGraphics2D(bufferedImage.createGraphics());
+
+            try {
+                chart.render();
+            } catch (Exception e)   {
+                e.printStackTrace();
+            }
         }
 
-        return readImage();
+        return bufferedImage;
     }
 }

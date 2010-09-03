@@ -42,6 +42,8 @@ public class FileOutputDataWindow extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         dataOutputArea = new javax.swing.JTextArea();
 
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance().getContext().getResourceMap(FileOutputDataWindow.class);
+        setTitle(resourceMap.getString("Form.title")); // NOI18N
         setName("Form"); // NOI18N
 
         jScrollPane1.setName("jScrollPane1"); // NOI18N
