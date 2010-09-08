@@ -27,6 +27,7 @@ public class GraphWindow extends javax.swing.JFrame {
     private double min;
     private double max;
     private double scale = 1.0;
+    private double scaleIncrease = 0.5;
     private int totalRot = 0;
     private double offset = 0;
     private int previousY = -1;
@@ -40,7 +41,7 @@ public class GraphWindow extends javax.swing.JFrame {
         image = GraphFunctions.getImage(ac);
         initComponents();
 
-        image = GraphFunctions.setSize(image, this.getWidth() - 20, this.getHeight() - 40);
+        image = GraphFunctions.setImageSize(image, this.getWidth() - 20, this.getHeight() - 40);
         paint(this.getGraphics());
     }
 
@@ -95,7 +96,7 @@ public class GraphWindow extends javax.swing.JFrame {
 
     private void formComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentResized
         image = GraphFunctions.getImage(ac);
-        image = GraphFunctions.setSize(image, this.getWidth() - 20, this.getHeight() - 40);
+        image = GraphFunctions.setImageSize(image, this.getWidth() - 20, this.getHeight() - 40);
     }//GEN-LAST:event_formComponentResized
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
@@ -105,10 +106,17 @@ public class GraphWindow extends javax.swing.JFrame {
     private void formMouseWheelMoved(java.awt.event.MouseWheelEvent evt) {//GEN-FIRST:event_formMouseWheelMoved
         int numOfRotation = evt.getWheelRotation();
         totalRot += numOfRotation;
-        scale = Math.exp(totalRot);
-        GraphFunctions.reScale(ac, min, max, scale, offset);
+        
+        if (totalRot >= 0)   {
+            scale = 1.0 + (totalRot * scaleIncrease);
+            GraphFunctions.reScale(ac, min + offset, max + offset, scale, offset);
+        } else {
+            scale = 1.0 - (totalRot * scaleIncrease);
+            GraphFunctions.reScale(ac, min + offset, max + offset, 1/scale, offset);
+        }
+        
         image = GraphFunctions.getImage(ac);
-        image = GraphFunctions.setSize(image, this.getWidth() - 20, this.getHeight() - 40);
+        image = GraphFunctions.setImageSize(image, this.getWidth() - 20, this.getHeight() - 40);
         paint(this.getGraphics());
     }//GEN-LAST:event_formMouseWheelMoved
 
@@ -120,16 +128,29 @@ public class GraphWindow extends javax.swing.JFrame {
             double scaleIncrease = (double)Math.abs(previousY - newY) / (double)this.getHeight();
             scaleIncrease *= 13;
 
+            double increment;
+
+            if (totalRot >= 0)
+                increment = ((max - min) * scale) / 10;
+            else
+                increment = ((max - min) * (1/scale)) / 10;
+
             if (newY > previousY)   {
-                offset -= scaleIncrease;
+                offset += scaleIncrease * increment;
             } else if (newY < previousY) {
-                offset += scaleIncrease;
+                offset -= scaleIncrease * increment;
             }
 
             if (newY != previousY)  {
-                GraphFunctions.reScale(ac, min, max, scale, offset);
+                if (totalRot >= 0) {
+                    scale = 1.0 + (totalRot * this.scaleIncrease);
+                    GraphFunctions.reScale(ac, min + offset, max + offset, scale, offset);
+                } else {
+                    scale = 1.0 - (totalRot * this.scaleIncrease);
+                    GraphFunctions.reScale(ac, min + offset, max + offset, 1 / scale, offset);
+                }
                 image = GraphFunctions.getImage(ac);
-                image = GraphFunctions.setSize(image, this.getWidth() - 20, this.getHeight() - 40);
+                image = GraphFunctions.setImageSize(image, this.getWidth() - 20, this.getHeight() - 40);
                 paint(this.getGraphics());
             }
 

@@ -24,6 +24,7 @@ public class DSWindow extends javax.swing.JFrame {
     /** Creates new form DataSummary */
     public DSWindow() {
         initComponents();
+        this.setTitle("Summary Window");
     }
 
     /** This method is called from within the constructor to
@@ -43,8 +44,6 @@ public class DSWindow extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         exportMenu = new javax.swing.JMenuItem();
 
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance().getContext().getResourceMap(DSWindow.class);
-        setTitle(resourceMap.getString("Form.title")); // NOI18N
         setName(""); // NOI18N
 
         jScrollPane1.setName("jScrollPane1"); // NOI18N
@@ -88,19 +87,19 @@ public class DSWindow extends javax.swing.JFrame {
                         .addComponent(variableSelectionList, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(graphButton, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1462, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1063, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 334, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 334, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(graphButton, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(variableSelectionList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
@@ -111,8 +110,7 @@ public class DSWindow extends javax.swing.JFrame {
 
         if (tableEntries == null)   {
             javax.swing.JOptionPane.showMessageDialog(null, "You must select atleast 1 input file to plot.\n" +
-                    "Select by checking the checkboxes\n" +
-                    "Dont be a DICKHEAD. I didn't stay at uni until midnight to write this warning mgs ,\\,,\n",
+                    "Select by checking the checkboxes\n",
                     "No files selected", javax.swing.JOptionPane.WARNING_MESSAGE);
             return;
         }

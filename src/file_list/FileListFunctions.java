@@ -8,17 +8,93 @@ package file_list;
 import DataStructure.DataHouse;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
+import javax.swing.JOptionPane.*;
 import java.io.*;
 import IO.*;
 import data_summary.*;
 import file_output.*;
 import java.util.*;
+import java.awt.Point;
 
 /**
  * Implements the functionalities for file_list subsystem.
  * @author 20378332
  */
 public class FileListFunctions {
+
+    protected static void saveWindowSettings(FileListWindow flw)  {
+
+        StringBuffer sb = new StringBuffer();
+        
+        Point topLeft = flw.getLocationOnScreen();
+        sb.append("FileListWindow= " + topLeft.x + " " + topLeft.y + " " + flw.getHeight() + " " + flw.getWidth() + "\n");
+
+        FileOutputFrontEnd.showWindow();
+        topLeft = FileOutputFrontEnd.getWindowPosition();
+        FileOutputFrontEnd.hideWindow();
+        sb.append("FileOutputWindow= " + topLeft.x + " " + topLeft.y + " " + FileOutputFrontEnd.getHeight() + " " + FileOutputFrontEnd.getWidth() + "\n");
+
+        DSFrontEnd.showWindow();
+        topLeft = DSFrontEnd.getWindowPosition();
+        DSFrontEnd.hideWindow();
+        sb.append("DataSummaryWindow= " + topLeft.x + " " + topLeft.y + " " + DSFrontEnd.getHeight() + " " + DSFrontEnd.getWidth() + "\n");
+
+        DSFrontEnd.showSecondWindow();
+        topLeft = DSFrontEnd.getSecondWindowPosition();
+        DSFrontEnd.hideSecondWindow();
+        sb.append("InputSummaryWindow= " + topLeft.x + " " + topLeft.y + " " + DSFrontEnd.getSecondHeight() + " " + DSFrontEnd.getSecondWidth() + "\n");
+
+        try {
+            PrintStream ps = new PrintStream(new BufferedOutputStream(new FileOutputStream(new File("SIMS_settings.dat"))));
+            ps.print(sb.toString());
+            ps.close();
+        } catch (Exception e)   {
+            e.printStackTrace();
+        }
+        
+    }
+
+    public static void loadSettings(FileListWindow flw)   {
+
+        StringTokenizer st;
+        String line;
+
+        try {
+            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(new File("SIMS_settings.dat"))));
+            
+            for (int i = 0; i < 4; i++) {
+                line = br.readLine();
+                st = new StringTokenizer(line);
+
+                String windowName = st.nextToken();
+                int x = Integer.parseInt(st.nextToken());
+                int y = Integer.parseInt(st.nextToken());
+                int h = Integer.parseInt(st.nextToken());
+                int w = Integer.parseInt(st.nextToken());
+
+                switch (i)  {
+                    case 0: flw.setLocation(x, y);
+                            flw.setSize(w, h);
+                            break;
+                    case 1: FileOutputFrontEnd.setLocation(x,y);
+                            FileOutputFrontEnd.setSize(w, h);
+                            break;
+                    case 2: DSFrontEnd.setLocation(x,y);
+                            DSFrontEnd.setSize(w, h);
+                            break;
+                    case 3: DSFrontEnd.setSecondLocation(x,y);
+                            DSFrontEnd.setSecondSize(w, h);
+                            break;
+                }
+            }
+
+            br.close();
+
+        } catch (Exception e)   {
+            e.printStackTrace();
+            System.err.println("No file found. Skipping settings");
+        }
+    }
 
     protected static void saveFileList(ArrayList<DataHouse> list)   {
         JFileChooser fc = new JFileChooser();
@@ -45,7 +121,7 @@ public class FileListFunctions {
         fc.setFileFilter(ff);
         fc.setMultiSelectionEnabled(false);
 
-        int result = fc.showSaveDialog(null);
+        int result = fc.showOpenDialog(null);
 
         if (result == fc.APPROVE_OPTION)    {
             File dest = fc.getSelectedFile();
@@ -67,6 +143,16 @@ public class FileListFunctions {
             showOutputWindow();
             showSummaryWindow();
         }
+    }
+
+    protected static boolean requestSystemWipe()  {
+        int result = JOptionPane.showConfirmDialog(null,
+                "The action you requested will clear the system state.\n" +
+                "All loaded files and processing will be removed.\n" +
+                "Would you like to continue?", "Request Permission to Wipe",
+                JOptionPane.YES_NO_OPTION);
+
+        return result == JOptionPane.YES_OPTION;
     }
 
     /**

@@ -26,6 +26,7 @@ public class FileListWindow extends javax.swing.JFrame {
     /** Creates new form FileList */
     public FileListWindow() {
         initComponents();
+        this.setTitle("File List");
     }
 
     /** This method is called from within the constructor to
@@ -66,6 +67,11 @@ public class FileListWindow extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("SIMS-2");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jScrollPane1.setName("jScrollPane1"); // NOI18N
 
@@ -96,7 +102,7 @@ public class FileListWindow extends javax.swing.JFrame {
         });
         fileMenu.add(loadInputFileMenu);
 
-        resetTable.setText("ResetTable");
+        resetTable.setText("Reset Table");
         resetTable.setName("resetTable"); // NOI18N
         resetTable.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -214,6 +220,7 @@ public class FileListWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_loadInputFileMenuActionPerformed
 
     private void exitItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitItemActionPerformed
+        this.formWindowClosing(null);
         System.exit(0);
     }//GEN-LAST:event_exitItemActionPerformed
 
@@ -235,7 +242,9 @@ public class FileListWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_fileListMouseClicked
 
     private void resetTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetTableActionPerformed
-        FileListFunctions.resetTable(this);
+        if (files.size() != 0)
+            if (FileListFunctions.requestSystemWipe())
+                FileListFunctions.resetTable(this);
     }//GEN-LAST:event_resetTableActionPerformed
 
     private void removeItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeItemActionPerformed
@@ -258,8 +267,16 @@ public class FileListWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_saveListMenuItemActionPerformed
 
     private void loadListMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadListMenuItemActionPerformed
-        FileListFunctions.loadFileList(this);
+        if (files.size() != 0)  {
+            if (FileListFunctions.requestSystemWipe())
+                FileListFunctions.loadFileList(this);
+        } else
+            FileListFunctions.loadFileList(this);
     }//GEN-LAST:event_loadListMenuItemActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        FileListFunctions.saveWindowSettings(this);
+    }//GEN-LAST:event_formWindowClosing
 
     protected void updateList()    {
         int size = files.size();

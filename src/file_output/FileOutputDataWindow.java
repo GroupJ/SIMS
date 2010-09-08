@@ -22,11 +22,8 @@ public class FileOutputDataWindow extends javax.swing.JFrame {
 
     /** Creates new form FileOutputData */
     public FileOutputDataWindow() {
-        Toolkit tk = Toolkit.getDefaultToolkit();
-        Dimension d = tk.getScreenSize();
-        d.setSize(d.getWidth()/2, d.getHeight()/2);
         initComponents();
-
+        this.setTitle("Output Window");
     }
 
 

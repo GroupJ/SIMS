@@ -14,8 +14,10 @@ import org.jCharts.axisChart.*;
  * @author 20378332
  */
 public class GraphFrontEnd {
+
     public static void createGraph(String[] xAxisLabels, Rx_DataSet[] values, String xAxisTitle, String yAxisTitle) {
         AxisChart ac = GraphFunctions.createChart(xAxisLabels, values, xAxisTitle, yAxisTitle, 1, 0);
         new GraphWindow(ac).setVisible(true);
     }
+    
 }

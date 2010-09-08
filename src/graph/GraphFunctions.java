@@ -8,6 +8,7 @@ import DataStructure.Rx_DataSet;
 import org.jCharts.chartData.*;
 import org.jCharts.properties.*;
 import org.jCharts.axisChart.*;
+import org.jCharts.properties.util.ChartFont;
 import java.awt.*;
 import java.awt.geom.*;
 import java.awt.image.*;
@@ -26,7 +27,7 @@ public class GraphFunctions {
         graphHeight = h;
     }
 
-    protected static BufferedImage setSize(BufferedImage bi, int width, int height) {
+    protected static BufferedImage setImageSize(BufferedImage bi, int width, int height) {
         BufferedImage result = new BufferedImage(width,height,bi.getType());
         Graphics2D g2 = result.createGraphics();
         g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
@@ -44,7 +45,7 @@ public class GraphFunctions {
 
         //setting scale
         double increment = ((max - min) * yScale) / 10;
-        double lowerBound = (min + (max - min)/2) - (increment * (6 + offset));
+        double lowerBound = (min + (max - min)/2) - (increment * (6 ));
         int numOfIncrements = 13;
 
         int exponent = -8;
@@ -121,6 +122,11 @@ public class GraphFunctions {
 
         ds.addIAxisPlotDataSet(scd);
         AxisChart axisChart = new AxisChart(ds, new ChartProperties(), new AxisProperties(), null, graphWidth, graphHeight);
+
+        // setting font
+        AxisProperties axisProperties = new AxisProperties();
+        ChartFont xScaleChartFont = new ChartFont(new Font("Lucida Console", Font.PLAIN, 8), Color.black);
+        axisProperties.getXAxisProperties().setScaleChartFont(xScaleChartFont);
 
         //setting scale
         reScale(axisChart,min,max,1,0);

@@ -5,6 +5,7 @@
 package sims2;
 
 import file_list.FileListWindow;
+import file_list.FileListFunctions;
 import org.jdesktop.application.Application;
 import org.jdesktop.application.SingleFrameApplication;
 
@@ -43,6 +44,6 @@ public class SIMS2App extends SingleFrameApplication {
      */
     public static void main(String[] args) {
         fileListWindow.setVisible(true);
-        fileListWindow.setLocation(1000, 0);
+        FileListFunctions.loadSettings(fileListWindow);
     }
 }
