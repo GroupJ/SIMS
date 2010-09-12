@@ -1,4 +1,4 @@
-FileListWindow= 0 24 330 402
-FileOutputWindow= 0 24 566 1146
-DataSummaryWindow= 316 348 428 1089
-InputSummaryWindow= 0 24 332 402
+FileListWindow= 347 131 330 402
+FileOutputWindow= 638 24 566 1146
+DataSummaryWindow= 437 524 428 1089
+InputSummaryWindow= 862 477 332 402

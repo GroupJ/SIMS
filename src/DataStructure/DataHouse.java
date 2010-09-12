@@ -261,9 +261,4 @@ public class DataHouse {
                 else
                     sb.append(TD_Grid.get(i).get(j) + "\t\t");
             }
-            sb.append("\n");
-        }
-
-        return sb.toString();
-    }
-}
+            sb.appen

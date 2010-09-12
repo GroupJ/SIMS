@@ -321,3 +321,4 @@ public class FileListWindow extends javax.swing.JFrame {
     protected ArrayList<DataHouse> files = new ArrayList<DataHouse> ();
     private int lastIndex = -1;
 }
+                                                                            
