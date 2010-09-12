@@ -45,6 +45,7 @@ public class FileListWindow extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         loadInputFileMenu = new javax.swing.JMenuItem();
+        exportSummaryTable = new javax.swing.JMenuItem();
         resetTable = new javax.swing.JMenuItem();
         saveListMenuItem = new javax.swing.JMenuItem();
         loadListMenuItem = new javax.swing.JMenuItem();
@@ -101,6 +102,15 @@ public class FileListWindow extends javax.swing.JFrame {
             }
         });
         fileMenu.add(loadInputFileMenu);
+
+        exportSummaryTable.setText("Export Summary Table");
+        exportSummaryTable.setName("exportSummaryTable"); // NOI18N
+        exportSummaryTable.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exportSummaryTableActionPerformed(evt);
+            }
+        });
+        fileMenu.add(exportSummaryTable);
 
         resetTable.setText("Reset Table");
         resetTable.setName("resetTable"); // NOI18N
@@ -278,6 +288,10 @@ public class FileListWindow extends javax.swing.JFrame {
         FileListFunctions.saveWindowSettings(this);
     }//GEN-LAST:event_formWindowClosing
 
+    private void exportSummaryTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportSummaryTableActionPerformed
+        FileListFunctions.exportSummaryTable();
+    }//GEN-LAST:event_exportSummaryTableActionPerformed
+
     protected void updateList()    {
         int size = files.size();
         ((DefaultListModel)fileList.getModel()).clear();
@@ -287,6 +301,7 @@ public class FileListWindow extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem exitItem;
+    private javax.swing.JMenuItem exportSummaryTable;
     private javax.swing.JList fileList;
     private javax.swing.JPopupMenu fileListPopupMenu;
     private javax.swing.JMenu fileMenu;

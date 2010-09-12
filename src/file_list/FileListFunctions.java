@@ -366,4 +366,8 @@ public class FileListFunctions {
         int result = javax.swing.JOptionPane.showConfirmDialog(null, mgs, "File Already Found", javax.swing.JOptionPane.OK_CANCEL_OPTION);
         return result == javax.swing.JOptionPane.YES_OPTION;
     }
+
+    protected static void exportSummaryTable()  {
+        DSFrontEnd.exportSummaryTable();
+    }
 }

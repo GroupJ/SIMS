@@ -144,4 +144,7 @@ public class DSFrontEnd {
         tableModel.removeRow(fileName);
     }
 
+    public static void exportSummaryTable() {
+        DSFunctions.exportSummaryTable();
+    }
 }

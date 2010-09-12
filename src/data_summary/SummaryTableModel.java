@@ -83,7 +83,7 @@ public class SummaryTableModel extends DefaultTableModel    {
         ArrayList<Object> row = new ArrayList<Object> ();
         row.add(new Integer(getRowCount() + 1));
         row.add(new Boolean(false));
-        row.add(new Boolean(false));
+        row.add(new Boolean(true));
 
         for (int i = 0; i < arg0.length; i++)
             row.add(arg0[i]);

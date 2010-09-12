@@ -42,6 +42,15 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="loadInputFileMenuActionPerformed"/>
               </Events>
             </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="exportSummaryTable">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Export Summary Table"/>
+                <Property name="name" type="java.lang.String" value="exportSummaryTable" noResource="true"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="exportSummaryTableActionPerformed"/>
+              </Events>
+            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="resetTable">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Reset Table"/>

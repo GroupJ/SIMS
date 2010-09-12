@@ -34,10 +34,16 @@ public class InputTableModel extends DefaultTableModel  {
         titles = new ArrayList<String> ();
 
         types.add(String.class);
+        types.add(String.class);
+        types.add(String.class);
 
-        titles.add("File Name");
+        titles.add("Std Name");
+        titles.add("Values");
+        titles.add("Std Deviation");
 
-        editable.add(new Boolean(false));
+        editable.add(new Boolean(true));
+        editable.add(new Boolean(true));
+        editable.add(new Boolean(true));
     }
 
     /**
@@ -79,7 +85,7 @@ public class InputTableModel extends DefaultTableModel  {
 
         System.err.println(totalCol + " " + RTotal + " " + getRowCount());
 
-        for (int i = ((totalCol -1)/2); i < RTotal; i++)    {
+        for (int i = ((totalCol -3)/2); i < RTotal; i++)    {
             addColumn("R" + (i) + " (MV)", String.class, true);
             addColumn("R" + (i) + " (StdErr)", String.class, true);
         }
@@ -116,7 +122,7 @@ public class InputTableModel extends DefaultTableModel  {
 
     public void setValueAt(Object value, int row, int col)  {
 
-        if (!isDouble(value) && ((String)value).length() != 0)
+        if (!isDouble(value) && ((String)value).length() != 0 && col != 0)
             javax.swing.JOptionPane.showMessageDialog(null,
                     "Not double value.",
                     "Incorrect Type",

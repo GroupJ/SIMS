@@ -45,8 +45,8 @@ public class GraphFunctions {
 
         //setting scale
         double increment = ((max - min) * yScale) / 10;
-        double lowerBound = (min + (max - min)/2) - (increment * (6 ));
-        int numOfIncrements = 13;
+        double lowerBound = (min + (max - min)/2) - (increment * (5.5 ));
+        int numOfIncrements = 11;
 
         int exponent = -8;
 
@@ -99,8 +99,8 @@ public class GraphFunctions {
         double[] meanVal = new double[values.length];
         double[] closeVal = new double[values.length];
 
-        double max = -1000000000.0;
-        double min = 1000000000.0;
+        double max = -1.0e-300;
+        double min = 1.0e300;
 
         for (int i = 0; i < values.length; i++) {
             meanVal[i] = values[i].meanValue;

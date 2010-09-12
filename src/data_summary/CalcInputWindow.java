@@ -39,8 +39,6 @@ public class CalcInputWindow extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         inputTable = new javax.swing.JTable();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
         jScrollPane1.setName("jScrollPane1"); // NOI18N
 
         inputTable.setModel(DSFrontEnd.inputModel);
