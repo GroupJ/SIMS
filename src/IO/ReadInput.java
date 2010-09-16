@@ -87,6 +87,7 @@ public class ReadInput {
      * @throws Exception If any IO errors occur. Currently unhandled.
      */
     public static DataHouse readInput(File file) throws Exception   {
+
         br = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
         readInput();
         br.close();

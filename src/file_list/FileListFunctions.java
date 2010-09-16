@@ -298,15 +298,32 @@ public class FileListFunctions {
             if (file == null)
                 return null;
 
+            ArrayList<String> badfiles = new ArrayList<String> ();
+
             dh = new DataHouse[file.length];
             for (int i = 0; i < file.length; i++)   {
-                try {
-                    dh[i] = ReadInput.readInput(file[i]);
-                } catch (Exception e)   {
-                    e.printStackTrace();
-                    dh[i] = null;
-                }
+
+                if (file[i].getName().contains(".asc")) {
+
+                    try {
+                        dh[i] = ReadInput.readInput(file[i]);
+                    } catch (Exception e) {
+                        badfiles.add(file[i].getAbsolutePath());
+                        dh[i] = null;
+                    }
+                    
+                } else
+                    badfiles.add(file[i].getAbsolutePath());
             }
+
+            String errorMgs = "Error, could not load the following file(s): \n";
+            for (int i = 0; i < badfiles.size(); i++)
+                errorMgs += badfiles.get(i) + "\n";
+
+            javax.swing.JOptionPane.showMessageDialog(null,
+                    errorMgs,
+                    "Error Loading File",
+                    javax.swing.JOptionPane.ERROR_MESSAGE);
         }
 
         return dh;

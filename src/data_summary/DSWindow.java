@@ -13,6 +13,7 @@ package data_summary;
 import javax.swing.*;
 import javax.swing.table.TableColumn;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 
 /**
  * GUI component for data summary subsystem. This handles
@@ -21,10 +22,23 @@ import javax.swing.table.DefaultTableCellRenderer;
  */
 public class DSWindow extends javax.swing.JFrame {
 
+    private DefaultTableModel stm;
+
     /** Creates new form DataSummary */
     public DSWindow() {
+        stm = DSFrontEnd.tableModel;
         initComponents();
         this.setTitle("Summary Window");
+    }
+
+    public DSWindow(DefaultTableModel stm, String title)    {
+        this.stm = stm;
+
+        if (this.stm == null)
+            this.stm = new DefaultTableModel();
+        
+        initComponents();
+        this.setTitle(title);
     }
 
     /** This method is called from within the constructor to
@@ -40,6 +54,7 @@ public class DSWindow extends javax.swing.JFrame {
         summaryTable = new javax.swing.JTable();
         graphButton = new javax.swing.JButton();
         variableSelectionList = new javax.swing.JComboBox();
+        jButton1 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         exportMenu = new javax.swing.JMenuItem();
@@ -48,7 +63,7 @@ public class DSWindow extends javax.swing.JFrame {
 
         jScrollPane1.setName("jScrollPane1"); // NOI18N
 
-        summaryTable.setModel(data_summary.DSFrontEnd.tableModel);
+        summaryTable.setModel(this.stm);
         summaryTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
         summaryTable.setName("summaryTable"); // NOI18N
         jScrollPane1.setViewportView(summaryTable);
@@ -63,6 +78,14 @@ public class DSWindow extends javax.swing.JFrame {
 
         variableSelectionList.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         variableSelectionList.setName("variableSelectionList"); // NOI18N
+
+        jButton1.setText("Calculate");
+        jButton1.setName("jButton1"); // NOI18N
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jMenuBar1.setBorder(null);
         jMenuBar1.setName("jMenuBar1"); // NOI18N
@@ -83,11 +106,13 @@ public class DSWindow extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1063, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 749, Short.MAX_VALUE)
                         .addComponent(variableSelectionList, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(graphButton, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1063, Short.MAX_VALUE))
+                        .addComponent(graphButton, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -98,7 +123,8 @@ public class DSWindow extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(graphButton, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(variableSelectionList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(variableSelectionList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1))
                 .addContainerGap())
         );
 
@@ -118,6 +144,12 @@ public class DSWindow extends javax.swing.JFrame {
         int Rvalue = variableSelectionList.getSelectedIndex();
         DSFunctions.generateGraph(tableEntries, Rvalue);
     }//GEN-LAST:event_graphButtonActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        int[] rows = getAllSelectedRow();
+
+        DSFunctions.calcUsingFormula(null, rows, new int[0]);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     private int[] getAllSelectedRow()    {
         int numRow = summaryTable.getRowCount();
@@ -183,6 +215,7 @@ public class DSWindow extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem exportMenu;
     private javax.swing.JButton graphButton;
+    private javax.swing.JButton jButton1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane1;

@@ -58,23 +58,77 @@ public class DSFunctions {
 
         if (result == fc.APPROVE_OPTION)    {
             File dest = fc.getSelectedFile();
-            dest = new File(dest.getAbsolutePath() + ".csv");
+
+            if (!dest.getName().contains(".csv"))
+                dest = new File(dest.getAbsolutePath() + ".csv");
+            
+            boolean writeToFile = true;
 
             if (dest.exists())  {
-                JOptionPane.showConfirmDialog(null, "File already exist.\nWould you like to overwrite?",
-                        "Permission to Overwrite",
+                int response = JOptionPane.showConfirmDialog(null, "File already exist.\nWould you like to overwrite?",
+                        "Requesting Permission to Overwrite",
                         JOptionPane.YES_NO_OPTION);
-            } else  {
+                writeToFile = response == JOptionPane.YES_OPTION;
+            }
 
-                String[][] grid = new String[DSFrontEnd.tableModel.getRowCount()][DSFrontEnd.tableModel.getColumnCount()-3];
-                for (int i = 0; i < grid.length; i++)
+            if (writeToFile) {
+
+                String[][] grid = new String[DSFrontEnd.tableModel.getRowCount()+1][DSFrontEnd.tableModel.getColumnCount()-3];
+
+                for (int i = 0; i < grid[0].length; i++)    {
+                    grid[0][i] = DSFrontEnd.tableModel.getColumnTitle(i + 3);
+                    //System.err.println(grid[0][i] + ":" + grid[0][i].compareTo("(X,Y)"));
+                    if (grid[0][i].compareTo("(X,Y)") == 0) {
+                        grid[0][i] = grid[0][i].replaceAll("[()]", "");
+                    }
+                }
+
+                for (int i = 0; i < grid.length - 1; i++)
                     for (int j = 0; j < grid[i].length; j++)    {
-                        grid[i][j] = (String) DSFrontEnd.tableModel.getValueAt(i, j+3);
-                        if (grid[i][j] == null)
-                            grid[i][j] = "";
+                        grid[i+1][j] = (String) DSFrontEnd.tableModel.getValueAt(i, j+3);
+
+                        if (grid[0][j].compareTo("X,Y") == 0) {
+                            grid[i+1][j] = grid[i+1][j].replaceAll("[()]", "");
+                        }
+
+                        if (grid[i+1][j] == null)
+                            grid[i+1][j] = "";
                     }
                 ExportTable.exportToCSV(grid, dest);
             }
         }
+    }
+
+    protected static void calcUsingFormula(String fileName, int[] useRow, int[] stdRow)    {
+
+        int numCol = DSFrontEnd.tableModel.getColumnCount();
+        String[] title = new String[numCol];
+        for (int i = 0; i < title.length; i++)
+            title[i] = DSFrontEnd.tableModel.getColumnTitle(i);
+
+        int numRow = useRow.length;
+        String[][] content = new String[numRow][numCol];
+        for (int i = 0; i < numRow; i++)
+            for (int j = 0; j < numCol; j++)    {
+                Object o = DSFrontEnd.tableModel.getValueAt(useRow[i], j);
+                if (o != null)
+                    content[i][j] = DSFrontEnd.tableModel.getValueAt(useRow[i], j).toString();
+                else
+                    content[i][j] = "0";
+            }
+
+        numRow = stdRow.length;
+        String[][] standard = new String[numRow][numCol];
+        for (int i = 0; i < numRow; i++)
+            for (int j = 0; j < numCol; j++)
+                content[i][j] = DSFrontEnd.tableModel.getValueAt(stdRow[i], j).toString();
+
+        plugin.Content.create(title, content);
+        plugin.Standard.create(title, standard);
+
+        DSWindow newWindow = new DSWindow(plugin_engine.SimsPluginLoader.runPlugin("plugin/Implementation.class"), "Trial");
+        newWindow.setDefaultCloseOperation(javax.swing.JFrame.DISPOSE_ON_CLOSE);
+        newWindow.setVisible(true);
+
     }
 }

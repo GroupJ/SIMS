@@ -87,8 +87,6 @@ public class DataHouse {
 
     public String toString() {
 
-        if (true)
-            return unformattedContent;
 
         StringBuffer sb = new StringBuffer();
         sb.append("System : " + system + "\tdate : " + date + "\ttime : " + time + "\n");
@@ -261,4 +259,9 @@ public class DataHouse {
                 else
                     sb.append(TD_Grid.get(i).get(j) + "\t\t");
             }
-            sb.appen
+            sb.append("\n");
+        }
+
+        return sb.toString();
+    }
+}

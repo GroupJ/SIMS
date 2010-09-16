@@ -1,3 +1,0 @@
-java.lang.ArithmeticException: / by zero
-	at file_list.FileListWindow.<init>(FileListWindow.java:30)
-	at sims2.SIMS2App.main(SIMS2App.java:49)

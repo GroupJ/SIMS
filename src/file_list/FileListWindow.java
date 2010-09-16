@@ -224,9 +224,11 @@ public class FileListWindow extends javax.swing.JFrame {
             FileListFunctions.addToSummary(dh[i]);
         }
 
-        FileListFunctions.updateTable();
-        FileListFunctions.showOutputWindow();
-        FileListFunctions.showSummaryWindow();
+        if (firstDisplayed) {
+            FileListFunctions.updateTable();
+            FileListFunctions.showOutputWindow();
+            FileListFunctions.showSummaryWindow();
+        }
     }//GEN-LAST:event_loadInputFileMenuActionPerformed
 
     private void exitItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitItemActionPerformed
@@ -321,4 +323,3 @@ public class FileListWindow extends javax.swing.JFrame {
     protected ArrayList<DataHouse> files = new ArrayList<DataHouse> ();
     private int lastIndex = -1;
 }
-                                                                            

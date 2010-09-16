@@ -100,6 +100,15 @@ public class SummaryTableModel extends DefaultTableModel    {
     }
 
     /**
+     * Returns the title of the column.
+     * @param col - the col index starting from 0
+     * @return String title of the column
+     */
+    protected String getColumnTitle(int col) {
+        return titles.get(col);
+    }
+
+    /**
      * Sets a cell position as editable based on 'value'.
      * Current implementation sets the entire column rather than
      * cell.
