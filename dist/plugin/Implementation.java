@@ -5,6 +5,7 @@ package plugin;
  * and open the template in the editor.
  */
 
+
 import plugin.*;
 
 /**
@@ -22,8 +23,8 @@ public class Implementation implements Formula_Iterative    {
 
     public void processUse(UseRowContent use)   {
         result[0] = use.getContentByTitle("File #");
-        result[1] = new Double(use.getContentByTitle("R0 (MV)"));
-        result[2] = new Double(use.getContentByTitle("R0 (Std Err(%))"));
+        result[1] = Double.parseDouble(use.getContentByTitle("R0 (MV)"));
+        result[2] = Double.parseDouble(use.getContentByTitle("R0 (Std Err(%))"));
     }
 
     public String[] getColumnTitle()    {

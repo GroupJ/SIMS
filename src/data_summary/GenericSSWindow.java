@@ -231,11 +231,15 @@ public class GenericSSWindow extends javax.swing.JFrame {
 
         if (!xBox.isSelected())    {
             System.err.println("select x-axis");
+            javax.swing.JOptionPane.showMessageDialog(null, "Select x-axis.", "No selection",
+                    javax.swing.JOptionPane.ERROR_MESSAGE);
             return;
         }
 
         if (!yBox.isSelected())    {
             System.err.println("select y-axis");
+            javax.swing.JOptionPane.showMessageDialog(null, "Select y-axis.", "No selection",
+                    javax.swing.JOptionPane.ERROR_MESSAGE);
             return;
         }
 
