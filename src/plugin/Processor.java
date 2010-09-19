@@ -6,14 +6,13 @@
 package plugin;
 
 import javax.swing.table.DefaultTableModel;
-
 /**
  *
  * @author 20378332
  */
 public class Processor {
 
-    protected static DefaultTableModel computeFormula(Formula f)  {
+    public static DefaultTableModel computeFormula(Formula f)  {
 
         BlankTableModel btm = new BlankTableModel(f.getColumnTitle());
         f.processStandard(new StandardData());
@@ -26,7 +25,7 @@ public class Processor {
         return btm;
     }
 
-    protected static DefaultTableModel computeForumla_Iterative(Formula_Iterative f) {
+    public static DefaultTableModel computeForumla_Iterative(Formula_Iterative f) {
         
         BlankTableModel btm = new BlankTableModel(f.getColumnTitle());
         f.processStandard(new StandardData());
@@ -44,4 +43,5 @@ public class Processor {
         }
 
         return btm;
- 
+    }
+}

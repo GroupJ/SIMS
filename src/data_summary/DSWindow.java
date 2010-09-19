@@ -39,6 +39,9 @@ public class DSWindow extends javax.swing.JFrame {
         
         initComponents();
         this.setTitle(title);
+        jButton1.setEnabled(false);
+
+        this.dispose();
     }
 
     /** This method is called from within the constructor to
@@ -192,7 +195,7 @@ public class DSWindow extends javax.swing.JFrame {
 
     private void setDefaultTableColumnSize() {
         TableColumn column = null;
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < 8; i++) {
             column = summaryTable.getColumnModel().getColumn(i);
             column.setPreferredWidth(defaultColWidth[i]);
         }
@@ -204,7 +207,7 @@ public class DSWindow extends javax.swing.JFrame {
         dtcr.setHorizontalAlignment(JLabel.RIGHT);
         int size = summaryTable.getColumnCount();
 
-        for (int i = 7; i < size; i++) {
+        for (int i = 8; i < size; i++) {
             column = summaryTable.getColumnModel().getColumn(i);
             column.setPreferredWidth(r0Size);
             summaryTable.setDefaultRenderer(summaryTable.getColumnClass(i), dtcr);
@@ -223,6 +226,6 @@ public class DSWindow extends javax.swing.JFrame {
     private javax.swing.JComboBox variableSelectionList;
     // End of variables declaration//GEN-END:variables
 
-    private int[] defaultColWidth = {40,30,30,100,100,120,120};
+    private int[] defaultColWidth = {40,30,30,100,100,100,120,120};
     private final int r0Size = 120;
 }

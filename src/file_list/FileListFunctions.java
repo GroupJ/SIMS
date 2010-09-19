@@ -7,7 +7,6 @@ package file_list;
 
 import DataStructure.DataHouse;
 import javax.swing.*;
-import javax.swing.filechooser.FileFilter;
 import javax.swing.JOptionPane.*;
 import java.io.*;
 import IO.*;
@@ -97,36 +96,39 @@ public class FileListFunctions {
     }
 
     protected static void saveFileList(ArrayList<DataHouse> list)   {
-        JFileChooser fc = new JFileChooser();
-        FileFilter ff = new SimsFormatFilter();
-        fc.setFileFilter(ff);
-        fc.setMultiSelectionEnabled(false);
-        
-        int result = fc.showSaveDialog(null);
 
-        if (result == fc.APPROVE_OPTION)    {
-            File dest = fc.getSelectedFile();
+        File dest = IO.FileChooserRequest.getSelectedFile(new String[] {".sims"}, true);
 
+        if (dest != null)   {
+
+            boolean write = true;
             if (dest.exists())  {
-                // do nothing
-            } else  {
-                ListIO.saveFileList(list, dest.getAbsolutePath() + ".sims");
+                int reply = javax.swing.JOptionPane.showConfirmDialog(null,
+                        "Destination file already exist.\nWould you like to overwrite?",
+                        "Requestion Permission to Overwrite",
+                        javax.swing.JOptionPane.YES_NO_OPTION);
+                write = reply == javax.swing.JOptionPane.YES_OPTION ? true : false;
+            }
+
+            if (write)  {
+                String name = dest.getAbsolutePath();
+                if (!name.contains(".sims"))
+                    name = name + ".sims";
+                ListIO.saveFileList(list, name);
             }
         }
     }
 
     protected static void loadFileList(FileListWindow flw)    {
-        JFileChooser fc = new JFileChooser();
-        FileFilter ff = new SimsFormatFilter();
-        fc.setFileFilter(ff);
-        fc.setMultiSelectionEnabled(false);
+        
+        File dest = IO.FileChooserRequest.getSelectedFile(new String[] {".sims"}, true);
 
-        int result = fc.showOpenDialog(null);
-
-        if (result == fc.APPROVE_OPTION)    {
-            File dest = fc.getSelectedFile();
+        if (dest != null)    {
+            
             DataHouse[] dh = ListIO.loadFileList(dest.getAbsolutePath());
-
+            if (dh == null)
+                return;
+            
             resetTable(flw);
 
             ArrayList<DataHouse> retVal = new ArrayList<DataHouse> ();
@@ -137,7 +139,9 @@ public class FileListFunctions {
 
             flw.files = retVal;
             flw.updateList();
-            displayData(dh[0]);
+
+            if (dh.length != 0)
+                displayData(dh[0]);
 
             updateTable();
             showOutputWindow();
@@ -202,6 +206,13 @@ public class FileListFunctions {
     }
 
     /**
+     * Displays input window.
+     */
+    protected static void showInputWindow() {
+        DSFrontEnd.showSecondWindow();
+    }
+
+    /**
      * Hides the summary table window.
      */
     protected static void showOutputWindow()    {
@@ -243,12 +254,13 @@ public class FileListFunctions {
      * @return String[] refer to description for details.
      */
     private static String[] getDefaultParam(DataHouse dh)    {
-        String[] result = new String[4];
+        String[] result = new String[5];
 
         result[0] = dh.fileName;
-        result[1] = "(" + dh.x_pos + "," + dh.y_pos + ")";
-        result[2] = "" + dh.PR_start;
-        result[3] = "" + dh.PR_end;
+        result[1] = dh.x_pos + "";
+        result[2] = dh.y_pos + "";
+        result[3] = "" + dh.PR_start;
+        result[4] = "" + dh.PR_end;
         
         return result;
     }
@@ -283,42 +295,39 @@ public class FileListFunctions {
      * @return DataHouse[]
      */
     protected static DataHouse[] loadInput()   {
-        FileFilter ff = new FormatFilter();
-        JFileChooser fc = new JFileChooser();
-        fc.setFileFilter(ff);
-        fc.setMultiSelectionEnabled(true);
 
         DataHouse[] dh = null;
 
-        int result = fc.showOpenDialog(null);
-        if (result == JFileChooser.APPROVE_OPTION) {
+        File[] file = IO.FileChooserRequest.getSelectedFiles(new String[]{".asc"}, false);
 
-            File[] file = fc.getSelectedFiles();
+        if (file == null) {
+            return null;
+        }
 
-            if (file == null)
-                return null;
+        ArrayList<String> badfiles = new ArrayList<String>();
 
-            ArrayList<String> badfiles = new ArrayList<String> ();
+        dh = new DataHouse[file.length];
+        for (int i = 0; i < file.length; i++) {
 
-            dh = new DataHouse[file.length];
-            for (int i = 0; i < file.length; i++)   {
+            if (file[i].getName().contains(".asc")) {
 
-                if (file[i].getName().contains(".asc")) {
-
-                    try {
-                        dh[i] = ReadInput.readInput(file[i]);
-                    } catch (Exception e) {
-                        badfiles.add(file[i].getAbsolutePath());
-                        dh[i] = null;
-                    }
-                    
-                } else
+                try {
+                    dh[i] = ReadInput.readInput(file[i]);
+                } catch (Exception e) {
                     badfiles.add(file[i].getAbsolutePath());
-            }
+                    dh[i] = null;
+                }
 
+            } else {
+                badfiles.add(file[i].getAbsolutePath());
+            }
+        }
+
+        if (badfiles.size() != 0) {
             String errorMgs = "Error, could not load the following file(s): \n";
-            for (int i = 0; i < badfiles.size(); i++)
+            for (int i = 0; i < badfiles.size(); i++) {
                 errorMgs += badfiles.get(i) + "\n";
+            }
 
             javax.swing.JOptionPane.showMessageDialog(null,
                     errorMgs,
@@ -388,4 +397,3 @@ public class FileListFunctions {
         DSFrontEnd.exportSummaryTable();
     }
 }
-                                                                                    

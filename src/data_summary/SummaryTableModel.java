@@ -14,6 +14,7 @@ import java.util.*;
  */
 public class SummaryTableModel extends DefaultTableModel    {
 
+    private static final int defaultColTotal = 8;
     // column data types
     private ArrayList<Class> types;
     // column editable ?
@@ -39,18 +40,21 @@ public class SummaryTableModel extends DefaultTableModel    {
         types.add(String.class);
         types.add(String.class);
         types.add(String.class);
+        types.add(String.class);
 
         titles.add("File #");
         titles.add("STD");
         titles.add("USE");
         titles.add("File Name");
-        titles.add("(X,Y)");
+        titles.add("X");
+        titles.add("Y");
         titles.add("PC-Start");
         titles.add("PC-End");
 
         editable.add(new Boolean(false));
         editable.add(new Boolean(true));
         editable.add(new Boolean(true));
+        editable.add(new Boolean(false));
         editable.add(new Boolean(false));
         editable.add(new Boolean(false));
         editable.add(new Boolean(false));
@@ -75,9 +79,9 @@ public class SummaryTableModel extends DefaultTableModel    {
         int numRn = arg1.length/2;
         int colSize = getColumnCount();
 
-        for (int i = 0; i < numRn - ((colSize - 7)/2); i++) {
-            addColumn("R" + ((((colSize - 7)/2)) + i) + " (MV)", String.class, false);
-            addColumn("R" + ((((colSize - 7)/2)) + i) + " (Std Err(%))", String.class, false);
+        for (int i = 0; i < numRn - ((colSize - defaultColTotal)/2); i++) {
+            addColumn("R" + ((((colSize - defaultColTotal)/2)) + i) + " (MV)", String.class, false);
+            addColumn("R" + ((((colSize - defaultColTotal)/2)) + i) + " (Std Err(%))", String.class, false);
         }
 
         ArrayList<Object> row = new ArrayList<Object> ();

@@ -1,9 +1,12 @@
+package plugin;
+
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
 
-package plugin;
+
+import plugin.*;
 
 /**
  *
@@ -11,21 +14,25 @@ package plugin;
  */
 public class Implementation implements Formula_Iterative    {
 
-    Double[] result = new Double[1];
+    private int numCol = 3;
+    Object[] result = new Object[numCol];
 
     public void processStandard(StandardData std)   {
 
     }
 
     public void processUse(UseRowContent use)   {
-
-        result[0] = Double.parseDouble(use.getContentByTitle("R0 (MV)")) + 2;
+        result[0] = use.getContentByTitle("File #");
+        result[1] = Double.parseDouble(use.getContentByTitle("R0 (MV)"));
+        result[2] = Double.parseDouble(use.getContentByTitle("R0 (Std Err(%))"));
     }
 
     public String[] getColumnTitle()    {
-        String[] column_title = new String[1];
+        String[] column_title = new String[numCol];
 
-        column_title[0] = "R0-mean + 2";
+        column_title[0] = "File #";
+        column_title[1] = "R0-mean";
+        column_title[2] = "R0-err";
         
         return column_title;
     }

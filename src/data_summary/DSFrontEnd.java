@@ -15,7 +15,7 @@ public class DSFrontEnd {
 
     // variables are initialised in order so tablemodel has to come first
     protected static SummaryTableModel tableModel = new SummaryTableModel();
-    private static DSWindow window = new DSWindow();
+    private static GenericSSWindow window = new GenericSSWindow(tableModel, "Summary Window", true, new int[] {40,30,30,100,100,100,120,120});
 
     protected static InputTableModel inputModel = new InputTableModel();
     private static CalcInputWindow inputWindow = new CalcInputWindow();
@@ -123,9 +123,9 @@ public class DSFrontEnd {
     public static void updateSummaryTable()    {
         tableModel.fireTableDataChanged();
         tableModel.fireTableStructureChanged();
-        window.resetColWidth();
+        window.resetSize();
 
-        window.extendComboList((tableModel.getColumnCount() - 7) / 2);
+        window.setComboBox();
         showWindow();
     }
 

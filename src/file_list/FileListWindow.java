@@ -53,6 +53,7 @@ public class FileListWindow extends javax.swing.JFrame {
         windowMenu = new javax.swing.JMenu();
         showOutputMenuItem = new javax.swing.JMenuItem();
         showSpreadsheetMenuItem = new javax.swing.JMenuItem();
+        showInputMenuItem = new javax.swing.JMenuItem();
         helpMenu = new javax.swing.JMenu();
 
         fileListPopupMenu.setName("fileListPopupMenu"); // NOI18N
@@ -162,7 +163,7 @@ public class FileListWindow extends javax.swing.JFrame {
         });
         windowMenu.add(showOutputMenuItem);
 
-        showSpreadsheetMenuItem.setText("Show Spreadsheet Window");
+        showSpreadsheetMenuItem.setText("Show Summary Window");
         showSpreadsheetMenuItem.setName("showSpreadsheetMenuItem"); // NOI18N
         showSpreadsheetMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -170,6 +171,15 @@ public class FileListWindow extends javax.swing.JFrame {
             }
         });
         windowMenu.add(showSpreadsheetMenuItem);
+
+        showInputMenuItem.setText("Show Input Window");
+        showInputMenuItem.setName("showInputMenuItem"); // NOI18N
+        showInputMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                showInputMenuItemActionPerformed(evt);
+            }
+        });
+        windowMenu.add(showInputMenuItem);
 
         jMenuBar1.add(windowMenu);
 
@@ -294,6 +304,10 @@ public class FileListWindow extends javax.swing.JFrame {
         FileListFunctions.exportSummaryTable();
     }//GEN-LAST:event_exportSummaryTableActionPerformed
 
+    private void showInputMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showInputMenuItemActionPerformed
+        FileListFunctions.showInputWindow();
+    }//GEN-LAST:event_showInputMenuItemActionPerformed
+
     protected void updateList()    {
         int size = files.size();
         ((DefaultListModel)fileList.getModel()).clear();
@@ -315,6 +329,7 @@ public class FileListWindow extends javax.swing.JFrame {
     private javax.swing.JMenuItem removeItem;
     private javax.swing.JMenuItem resetTable;
     private javax.swing.JMenuItem saveListMenuItem;
+    private javax.swing.JMenuItem showInputMenuItem;
     private javax.swing.JMenuItem showOutputMenuItem;
     private javax.swing.JMenuItem showSpreadsheetMenuItem;
     private javax.swing.JMenu windowMenu;

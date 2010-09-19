@@ -106,11 +106,20 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="showSpreadsheetMenuItem">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Show Spreadsheet Window"/>
+                <Property name="text" type="java.lang.String" value="Show Summary Window"/>
                 <Property name="name" type="java.lang.String" value="showSpreadsheetMenuItem" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="showSpreadsheetMenuItemActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="showInputMenuItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Show Input Window"/>
+                <Property name="name" type="java.lang.String" value="showInputMenuItem" noResource="true"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="showInputMenuItemActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>

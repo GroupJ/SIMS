@@ -61,7 +61,6 @@ public class InputTableModel extends DefaultTableModel  {
     protected void addRow(String name, int RTotal)    {
 
         String sampleName = name.substring(0, name.indexOf("@"));
-        System.err.println(sampleName);
 
         int index = -1;
         for (int i = 0; i < tableEntries.size(); i++)   {
@@ -72,7 +71,6 @@ public class InputTableModel extends DefaultTableModel  {
         }
 
         if (index == -1)    {
-            System.err.println("Adding");
             tableEntries.add(new ArrayList<Object> ());
             tableEntries.get(tableEntries.size() - 1).add(sampleName);
 
@@ -83,14 +81,10 @@ public class InputTableModel extends DefaultTableModel  {
 
         int totalCol = getColumnCount();
 
-        System.err.println(totalCol + " " + RTotal + " " + getRowCount());
-
         for (int i = ((totalCol -3)/2); i < RTotal; i++)    {
             addColumn("R" + (i) + " (MV)", String.class, true);
             addColumn("R" + (i) + " (StdErr)", String.class, true);
         }
-
-        System.err.println(types.size() + " " + getColumnCount() + " " + RTotal + " " + getRowCount());
     }
 
     /**

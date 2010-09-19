@@ -46,4 +46,5 @@ public class SIMS2App extends SingleFrameApplication {
         fileListWindow.setVisible(true);
         FileListFunctions.loadSettings(fileListWindow);
     }
+
 }
