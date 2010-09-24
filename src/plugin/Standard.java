@@ -42,15 +42,40 @@ public class Standard {
         }
     }
 
-    public static String getContentByName(String name, String column)    {
+    public static String getContentByName(String name, String column) throws Exception  {
         int col = colTitle.get(column);
         int row = rowId.get(name);
+
+        if (!isValid(row,col))
+            throw new Exception("Out of Bounds");
+
         return content[row][col];
     }
 
-    public static String getContentByFileNumber(String name, String column)    {
+    public static String getContentByFileNumber(String name, String column) throws Exception  {
         int col = colTitle.get(column);
         int row = rowId.get(name);
+
+        if (!isValid(row,col))
+            throw new Exception("Out of Bounds");
+
         return content[row][col];
+    }
+
+    public static String[] getAllStd(String column) throws Exception  {
+        int index = colTitle.get(column);
+
+        if (index == -1)
+            throw new Exception("Out of Bounds");
+
+        String[] result = new String[content.length];
+        for (int i = 0; i < content.length; i++)    {
+            result[i] = content[i][index];
+        }
+        return result;
+    }
+
+    private static boolean isValid(int row, int col)    {
+        return row >= 0 && row < content.length && col >= 0 && col < titles.length;
     }
 }

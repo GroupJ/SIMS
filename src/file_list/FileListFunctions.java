@@ -102,6 +102,13 @@ public class FileListFunctions {
         if (dest != null)   {
 
             boolean write = true;
+
+            String name = dest.getAbsolutePath();
+                if (!name.contains(".sims"))
+                    name = name + ".sims";
+            
+            dest = new File(name);
+
             if (dest.exists())  {
                 int reply = javax.swing.JOptionPane.showConfirmDialog(null,
                         "Destination file already exist.\nWould you like to overwrite?",
@@ -111,9 +118,6 @@ public class FileListFunctions {
             }
 
             if (write)  {
-                String name = dest.getAbsolutePath();
-                if (!name.contains(".sims"))
-                    name = name + ".sims";
                 ListIO.saveFileList(list, name);
             }
         }
@@ -121,7 +125,7 @@ public class FileListFunctions {
 
     protected static void loadFileList(FileListWindow flw)    {
         
-        File dest = IO.FileChooserRequest.getSelectedFile(new String[] {".sims"}, true);
+        File dest = IO.FileChooserRequest.getSelectedFile(new String[] {".sims"}, false);
 
         if (dest != null)    {
             
@@ -181,11 +185,19 @@ public class FileListFunctions {
      */
     protected static void addToSummary(DataHouse dh)    {
         String[] arg0,arg1;
-        arg0 = getDefaultParam(dh);
-        arg1 = getR0ToRn(dh);
-        
-        DSFrontEnd.addRow(arg0, arg1);
-        showSummaryWindow();
+        try {
+            arg0 = getDefaultParam(dh);
+            arg1 = getR0ToRn(dh);
+
+            DSFrontEnd.addRow(arg0, arg1);
+            showSummaryWindow();
+        } catch (Exception e)   {
+            e.printStackTrace();
+            javax.swing.JOptionPane.showMessageDialog(null,
+                    "Cannot obtain R values. Please check input file.",
+                    "Cannot find R values",
+                    javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     /**
@@ -308,6 +320,9 @@ public class FileListFunctions {
 
         dh = new DataHouse[file.length];
         for (int i = 0; i < file.length; i++) {
+
+            if (file[i] == null)
+                continue;
 
             if (file[i].getName().contains(".asc")) {
 

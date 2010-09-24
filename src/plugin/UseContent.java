@@ -12,10 +12,24 @@ package plugin;
 public class UseContent {
 
     public String getContentByName(String name, String column)  {
-        return Content.getContentByName(name, column);
+        try {
+            return Content.getContentByName(name, column);
+        } catch (Exception e)   {
+            System.err.println("Cannot access element by name : \"" +
+                    name + "\" and column : \"" + column + "\"");
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public String getContentByFileNumber(String name, String column)    {
-        return Content.getContentByFileNumber(name, column);
+        try {
+            return Content.getContentByFileNumber(name, column);
+        } catch (Exception e)   {
+            System.err.println("Cannot access element by name : \"" +
+                    name + "\" and column : \"" + column + "\"");
+            e.printStackTrace();
+        }
+        return null;
     }
 }

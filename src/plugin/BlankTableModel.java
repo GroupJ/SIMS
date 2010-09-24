@@ -16,25 +16,31 @@ import javax.swing.table.DefaultTableModel;
 public class BlankTableModel extends DefaultTableModel  {
 
     private ArrayList<String> title;
-    private ArrayList<ArrayList<String>> content;
+    private ArrayList<ArrayList<Object>> content;
 
     public BlankTableModel(String[] colTitle)    {
         title = new ArrayList<String> ();
+        
+        title.add("File #");
+        title.add("Std");
+        title.add("Use");
 
         for (int i = 0; i < colTitle.length; i++)
             title.add(colTitle[i]);
 
-        content = new ArrayList<ArrayList<String>> ();
+        content = new ArrayList<ArrayList<Object>> ();
     }
 
     public void addRow(Object[] row)    {
-        System.err.println("Adding " + row.length);
-
         NumberFormat formatter = new DecimalFormat("0.######E0");
         
-        content.add(new ArrayList<String> ());
-        for (int i = 0; i < row.length; i++)    {
+        content.add(new ArrayList<Object> ());
 
+        content.get(content.size() - 1).add(content.size());
+        content.get(content.size() - 1).add(false);
+        content.get(content.size() - 1).add(true);
+
+        for (int i = 0; i < row.length; i++)    {
             if (row[i] instanceof Double)
                 content.get(content.size() - 1).add(formatter.format(row[i]));
             else
@@ -51,7 +57,10 @@ public class BlankTableModel extends DefaultTableModel  {
     }
 
     public void setValueAt(Object value, int row, int col)  {
-        content.get(row).set(col, (String) value);
+        if (col != 1 && col != 2)
+            content.get(row).set(col, (String) value);
+        else
+            content.get(row).set(col, (Boolean) value);
     }
 
     public int getColumnCount() {
@@ -67,11 +76,15 @@ public class BlankTableModel extends DefaultTableModel  {
     }
 
     public Class getColumnClass(int columnIndex) {
+
+        if (columnIndex == 1 || columnIndex == 2)
+            return Boolean.class;
+
         return String.class;
     }
 
     public boolean isCellEditable(int rowIndex, int columnIndex) {
-        return false;
+        return columnIndex == 1 || columnIndex == 2;
     }
 
     public String getColumnName(int col)    {

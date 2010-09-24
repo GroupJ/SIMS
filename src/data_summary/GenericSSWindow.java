@@ -14,6 +14,7 @@ package data_summary;
 import javax.swing.table.TableColumn;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import java.util.*;
 
 /**
  *
@@ -23,6 +24,7 @@ public class GenericSSWindow extends javax.swing.JFrame {
 
     private DefaultTableModel dtm;
     private int[] defaultSize;
+    private boolean enableCalc;
 
     /** Creates new form GenericSpreadsheetWindow */
     public GenericSSWindow(DefaultTableModel dtm, String title, boolean calculate, int[] defaultSize) {
@@ -35,10 +37,14 @@ public class GenericSSWindow extends javax.swing.JFrame {
         setComboBox();
         resetSize();
 
+        enableCalc = calculate;
+        
         if (!calculate) {
             pluginButton.setEnabled(false);
             pluginSelection.setEnabled(false);
         }
+        pluginButton.setVisible(false);
+        pluginSelection.setVisible(false);
     }
 
     /** Creates new form GenericSpreadsheetWindow */
@@ -57,7 +63,7 @@ public class GenericSSWindow extends javax.swing.JFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
+        graphButton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         yMeanSelection = new javax.swing.JComboBox();
         jLabel2 = new javax.swing.JLabel();
@@ -80,11 +86,11 @@ public class GenericSSWindow extends javax.swing.JFrame {
         jTable1.setName("jTable1"); // NOI18N
         jScrollPane1.setViewportView(jTable1);
 
-        jButton1.setText("Graph");
-        jButton1.setName("jButton1"); // NOI18N
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        graphButton.setText("Graph");
+        graphButton.setName("graphButton"); // NOI18N
+        graphButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                graphButtonActionPerformed(evt);
             }
         });
 
@@ -100,9 +106,11 @@ public class GenericSSWindow extends javax.swing.JFrame {
         yErrSelection.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         yErrSelection.setName("yErrSelection"); // NOI18N
 
+        yBox.setSelected(true);
         yBox.setText("Use Y");
         yBox.setName("yBox"); // NOI18N
 
+        xBox.setSelected(true);
         xBox.setText("Use X");
         xBox.setName("xBox"); // NOI18N
 
@@ -136,7 +144,7 @@ public class GenericSSWindow extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 790, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 938, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(pluginSelection, 0, 156, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -162,7 +170,7 @@ public class GenericSSWindow extends javax.swing.JFrame {
                         .addGap(2, 2, 2)
                         .addComponent(yErrSelection, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton1)))
+                        .addComponent(graphButton)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -173,7 +181,7 @@ public class GenericSSWindow extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jButton1)
+                        .addComponent(graphButton)
                         .addComponent(yErrSelection, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(yMeanSelection, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -194,37 +202,18 @@ public class GenericSSWindow extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void graphButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_graphButtonActionPerformed
         plotGraph();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_graphButtonActionPerformed
 
     private void pluginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pluginButtonActionPerformed
-        DSFunctions.calcUsingFormula(null, getAllSelectedRow(), new int[0]);
+        DSFunctions.calcUsingFormula(null, getSelectedRow(2), getSelectedRow(1));
     }//GEN-LAST:event_pluginButtonActionPerformed
 
-    private int[] getAllSelectedRow()    {
-        int numRow = jTable1.getRowCount();
-        int total = 0;
-
-        // counter the number of selected Row;
-        for (int i = 0; i < numRow; i++)    {
-            if ((Boolean)jTable1.getValueAt(i, 2))
-                total++;
-        }
-
-        if (total == 0)
-            return null;
-
-        int[] result = new int[total];
-        int counter = 0;
-
-        // insert the rows that are selected
-        for (int i = 0; i < numRow; i++)    {
-            if ((Boolean)jTable1.getValueAt(i, 2))
-                result[counter++] = i;
-        }
-
-        return result;
+    public void setEnabled(boolean value)    {
+        if (enableCalc)
+            pluginButton.setEnabled(value);
+        graphButton.setEnabled(value);
     }
 
     private void plotGraph()    {
@@ -250,40 +239,53 @@ public class GenericSSWindow extends javax.swing.JFrame {
             return;
         }
 
-        int[] selectedRows = getSelectedRow();
+        int[] selectedRows = getSelectedRow(1);
+        int[] stdRows = getSelectedRow(2);
 
-        if (selectedRows == null)   {
+        if (selectedRows.length == 0 && stdRows.length == 0)   {
             javax.swing.JOptionPane.showMessageDialog(null, "You must select atleast 1 input file to plot.\n" +
                     "Select by checking the checkboxes\n",
                     "No files selected", javax.swing.JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        int ymean = yMeanSelection.getSelectedIndex();
-        int yerror = yErrSelection.getSelectedIndex();
-        int xmean = xMeanSelection.getSelectedIndex();
-        int xerror = xErrSelection.getSelectedIndex();
+        String[] column = new String[dtm.getColumnCount()];
+        HashMap<String, Integer> map = new HashMap<String, Integer>();
+        map.put(nullValue,0);
+        for (int i = 0; i < column.length; i++)
+            map.put(dtm.getColumnName(i), i+1);
+
+        int ymean = map.get(yMeanSelection.getSelectedItem().toString());
+        int yerror = map.get(yErrSelection.getSelectedItem().toString());
+        int xmean = map.get(xMeanSelection.getSelectedItem().toString());
+        int xerror = map.get(xErrSelection.getSelectedItem().toString());
 
         String[] legend = {"STD", "USE"};
         // 0 std - 1 use
         double[][][] data = new double[2][6][];
         for (int i = 0; i < 6; i++) {
             data[0][i] = new double[selectedRows.length];
-            data[1][i] = new double[0];
+            data[1][i] = new double[stdRows.length];
         }
 
-        for (int i = 0; i < selectedRows.length; i++)   {
+        for (int i = 0; i < selectedRows.length + stdRows.length; i++)   {
             // x min max y min max
             double xmid;
             double xerr;
             double ymid;
             double yerr;
 
+            int index = -1;
+            if (i < selectedRows.length)
+                index = selectedRows[i];
+            else
+                index = stdRows[i - selectedRows.length];
+            
             try {
                 if (xmean != nullIndex && xBox.isSelected())  {
-                     xmid = Double.parseDouble(dtm.getValueAt(i, xmean-1).toString());
+                     xmid = Double.parseDouble(dtm.getValueAt(index, xmean-1).toString());
                      if (xerror != nullIndex)   {
-                         xerr = Double.parseDouble(dtm.getValueAt(i, xerror-1).toString());
+                         xerr = Double.parseDouble(dtm.getValueAt(index, xerror-1).toString());
                          xerr = xerr / 100 * xmid;
                      } else {
                          xerr = 0;
@@ -294,9 +296,9 @@ public class GenericSSWindow extends javax.swing.JFrame {
                 }
 
                 if (ymean != nullIndex && yBox.isSelected())  {
-                     ymid = Double.parseDouble(dtm.getValueAt(i, ymean-1).toString());
+                     ymid = Double.parseDouble(dtm.getValueAt(index, ymean-1).toString());
                      if (yerror != nullIndex)   {
-                         yerr = Double.parseDouble(dtm.getValueAt(i, yerror-1).toString());
+                         yerr = Double.parseDouble(dtm.getValueAt(index, yerror-1).toString());
                          yerr = yerr / 100 * ymid;
                      } else {
                          yerr = 0;
@@ -308,26 +310,38 @@ public class GenericSSWindow extends javax.swing.JFrame {
 
             } catch (Exception e)   {
                 e.printStackTrace();
-                javax.swing.JOptionPane.showMessageDialog(null, "Cannot plot graph.\nCheck input selection.", "Wrong Selection", javax.swing.JOptionPane.ERROR_MESSAGE);
+                javax.swing.JOptionPane.showMessageDialog(null, "Cannot generate data for plot.\nCheck input selection.", "Wrong Selection", javax.swing.JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
-            data[0][0][i] = xmid;
-            data[0][1][i] = xmid - xerr;
-            data[0][2][i] = xmid + xerr;
-            data[0][3][i] = ymid;
-            data[0][4][i] = ymid - yerr;
-            data[0][5][i] = ymid + yerr;
+            int temp = i < selectedRows.length ? 0 : 1;
+            int temp2 = i < selectedRows.length ? i : i - selectedRows.length;
+
+            data[temp][0][temp2] = xmid;
+            data[temp][1][temp2] = xmid - xerr;
+            data[temp][2][temp2] = xmid + xerr;
+            data[temp][3][temp2] = ymid;
+            data[temp][4][temp2] = ymid - yerr;
+            data[temp][5][temp2] = ymid + yerr;
         }
 
         graph.jfreecharts.GraphFrontEnd.plotData(null, xMeanSelection.getSelectedItem().toString(),
                 yMeanSelection.getSelectedItem().toString(), legend, data);
     }
 
-    private int[] getSelectedRow()   {
-        int[] result = new int[dtm.getRowCount()];
-        for (int i = 0; i < result.length; i++)
-            result[i] = i;
+    private int[] getSelectedRow(int colNum)   {
+        int totalSelected = 0;
+        int rowCount = dtm.getRowCount();
+        for (int i = 0; i < rowCount; i++)
+            if ((Boolean)dtm.getValueAt(i, colNum))
+                totalSelected ++;
+
+        int[] result = new int[totalSelected];
+        int counter = 0;
+        for (int i = 0; counter != result.length && i < rowCount; i++)
+            if ((Boolean)dtm.getValueAt(i, colNum)) {
+                result[counter++] = i;
+            }
         return result;
     }
 
@@ -353,11 +367,30 @@ public class GenericSSWindow extends javax.swing.JFrame {
         xMeanSelection.addItem(nullValue);
 
         for (int i = 0; i < numCol; i++)    {
+
+            if (!checkColumn(i))
+                continue;
+
             yErrSelection.addItem(colTitle[i]);
             yMeanSelection.addItem(colTitle[i]);
             xErrSelection.addItem(colTitle[i]);
             xMeanSelection.addItem(colTitle[i]);
         }
+    }
+
+    private boolean checkColumn(int col)   {
+        int total = dtm.getRowCount();
+        int counter = 0;
+        for (int i = 0; i < total; i++) {
+            try {
+                new Double(dtm.getValueAt(i, col).toString());
+                counter++;
+            } catch (Exception e)   {
+                
+            }
+        }
+
+        return counter >= total /2;
     }
 
     public void resetSize()    {
@@ -373,7 +406,7 @@ public class GenericSSWindow extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton graphButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

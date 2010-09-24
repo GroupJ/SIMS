@@ -42,24 +42,35 @@ public class Content {
         }
     }
 
-    public static String getContentByName(String name, String column)    {
+    public static String getContentByName(String name, String column) throws Exception  {
         int col = colTitle.get(column);
         int row = rowId.get(name);
+
+        if (!isValid(row,col))
+            throw new Exception("Out of Bounds");
+
         return content[row][col];
     }
 
-    public static String getContentByFileNumber(String name, String column)    {
+    public static String getContentByFileNumber(String name, String column) throws Exception  {
         int col = colTitle.get(column);
         int row = rowId.get(name);
+
+        if (!isValid(row,col))
+            throw new Exception("Out of Bounds");
+
         return content[row][col];
     }
 
     public static String[][] getAll()   {
-        return content;
+        return content.clone();
     }
 
     public static String[] getTitle()   {
-        return titles;
+        return titles.clone();
     }
 
+    private static boolean isValid(int row, int col)    {
+        return row >= 0 && row < content.length && col >= 0 && col < titles.length;
+    }
 }

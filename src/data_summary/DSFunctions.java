@@ -11,6 +11,7 @@ import javax.swing.JOptionPane.*;
 import java.io.*;
 import IO.*;
 import plugin_engine.*;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -49,7 +50,7 @@ public class DSFunctions {
 
     protected static void exportSummaryTable() {
 
-        File dest = IO.FileChooserRequest.getSelectedFile(new String[]{".csv"}, false);
+        File dest = IO.FileChooserRequest.getSelectedFile(new String[]{".csv"}, true);
 
         if (dest != null) {
             if (!dest.getName().contains(".csv")) {
@@ -98,12 +99,80 @@ public class DSFunctions {
 
     protected static void calcUsingFormula(String fileName, int[] useRow, int[] stdRow) {
 
+        createDatabase(useRow,stdRow);
+
+        File file = IO.FileChooserRequest.getSelectedFile(new String[]{".class", ".java"}, false);
+
+        if (!(file == null)) {
+
+            // redirect std err
+            PrintStream ps = System.err;
+            try {
+                System.setErr(new PrintStream(new FileOutputStream(new File("debug_output.blah"))));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            if (SimsPluginLoader.moveFile(file)) {
+
+                System.err.println("Compile Sucessfull\n\n");
+
+                GenericSSWindow newWindow = null;
+                DefaultTableModel dtm = null;
+
+                dtm = plugin_engine.SimsPluginLoader.runPlugin("plugin" + File.separator +
+                            file.getName().substring(0,file.getName().lastIndexOf('.')) + ".class");
+
+                if (dtm != null)    {
+                    System.err.println("Generating display.\n\n");
+                    newWindow = new GenericSSWindow(dtm, "Trial", false);
+                    newWindow.setDefaultCloseOperation(javax.swing.JFrame.DISPOSE_ON_CLOSE);
+                    newWindow.setVisible(true);
+                } else  {
+                    System.err.println("Cannot generate display.\n\n");
+                }
+                
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(null, "Could not load plugin.\nCheck if the file can be compiled.",
+                        "Cannot Load",
+                        javax.swing.JOptionPane.ERROR_MESSAGE);
+                System.err.println("Could not load plugin.\nCheck if the file can be compiled.\n\n");
+            }
+
+            // set std err back to normal
+            try {
+                System.setErr(ps);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            showDebugConsole();
+        }
+    }
+
+    private static void showDebugConsole()  {
+        try {
+            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(new File("debug_output.blah"))));
+            String line;
+            StringBuffer sb = new StringBuffer();
+            while ((line = br.readLine()) != null)
+                sb.append(line + "\n");
+
+            new debug.DebugConsole(sb.toString());
+        } catch (Exception e)   {
+            e.printStackTrace();
+        }
+    }
+
+    private static void createDatabase(int[] useRow, int[] stdRow)    {
+                // get used title
         int numCol = DSFrontEnd.tableModel.getColumnCount();
         String[] title = new String[numCol];
         for (int i = 0; i < title.length; i++) {
             title[i] = DSFrontEnd.tableModel.getColumnTitle(i);
         }
 
+        // get used content
         int numRow = useRow.length;
         String[][] content = new String[numRow][numCol];
         for (int i = 0; i < numRow; i++) {
@@ -112,43 +181,50 @@ public class DSFunctions {
                 if (o != null) {
                     content[i][j] = DSFrontEnd.tableModel.getValueAt(useRow[i], j).toString();
                 } else {
-                    content[i][j] = "0";
+                    content[i][j] = null;
                 }
             }
         }
 
+        // get std content
         numRow = stdRow.length;
         String[][] standard = new String[numRow][numCol];
         for (int i = 0; i < numRow; i++) {
             for (int j = 0; j < numCol; j++) {
-                content[i][j] = DSFrontEnd.tableModel.getValueAt(stdRow[i], j).toString();
+
+                Object o = DSFrontEnd.tableModel.getValueAt(stdRow[i], j);
+                if (o != null) {
+                    standard[i][j] = o.toString();
+                } else {
+                    standard[i][j] = null;
+                }
             }
+        }
+
+        // get user input content
+        numRow = DSFrontEnd.inputModel.getRowCount();
+        numCol = DSFrontEnd.inputModel.getColumnCount();
+        String[][] userInput = new String[numRow][numCol];
+        for (int i = 0; i < numRow; i++) {
+            for (int j = 0; j < numCol; j++) {
+                Object o = DSFrontEnd.inputModel.getValueAt(i, j);
+                if (o != null) {
+                    userInput[i][j] = o.toString();
+                } else {
+                    userInput[i][j] = null;
+                }
+            }
+        }
+
+         // get user input title
+        numCol = DSFrontEnd.inputModel.getColumnCount();
+        String[] userTitle = new String[numCol];
+        for (int i = 0; i < userTitle.length; i++) {
+            userTitle[i] = DSFrontEnd.inputModel.getColumnTitle(i);
         }
 
         plugin.Content.create(title, content);
         plugin.Standard.create(title, standard);
-
-        File file = IO.FileChooserRequest.getSelectedFile(new String[]{".class", ".java"}, false);
-
-        if (file != null)   {
-            if (SimsPluginLoader.moveFile(file)) {
-
-                GenericSSWindow newWindow;
-
-                if (file.getName().contains(".class")) {
-                    newWindow = new GenericSSWindow(plugin_engine.SimsPluginLoader.runPlugin("plugin" + File.separator + file.getName()), "Trial", false);
-                } else {
-                    newWindow = new GenericSSWindow(plugin_engine.SimsPluginLoader.runPlugin("plugin" + File.separator
-                            + file.getName().substring(0, file.getName().length() - ".java".length()) + ".class"), "Trial", false);
-                }
-
-                newWindow.setDefaultCloseOperation(javax.swing.JFrame.DISPOSE_ON_CLOSE);
-                newWindow.setVisible(true);
-            } else  {
-                javax.swing.JOptionPane.showMessageDialog(null, "Could not load plugin.\nCheck if the file can be compiled.",
-                        "Cannot Load",
-                        javax.swing.JOptionPane.ERROR_MESSAGE);
-            }
-        }
+        plugin.Input.create(userTitle, userInput);
     }
 }

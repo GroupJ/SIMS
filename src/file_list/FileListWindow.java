@@ -27,6 +27,7 @@ public class FileListWindow extends javax.swing.JFrame {
     public FileListWindow() {
         initComponents();
         this.setTitle("File List");
+        showInputMenuItem.setVisible(false);
     }
 
     /** This method is called from within the constructor to
@@ -55,6 +56,7 @@ public class FileListWindow extends javax.swing.JFrame {
         showSpreadsheetMenuItem = new javax.swing.JMenuItem();
         showInputMenuItem = new javax.swing.JMenuItem();
         helpMenu = new javax.swing.JMenu();
+        aboutMenuItem = new javax.swing.JMenuItem();
 
         fileListPopupMenu.setName("fileListPopupMenu"); // NOI18N
 
@@ -78,7 +80,6 @@ public class FileListWindow extends javax.swing.JFrame {
         jScrollPane1.setName("jScrollPane1"); // NOI18N
 
         fileList.setModel(new DefaultListModel());
-        fileList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         fileList.setName("fileList"); // NOI18N
         fileList.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -185,6 +186,16 @@ public class FileListWindow extends javax.swing.JFrame {
 
         helpMenu.setText("Help");
         helpMenu.setName("helpMenu"); // NOI18N
+
+        aboutMenuItem.setText("about");
+        aboutMenuItem.setName("aboutMenuItem"); // NOI18N
+        aboutMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                aboutMenuItemActionPerformed(evt);
+            }
+        });
+        helpMenu.add(aboutMenuItem);
+
         jMenuBar1.add(helpMenu);
 
         setJMenuBar(jMenuBar1);
@@ -270,16 +281,25 @@ public class FileListWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_resetTableActionPerformed
 
     private void removeItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeItemActionPerformed
-        int index = fileList.getSelectedIndex();
-        if (FileListFunctions.requestRemove(files.get(index)))   {          
-            ((DefaultListModel)fileList.getModel()).remove(index);
-            FileListFunctions.removeFromSystem(files.get(index).fileName, this);
+        int[] index = fileList.getSelectedIndices();
+
+        if (index.length == 0)
+            return;
+
+        Arrays.sort(index);
+
+        boolean request = FileListFunctions.requestRemove(files.get(index[0]));
+        for (int i = index.length - 1; i >= 0; i--)  {
+            if (request)   {
+                ((DefaultListModel)fileList.getModel()).remove(index[i]);
+                FileListFunctions.removeFromSystem(files.get(index[i]).fileName, this);
+            }
         }
     }//GEN-LAST:event_removeItemActionPerformed
 
     private void fileListMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fileListMousePressed
         if (evt.isPopupTrigger()) {
-            fileList.setSelectedIndex(fileList.locationToIndex(evt.getPoint()));
+            fileList.addSelectionInterval(fileList.locationToIndex(evt.getPoint()), fileList.locationToIndex(evt.getPoint()));
             fileListPopupMenu.show(fileList, evt.getX(), evt.getY());
         }
     }//GEN-LAST:event_fileListMousePressed
@@ -308,6 +328,10 @@ public class FileListWindow extends javax.swing.JFrame {
         FileListFunctions.showInputWindow();
     }//GEN-LAST:event_showInputMenuItemActionPerformed
 
+    private void aboutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMenuItemActionPerformed
+        new about.AboutWindow().setVisible(true);
+    }//GEN-LAST:event_aboutMenuItemActionPerformed
+
     protected void updateList()    {
         int size = files.size();
         ((DefaultListModel)fileList.getModel()).clear();
@@ -316,6 +340,7 @@ public class FileListWindow extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem aboutMenuItem;
     private javax.swing.JMenuItem exitItem;
     private javax.swing.JMenuItem exportSummaryTable;
     private javax.swing.JList fileList;

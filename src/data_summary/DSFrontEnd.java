@@ -41,6 +41,7 @@ public class DSFrontEnd {
     }
 
     public static Point getSecondWindowPosition()  {
+        inputWindow.setVisible(true);
         return inputWindow.getLocationOnScreen();
     }
 
@@ -79,7 +80,7 @@ public class DSFrontEnd {
      * Displays input window
      */
     public static void showSecondWindow()   {
-        inputWindow.setVisible(true);
+        inputWindow.setVisible(false);
     }
 
     /**
@@ -126,6 +127,12 @@ public class DSFrontEnd {
         window.resetSize();
 
         window.setComboBox();
+
+        if (tableModel.getRowCount() != 0)
+            window.setEnabled(true);
+        else
+            window.setEnabled(false);
+        
         showWindow();
     }
 

@@ -18,6 +18,11 @@ public class UseRowContent {
     }
 
     public String getContentByTitle(String colName)  {
-        return Content.getContentByFileNumber(id, colName);
+        try {
+            return Content.getContentByFileNumber(id, colName);
+        } catch (Exception e)   {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

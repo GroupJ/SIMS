@@ -12,6 +12,8 @@ package plugin;
  */
 public interface Formula_Iterative {
 
+    public void processUserInput(UserInputData uid);
+    
     public void processStandard(StandardData std);
 
     public void processUse(UseRowContent use);

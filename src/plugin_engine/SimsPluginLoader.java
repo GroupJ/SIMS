@@ -9,7 +9,6 @@ import java.io.*;
 import javax.swing.table.DefaultTableModel;
 import plugin.Formula;
 import plugin.Formula_Iterative;
-import plugin.Processor;
 
 /**
  *
@@ -24,24 +23,25 @@ public class SimsPluginLoader {
             File file = new File(fileName);
             if (file.exists())  {
 
-                System.err.println(fileName);
+                System.err.println("Plugin located at : " + fileName);
                 fileName = fileName.replace(File.separator, ".");
                 fileName = fileName.substring(0, fileName.length() - ".class".length());
                 Class feature = Class.forName(fileName);
 
                 if (implementsInterface(feature, Formula.class)) {
-                    System.err.println("Starting Formula");
+                    System.err.println("Starting Formula\n\n");
                     return Processor.computeFormula((Formula) feature.newInstance());
                 }
 
                 if (implementsInterface(feature, Formula_Iterative.class))  {
-                    System.err.println("Starting Iterative");
+                    System.err.println("Starting Iterative\n\n");
                     return Processor.computeForumla_Iterative((Formula_Iterative) feature.newInstance());
                 }
                 
             } else  {
+                System.err.println("Could not load plugin:\n" + file.getAbsolutePath() + "\n\n");
                 javax.swing.JOptionPane.showMessageDialog(null, "Could not load plugin:\n" + file.getAbsolutePath(),
-                        "Error Loading Plugin wtf",
+                        "Error Loading Plugin",
                         javax.swing.JOptionPane.ERROR_MESSAGE);
             }
 
@@ -49,14 +49,13 @@ public class SimsPluginLoader {
             e.printStackTrace();
         }
 
-        System.err.println("Error : The plugin could not be loaded.");
+        System.err.println("Error : The plugin could not be loaded.\n\n");
         return null;
     }
 
     private static boolean implementsInterface(Class o, Class interf)  {
         Class[] interfaces = o.getInterfaces();
         for (int i = 0; i < interfaces.length; i++) {
-            System.err.println(interfaces[i]);
             if (interfaces[i].equals(interf))
                 return true;
         }
@@ -128,15 +127,13 @@ public class SimsPluginLoader {
             BufferedReader input = new BufferedReader(new InputStreamReader(pr.getErrorStream()));
 
             int result = pr.waitFor();
-            System.err.println("Exit status " + result);
-            System.err.println("Compiler Ouput:");
+            System.err.println("Compiler Ouput:\n\n");
             String line;
             while ((line = input.readLine()) != null) {
                 System.err.println(line);
             }
 
             File classF = new File("plugin" + File.separator + file.getName().substring(0, file.getName().lastIndexOf('.')) + ".class");
-            System.err.println(classF.getAbsolutePath());
             return classF.exists();
 
         } catch (Exception e) {
