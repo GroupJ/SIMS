@@ -15,6 +15,13 @@ import java.io.*;
  */
 public class ListIO {
 
+    /**
+     * Save the absolute path of each datahouse in the list.
+     * Each datahouse location is saved in order as passed in the list.
+     * #WARNING - the output file will be overwritten if it already exist.
+     * @param list An arraylist of datahouses
+     * @param outputDest the output file.
+     */
     public static void saveFileList(ArrayList<DataHouse> list, String outputDest)   {
         try {
             PrintStream ps = new PrintStream(new BufferedOutputStream(new FileOutputStream(new File(outputDest))));
@@ -27,6 +34,13 @@ public class ListIO {
         }
     }
 
+    /**
+     * Load a file containing the absolute path of one or more input files
+     * with each file path seperated on a single line.
+     * @param source The config file location
+     * @return Datahouse[] an array of datahouses. A null entry refers to a
+     *          file that cannot be loaded.
+     */
     public static DataHouse[] loadFileList(String source)   {
         
         try {

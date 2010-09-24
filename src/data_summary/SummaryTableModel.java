@@ -12,7 +12,7 @@ import java.util.*;
  *
  * @author 20378332
  */
-public class SummaryTableModel extends DefaultTableModel    {
+public final class SummaryTableModel extends DefaultTableModel    {
 
     private static final int defaultColTotal = 8;
     // column data types
@@ -51,14 +51,14 @@ public class SummaryTableModel extends DefaultTableModel    {
         titles.add("PC-Start");
         titles.add("PC-End");
 
-        editable.add(new Boolean(false));
-        editable.add(new Boolean(true));
-        editable.add(new Boolean(true));
-        editable.add(new Boolean(false));
-        editable.add(new Boolean(false));
-        editable.add(new Boolean(false));
-        editable.add(new Boolean(false));
-        editable.add(new Boolean(false));
+        editable.add(false);
+        editable.add(true);
+        editable.add(true);
+        editable.add(false);
+        editable.add(false);
+        editable.add(false);
+        editable.add(false);
+        editable.add(false);
 
     }
 
@@ -86,8 +86,8 @@ public class SummaryTableModel extends DefaultTableModel    {
 
         ArrayList<Object> row = new ArrayList<Object> ();
         row.add(new Integer(getRowCount() + 1));
-        row.add(new Boolean(false));
-        row.add(new Boolean(true));
+        row.add(false);
+        row.add(true);
 
         for (int i = 0; i < arg0.length; i++)
             row.add(arg0[i]);
@@ -121,7 +121,7 @@ public class SummaryTableModel extends DefaultTableModel    {
      * @param value
      */
     protected void setEditable(int row, int col, boolean value)   {
-        editable.set(col, new Boolean(value));
+        editable.set(col, value);
     }
 
     protected void removeRow(String fileName)   {
@@ -135,6 +135,7 @@ public class SummaryTableModel extends DefaultTableModel    {
             tableEntries.remove(index);
     }
 
+    @Override
     public Object getValueAt(int r, int c)   {
         return tableEntries.get(r).get(c);
     }
@@ -143,26 +144,31 @@ public class SummaryTableModel extends DefaultTableModel    {
         tableEntries.get(row).set(col, value);
     }
 
+    @Override
     public int getColumnCount() {
         if (types == null)
             return 0;
         return types.size();
     }
 
+    @Override
     public int getRowCount()    {
         if (tableEntries == null)
             return 0;
         return tableEntries.size();
     }
 
+    @Override
     public Class getColumnClass(int columnIndex) {
         return types.get(columnIndex);
     }
 
+    @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
         return editable.get(columnIndex).booleanValue();
     }
 
+    @Override
     public String getColumnName(int col)    {
         return titles.get(col);
     }
@@ -174,7 +180,7 @@ public class SummaryTableModel extends DefaultTableModel    {
         int rowSize = getRowCount();
         titles.add(name);
         types.add(type);
-        this.editable.add(new Boolean(editable));
+        this.editable.add(editable);
 
         for (int i = 0; i < rowSize; i++)   {
             this.tableEntries.get(i).add(null);

@@ -16,22 +16,44 @@ public class FileOutputFrontEnd {
     // file output window
     private static FileOutputDataWindow window = new FileOutputDataWindow();
 
+    /**
+     * Returns the output window position
+     * @return Point
+     */
     public static Point getWindowPosition()  {
         return window.getLocationOnScreen();
     }
 
+    /**
+     * Returns the output window height
+     * @return int height
+     */
     public static int getHeight()   {
         return window.getHeight();
     }
 
+    /**
+     * Returns the output window width
+     * @return int width
+     */
     public static int getWidth()    {
         return window.getWidth();
     }
 
+    /**
+     * Sets the position of the output window
+     * @param x xpos
+     * @param y ypos
+     */
     public static void setLocation(int x, int y) {
         window.setLocation(x, y);
     }
 
+    /**
+     * Sets the dimensions of the output window
+     * @param w width
+     * @param h height
+     */
     public static void setSize(int w,int h)   {
         window.setSize(w,h);
     }

@@ -22,11 +22,23 @@ public class GraphFunctions {
     private static int graphWidth = 300;
     private static int graphHeight = 450;
 
+    /**
+     * sets the default graph size
+     * @param w width
+     * @param h height
+     */
     protected static void setSize(int w, int h) {
         graphWidth = w;
         graphHeight = h;
     }
 
+    /**
+     * Resize and image to the specified width and height.
+     * @param bi the image
+     * @param width the desired width
+     * @param height the desired height
+     * @return
+     */
     protected static BufferedImage setImageSize(BufferedImage bi, int width, int height) {
         BufferedImage result = new BufferedImage(width,height,bi.getType());
         Graphics2D g2 = result.createGraphics();
@@ -39,6 +51,14 @@ public class GraphFunctions {
         return result;
     }
 
+    /**
+     * Rescale the axis on the graph.
+     * @param ac and axis chart
+     * @param min the min value
+     * @param max the max value
+     * @param yScale the yscale
+     * @param offset the y offset
+     */
     protected static void reScale(AxisChart ac, double min, double max, double yScale, double offset) {
 
         DataAxisProperties dataAxisProperties= (DataAxisProperties) ac.getAxisProperties().getYAxisProperties();
@@ -81,6 +101,10 @@ public class GraphFunctions {
         }
     }
 
+    /*
+     * the width of the xaxis scale
+     * @param x_length
+     */
     private static void calcWidth(int x_length) {
 
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -88,6 +112,17 @@ public class GraphFunctions {
         graphWidth = 125 + (int)((double)x_length * (entryWidth > 50 ? 50 : entryWidth));
     }
 
+    /**
+     * Creates a JCharts graph.
+     * This method has been replaced by jfreecharts.
+     * @param xAxisLabels the x labels
+     * @param values the rxdataset values
+     * @param xAxisTitle the xaxis title
+     * @param yAxisTitle the y axis title
+     * @param yScale the y scale
+     * @param offset the y offset
+     * @return and axischart
+     */
     protected static AxisChart createChart(String[] xAxisLabels, Rx_DataSet[] values, String xAxisTitle, String yAxisTitle, double yScale, double offset)    {
         calcWidth(xAxisLabels.length);
 
@@ -136,8 +171,9 @@ public class GraphFunctions {
 
     /**
      * Code taken from org.jCharts.encoders.BinaryEncoderUtil
+     * It renders an axischart to and image
      * @param chart
-     * @return
+     * @return BufferedImage a rendering of the axischart
      */
     protected static BufferedImage getImage(AxisChart chart)  {
 

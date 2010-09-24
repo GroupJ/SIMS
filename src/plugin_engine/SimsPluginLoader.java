@@ -11,11 +11,16 @@ import plugin.Formula;
 import plugin.Formula_Iterative;
 
 /**
- *
+ * A plugin loader
  * @author 20378332
  */
 public class SimsPluginLoader {
 
+    /**
+     * Attempts to run the plugin.
+     * @param fileName a compiled java file
+     * @return a tablemodel containing the contents of the plugin output
+     */
     public static DefaultTableModel runPlugin(String fileName)  {
 
         try {
@@ -53,6 +58,9 @@ public class SimsPluginLoader {
         return null;
     }
 
+    /*
+     * Checks if a class 'o' implements and interface
+     */
     private static boolean implementsInterface(Class o, Class interf)  {
         Class[] interfaces = o.getInterfaces();
         for (int i = 0; i < interfaces.length; i++) {
@@ -62,6 +70,11 @@ public class SimsPluginLoader {
         return false;
     }
 
+    /**
+     * Moves the file into the plugin folder
+     * @param file the file to move
+     * @return true if the file could be moved
+     */
     public static boolean moveFile(File file) {
 
         if (file != null) {
@@ -118,6 +131,10 @@ public class SimsPluginLoader {
         return false;
     }
 
+    /*
+     * Attempts to compile the file in the plugin folder
+     * @return boolean true if succesful
+     */
     private static boolean compileFile(File file) {
 
         try {

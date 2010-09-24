@@ -23,6 +23,14 @@ public class GraphFunction {
 
     private static ChartTheme currentTheme = new StandardChartTheme("JFree");
 
+    /**
+     * Plots an xyerror graph using jfreecharts
+     * @param title the title of the graph
+     * @param xlabel the x axis title
+     * @param ylabel the y axis title
+     * @param legend the legend
+     * @param data the data values
+     */
     protected static void plotData(String title, String xlabel, String ylabel,
             String[] legend, double[][][] data)  {
 
@@ -40,6 +48,19 @@ public class GraphFunction {
         frame.setDefaultCloseOperation(javax.swing.JFrame.DISPOSE_ON_CLOSE);
     }
 
+    /**
+     * A custom xyerror renderer because jfreecharts does not
+     * have it supported in the api.
+     * @param title the graph title
+     * @param xAxisLabel the xaxis title
+     * @param yAxisLabel the yaxis title
+     * @param dataset the xydataset
+     * @param orientation the plot orientation
+     * @param legend true to turn on legend
+     * @param tooltips true to turn on tooltips (the pop up when right click)
+     * @param urls // no idea what this is for
+     * @return
+     */
     private static JFreeChart createXYIntervalChart(String title,
                                                String xAxisLabel,
                                                String yAxisLabel,

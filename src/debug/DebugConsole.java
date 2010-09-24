@@ -12,7 +12,7 @@
 package debug;
 
 /**
- *
+ * A window with debug output for the plugin system
  * @author 20378332
  */
 public class DebugConsole extends javax.swing.JFrame {

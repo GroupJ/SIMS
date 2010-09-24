@@ -7,13 +7,19 @@ package plugin_engine;
 
 import plugin.*;
 import javax.swing.table.DefaultTableModel;
+
 /**
- *
+ * Code that runs the plugin
  * @author 20378332
  */
 public class Processor {
 
-    public static DefaultTableModel computeFormula(Formula f)  {
+    /**
+     * Computes sequentially
+     * @param f
+     * @return
+     */
+    protected static DefaultTableModel computeFormula(Formula f)  {
 
         System.err.println("Calling getColumnTitle();\n\n");
         BlankTableModel btm = new BlankTableModel(f.getColumnTitle());
@@ -36,7 +42,12 @@ public class Processor {
         return btm;
     }
 
-    public static DefaultTableModel computeForumla_Iterative(Formula_Iterative f) {
+    /**
+     * Computes iteratively
+     * @param f
+     * @return
+     */
+    protected static DefaultTableModel computeForumla_Iterative(Formula_Iterative f) {
 
         System.err.println("Calling getColumnTitle();\n\n");
         BlankTableModel btm = new BlankTableModel(f.getColumnTitle());

@@ -5,14 +5,15 @@
 
 /*
  * AboutWindow.java
- *
+ * 
  * Created on Sep 24, 2010, 5:44:11 PM
  */
 
 package about;
 
 /**
- *
+ * An about window providing a brief description of the project and
+ * the external libraries that it uses.
  * @author 20378332
  */
 public class AboutWindow extends javax.swing.JFrame {

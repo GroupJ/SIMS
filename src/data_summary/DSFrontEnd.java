@@ -20,87 +20,134 @@ public class DSFrontEnd {
     protected static InputTableModel inputModel = new InputTableModel();
     private static CalcInputWindow inputWindow = new CalcInputWindow();
 
-    public static Point getWindowPosition()  {
+    /**
+     * Returns the window summary window position.
+     * @return Point
+     */
+    public static Point getSummaryWindowPosition()  {
         return window.getLocationOnScreen();
     }
 
-    public static int getHeight()   {
+    /**
+     * Returns the height of the summary window.
+     * @return int height
+     */
+    public static int getSummaryHeight()   {
         return window.getHeight();
     }
 
-    public static int getWidth()    {
+    /**
+     * Returns the width of the summary window.
+     * @return int width
+     */
+    public static int getSummaryWidth()    {
         return window.getWidth();
     }
 
-    public static void setLocation(int x, int y) {
+    /**
+     * Moves the summary window to an x y point.
+     * (0,0) is located at the top left of the screen.
+     * @param x xpos
+     * @param y ypos
+     */
+    public static void setSummaryLocation(int x, int y) {
         window.setLocation(x, y);
     }
 
-    public static void setSize(int w,int h)   {
+    /**
+     * Sets the summary window dimensions.
+     * @param w width
+     * @param h height
+     */
+    public static void setSummarySize(int w,int h)   {
         window.setSize(w,h);
     }
 
-    public static Point getSecondWindowPosition()  {
+    /**
+     * Returns the position of the input window.
+     * @return Point
+     */
+    public static Point getInputWindowPosition()  {
         inputWindow.setVisible(true);
         return inputWindow.getLocationOnScreen();
     }
 
-    public static int getSecondHeight()   {
+    /**
+     * Returns the height dimension of the input window.
+     * @return int height dimension
+     */
+    public static int getInputWindowHeight()   {
         return inputWindow.getHeight();
     }
 
-    public static int getSecondWidth()    {
+    /**
+     * Returns the width dimension of the input window.
+     * @return int width dimension
+     */
+    public static int getInputWindowWidth()    {
         return inputWindow.getWidth();
     }
 
-    public static void setSecondLocation(int x, int y) {
+    /**
+     * Moves the input window to an x y point.
+     * (0,0) is located at the top left of the screen.
+     * @param x xpos
+     * @param y ypos
+     */
+    public static void setInputWindowLocation(int x, int y) {
         inputWindow.setLocation(x, y);
     }
 
-    public static void setSecondSize(int w,int h)   {
+    /**
+     * Sets the input window dimensions.
+     * @param w width
+     * @param h height
+     */
+    public static void setInputWindowSize(int w,int h)   {
         inputWindow.setSize(w,h);
     }
 
     /**
-     * Resets everything to default.
+     * Resets the contents of the summary window to default.
+     * This clears any content.
      */
     public static void init()   {
-        resetTable();
+        resetSummaryTable();
         window.setVisible(true);
     }
 
     /**
      * Displays summary window.
      */
-    public static void showWindow()  {
+    public static void showSummaryWindow()  {
         window.setVisible(true);
     }
 
     /**
      * Displays input window
      */
-    public static void showSecondWindow()   {
+    public static void showInputWindow()   {
         inputWindow.setVisible(false);
     }
 
     /**
      * Hide summary window.
      */
-    public static void hideWindow() {
+    public static void hideSummaryWindow() {
         window.setVisible(false);
     }
 
-        /**
+    /**
      * Hide summary window.
      */
-    public static void hideSecondWindow() {
+    public static void hideInputWindow() {
         inputWindow.setVisible(false);
     }
 
     /**
      * Reset the contents of the summary table.
      */
-    public static void resetTable() {
+    public static void resetSummaryTable() {
         tableModel.resetDefault();
         updateSummaryTable();
     }
@@ -125,7 +172,6 @@ public class DSFrontEnd {
         tableModel.fireTableDataChanged();
         tableModel.fireTableStructureChanged();
         window.resetSize();
-
         window.setComboBox();
 
         if (tableModel.getRowCount() != 0)
@@ -133,14 +179,18 @@ public class DSFrontEnd {
         else
             window.setEnabled(false);
         
-        showWindow();
+        showSummaryWindow();
     }
 
+    /**
+     * Update the input table. This is required to make
+     * changes appear.
+     */
     public static void updateInputTable()   {
         inputModel.fireTableDataChanged();
         inputModel.fireTableStructureChanged();
         inputWindow.resetColWidth();
-        showSecondWindow();
+        showInputWindow();
     }
 
     /**
@@ -151,6 +201,10 @@ public class DSFrontEnd {
         tableModel.removeRow(fileName);
     }
 
+    /**
+     * Triggers the program to export the contents of the
+     * summary table.
+     */
     public static void exportSummaryTable() {
         DSFunctions.exportSummaryTable();
     }

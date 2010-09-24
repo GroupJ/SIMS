@@ -21,6 +21,16 @@ import java.awt.Point;
  */
 public class FileListFunctions {
 
+    /**
+     * Saves the window positions and dimensions for:
+     * filelist window
+     * output window
+     * summary window
+     * input window
+     * the output file is located at "SIMS_settings.dat"
+     * @param flw the filelist window (its not global so you have
+     * to pass it)
+     */
     protected static void saveWindowSettings(FileListWindow flw)  {
 
         StringBuffer sb = new StringBuffer();
@@ -33,15 +43,15 @@ public class FileListFunctions {
         FileOutputFrontEnd.hideWindow();
         sb.append("FileOutputWindow= " + topLeft.x + " " + topLeft.y + " " + FileOutputFrontEnd.getHeight() + " " + FileOutputFrontEnd.getWidth() + "\n");
 
-        DSFrontEnd.showWindow();
-        topLeft = DSFrontEnd.getWindowPosition();
-        DSFrontEnd.hideWindow();
-        sb.append("DataSummaryWindow= " + topLeft.x + " " + topLeft.y + " " + DSFrontEnd.getHeight() + " " + DSFrontEnd.getWidth() + "\n");
+        DSFrontEnd.showSummaryWindow();
+        topLeft = DSFrontEnd.getSummaryWindowPosition();
+        DSFrontEnd.hideSummaryWindow();
+        sb.append("DataSummaryWindow= " + topLeft.x + " " + topLeft.y + " " + DSFrontEnd.getSummaryHeight() + " " + DSFrontEnd.getSummaryWidth() + "\n");
 
-        DSFrontEnd.showSecondWindow();
-        topLeft = DSFrontEnd.getSecondWindowPosition();
-        DSFrontEnd.hideSecondWindow();
-        sb.append("InputSummaryWindow= " + topLeft.x + " " + topLeft.y + " " + DSFrontEnd.getSecondHeight() + " " + DSFrontEnd.getSecondWidth() + "\n");
+        DSFrontEnd.showInputWindow();
+        topLeft = DSFrontEnd.getInputWindowPosition();
+        DSFrontEnd.hideInputWindow();
+        sb.append("InputSummaryWindow= " + topLeft.x + " " + topLeft.y + " " + DSFrontEnd.getInputWindowHeight() + " " + DSFrontEnd.getInputWindowWidth() + "\n");
 
         try {
             PrintStream ps = new PrintStream(new BufferedOutputStream(new FileOutputStream(new File("SIMS_settings.dat"))));
@@ -53,6 +63,12 @@ public class FileListFunctions {
         
     }
 
+    /**
+     * Loads SIMS_settings.dat and sets the windows according
+     * to the contents of the file.
+     * If an error occurs, window settings will be reset to default.
+     * @param flw the file list window to move.
+     */
     public static void loadSettings(FileListWindow flw)   {
 
         StringTokenizer st;
@@ -78,11 +94,11 @@ public class FileListFunctions {
                     case 1: FileOutputFrontEnd.setLocation(x,y);
                             FileOutputFrontEnd.setSize(w, h);
                             break;
-                    case 2: DSFrontEnd.setLocation(x,y);
-                            DSFrontEnd.setSize(w, h);
+                    case 2: DSFrontEnd.setSummaryLocation(x,y);
+                            DSFrontEnd.setSummarySize(w, h);
                             break;
-                    case 3: DSFrontEnd.setSecondLocation(x,y);
-                            DSFrontEnd.setSecondSize(w, h);
+                    case 3: DSFrontEnd.setInputWindowLocation(x,y);
+                            DSFrontEnd.setInputWindowSize(w, h);
                             break;
                 }
             }
@@ -95,6 +111,10 @@ public class FileListFunctions {
         }
     }
 
+    /**
+     * Saves the contents of the filelist.
+     * @param list and arraylist of datahouses.
+     */
     protected static void saveFileList(ArrayList<DataHouse> list)   {
 
         File dest = IO.FileChooserRequest.getSelectedFile(new String[] {".sims"}, true);
@@ -123,6 +143,11 @@ public class FileListFunctions {
         }
     }
 
+    /**
+     * loads the contents of the file list and updates
+     * the filelist window.
+     * @param flw the filelist window
+     */
     protected static void loadFileList(FileListWindow flw)    {
         
         File dest = IO.FileChooserRequest.getSelectedFile(new String[] {".sims"}, false);
@@ -153,6 +178,10 @@ public class FileListFunctions {
         }
     }
 
+    /**
+     * Request the user for a system wipe.
+     * @return true of the user agrees
+     */
     protected static boolean requestSystemWipe()  {
         int result = JOptionPane.showConfirmDialog(null,
                 "The action you requested will clear the system state.\n" +
@@ -204,7 +233,7 @@ public class FileListFunctions {
      * Clears the every loaded input file.
      */
     protected static void resetTable(FileListWindow flw)  {
-        DSFrontEnd.resetTable();
+        DSFrontEnd.resetSummaryTable();
         flw.files = new ArrayList<DataHouse> ();
         flw.updateList();
         FileOutputFrontEnd.displayData("");
@@ -214,14 +243,14 @@ public class FileListFunctions {
      * Displays the summary table window.
      */
     protected static void showSummaryWindow()   {
-        DSFrontEnd.showWindow();
+        DSFrontEnd.showSummaryWindow();
     }
 
     /**
      * Displays input window.
      */
     protected static void showInputWindow() {
-        DSFrontEnd.showSecondWindow();
+        DSFrontEnd.showInputWindow();
     }
 
     /**

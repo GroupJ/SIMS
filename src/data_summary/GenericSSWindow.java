@@ -210,14 +210,13 @@ public class GenericSSWindow extends javax.swing.JFrame {
         DSFunctions.calcUsingFormula(null, getSelectedRow(2), getSelectedRow(1));
     }//GEN-LAST:event_pluginButtonActionPerformed
 
-    public void setEnabled(boolean value)    {
-        if (enableCalc)
-            pluginButton.setEnabled(value);
-        graphButton.setEnabled(value);
-    }
-
+    /*
+     * Plots a graph based on the users selection of the
+     * combo boxes
+     */
     private void plotGraph()    {
 
+        // check for invalid settings
         if (!xBox.isSelected())    {
             System.err.println("select x-axis");
             javax.swing.JOptionPane.showMessageDialog(null, "Select x-axis.", "No selection",
@@ -239,9 +238,11 @@ public class GenericSSWindow extends javax.swing.JFrame {
             return;
         }
 
+        // get the selected axies values
         int[] selectedRows = getSelectedRow(1);
         int[] stdRows = getSelectedRow(2);
 
+        // check if the axis values are valid
         if (selectedRows.length == 0 && stdRows.length == 0)   {
             javax.swing.JOptionPane.showMessageDialog(null, "You must select atleast 1 input file to plot.\n" +
                     "Select by checking the checkboxes\n",
@@ -249,6 +250,7 @@ public class GenericSSWindow extends javax.swing.JFrame {
             return;
         }
 
+        // find the correct indexes
         String[] column = new String[dtm.getColumnCount()];
         HashMap<String, Integer> map = new HashMap<String, Integer>();
         map.put(nullValue,0);
@@ -268,6 +270,7 @@ public class GenericSSWindow extends javax.swing.JFrame {
             data[1][i] = new double[stdRows.length];
         }
 
+        // process the data
         for (int i = 0; i < selectedRows.length + stdRows.length; i++)   {
             // x min max y min max
             double xmid;
@@ -325,10 +328,14 @@ public class GenericSSWindow extends javax.swing.JFrame {
             data[temp][5][temp2] = ymid + yerr;
         }
 
+        // plot the graph
         graph.jfreecharts.GraphFrontEnd.plotData(null, xMeanSelection.getSelectedItem().toString(),
                 yMeanSelection.getSelectedItem().toString(), legend, data);
     }
 
+    /*
+     * get the selected indexes chosen by the user
+     */
     private int[] getSelectedRow(int colNum)   {
         int totalSelected = 0;
         int rowCount = dtm.getRowCount();
@@ -345,6 +352,11 @@ public class GenericSSWindow extends javax.swing.JFrame {
         return result;
     }
 
+    /*
+     * Set the content for the graph comboboxes.
+     * Any axis that cannot be converted to a double
+     * value is ignored
+     */
     public void setComboBox()  {
         int numCol = dtm.getColumnCount();
 
@@ -378,6 +390,9 @@ public class GenericSSWindow extends javax.swing.JFrame {
         }
     }
 
+    /*
+     * Returns true if the column can be converted to a double.
+     */
     private boolean checkColumn(int col)   {
         int total = dtm.getRowCount();
         int counter = 0;
@@ -393,6 +408,9 @@ public class GenericSSWindow extends javax.swing.JFrame {
         return counter >= total /2;
     }
 
+    /**
+     * Resets the column width of the tables.
+     */
     public void resetSize()    {
         DefaultTableCellRenderer dtcr = new DefaultTableCellRenderer();
         dtcr.setHorizontalAlignment(javax.swing.JLabel.RIGHT);

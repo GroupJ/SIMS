@@ -105,7 +105,7 @@ public class InputTableModel extends DefaultTableModel  {
      * @param value
      */
     protected void setEditable(int row, int col, boolean value)   {
-        editable.set(col, new Boolean(value));
+        editable.set(col, value);
     }
 
     protected void removeRow(String fileName)   {
@@ -119,10 +119,12 @@ public class InputTableModel extends DefaultTableModel  {
             tableEntries.remove(index);
     }
 
+    @Override
     public Object getValueAt(int r, int c)   {
         return tableEntries.get(r).get(c);
     }
 
+    @Override
     public void setValueAt(Object value, int row, int col)  {
 
         if (!isDouble(value) && ((String)value).length() != 0 && col != 0)
@@ -143,26 +145,31 @@ public class InputTableModel extends DefaultTableModel  {
         return true;
     }
 
+    @Override
     public int getColumnCount() {
         if (types == null)
             return 0;
         return types.size();
     }
 
+    @Override
     public int getRowCount()    {
         if (tableEntries == null)
             return 0;
         return tableEntries.size();
     }
 
+    @Override
     public Class getColumnClass(int columnIndex) {
         return types.get(columnIndex);
     }
 
+    @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
         return editable.get(columnIndex).booleanValue();
     }
 
+    @Override
     public String getColumnName(int col)    {
         return titles.get(col);
     }
@@ -174,7 +181,7 @@ public class InputTableModel extends DefaultTableModel  {
         int rowSize = getRowCount();
         titles.add(name);
         types.add(type);
-        this.editable.add(new Boolean(editable));
+        this.editable.add(editable);
 
         for (int i = 0; i < rowSize; i++)   {
             this.tableEntries.get(i).add(null);

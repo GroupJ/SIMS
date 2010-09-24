@@ -15,6 +15,13 @@ import org.jCharts.axisChart.*;
  */
 public class GraphFrontEnd {
 
+    /**
+     * Generates a graph using JCharts
+     * @param xAxisLabels the x axis labels
+     * @param values the rxdata values
+     * @param xAxisTitle the x axis title
+     * @param yAxisTitle the y axis title
+     */
     public static void createGraph(String[] xAxisLabels, Rx_DataSet[] values, String xAxisTitle, String yAxisTitle) {
         AxisChart ac = GraphFunctions.createChart(xAxisLabels, values, xAxisTitle, yAxisTitle, 1, 0);
         new GraphWindow(ac).setVisible(true);

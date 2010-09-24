@@ -13,6 +13,12 @@ import java.io.*;
  */
 public class ExportTable {
 
+    /**
+     * Exports a 2D matrix of strings into a comma delimited file.
+     * #Warning, the file will be overwritten if it already exist.
+     * @param grid the 2d matrix
+     * @param file the output file
+     */
     public static void exportToCSV(String[][] grid, File file) {
 
         try {

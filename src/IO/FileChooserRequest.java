@@ -10,13 +10,19 @@ import javax.swing.JFileChooser;
 import java.util.*;
 
 /**
- *
+ * An api for filechooser gui.
  * @author ragil
  */
 public class FileChooserRequest {
 
     private static File lastFolder = null;
 
+    /**
+     * Shows a filechooser window prompting the user for a directory location.
+     * @param fileFormat The supported file formats
+     * @param save true if a save window is requested false for open
+     * @return the selected file
+     */
     public static File getSelectedFile(String[] fileFormat, boolean save) {
 
         JFileChooser fc = new JFileChooser();
@@ -40,6 +46,7 @@ public class FileChooserRequest {
             if (fc.getSelectedFile().getName().length() > 0) {
                 if (fc.getSelectedFile().getName().charAt(0) != '.') {
 
+                    // check for OS write restrictions
                     if (save && !fc.getSelectedFile().canWrite() && fc.getSelectedFile().exists()) {
                         javax.swing.JOptionPane.showMessageDialog(null,
                                 "Cannot write to file " +
@@ -74,6 +81,12 @@ public class FileChooserRequest {
         return null;
     }
 
+    /**
+     * Shows a filechooser window prompting the user for one or more directory location.
+     * @param fileFormat the supported file formats
+     * @param save save true if a save window is requested false for open
+     * @return the selected files as an array of File's
+     */
     public static File[] getSelectedFiles(String[] fileFormat, boolean save) {
 
         JFileChooser fc = new JFileChooser();
@@ -95,11 +108,11 @@ public class FileChooserRequest {
             lastFolder = new File(lastFolder.getAbsolutePath() + "/.");
 
             File[] files = fc.getSelectedFiles();
-
             ArrayList<String> errors = new ArrayList<String>();
 
             for (int i = 0; i < files.length; i++) {
 
+                // check OS write restrictions
                 if ((save && !files[i].canWrite() && files[i].exists()) || (!save && !files[i].canRead()))
                     errors.add(files[i].getName());
                 
@@ -110,6 +123,7 @@ public class FileChooserRequest {
                 }
             }
 
+            // print any files that cannot be read or written to.
             if (errors.size() >= 1) {
                 StringBuffer sb = new StringBuffer();
                 for (int i = 0; i < errors.size(); i++)

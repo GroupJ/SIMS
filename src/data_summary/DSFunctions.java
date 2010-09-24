@@ -19,6 +19,13 @@ import javax.swing.table.DefaultTableModel;
  */
 public class DSFunctions {
 
+    /**
+     * Generates a graph using JCharts.
+     * This method has been replaced by JFreeCharts found in
+     * GenericSSWindow.java
+     * @param tableIndex The use columns
+     * @param Rvalue the rvalue
+     */
     protected static void generateGraph(int[] tableIndex, int Rvalue) {
 
         System.err.println(tableIndex.length + " " + Rvalue);
@@ -48,6 +55,9 @@ public class DSFunctions {
         GraphFrontEnd.createGraph(xAxisLabel, ds, "File #", "R-" + Rvalue);
     }
 
+    /**
+     * Exports the contents of the summary talbe into a csv file.
+     */
     protected static void exportSummaryTable() {
 
         File dest = IO.FileChooserRequest.getSelectedFile(new String[]{".csv"}, true);
@@ -97,6 +107,12 @@ public class DSFunctions {
         }
     }
 
+    /**
+     * Triggers the plugin system.
+     * @param fileName this is not used
+     * @param useRow the row indexes of the use data in the summary table
+     * @param stdRow the row indexes of the std data in the summary table
+     */
     protected static void calcUsingFormula(String fileName, int[] useRow, int[] stdRow) {
 
         createDatabase(useRow,stdRow);
@@ -150,6 +166,9 @@ public class DSFunctions {
         }
     }
 
+    /*
+     * Shows a debug terminal for the plugin system
+     */
     private static void showDebugConsole()  {
         try {
             BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(new File("debug_output.blah"))));
@@ -164,6 +183,9 @@ public class DSFunctions {
         }
     }
 
+    /*
+     * Populates the plugin system with the user selected data
+     */
     private static void createDatabase(int[] useRow, int[] stdRow)    {
                 // get used title
         int numCol = DSFrontEnd.tableModel.getColumnCount();

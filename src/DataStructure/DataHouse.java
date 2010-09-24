@@ -80,13 +80,21 @@ public class DataHouse {
     public ArrayList<String> TD_col_title = new ArrayList<String>();
     public ArrayList<ArrayList<String>> TD_Grid = new ArrayList<ArrayList<String>>();
 
+    /**
+     * Checks if the filename of two datahouses match
+     * @param obj the datahouse to compare with
+     * @return true if filename is a single equivalent
+     */
     public boolean equals(Object obj)   {
         DataHouse dh = (DataHouse) obj;
         return this.fileName.compareTo(dh.fileName) == 0;
     }
 
+    /**
+     * Outputs the content of the datahouse.
+     * @return String - content
+     */
     public String toString() {
-
 
         StringBuffer sb = new StringBuffer();
         sb.append("System : " + system + "\tdate : " + date + "\ttime : " + time + "\n");

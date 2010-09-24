@@ -16,7 +16,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.JLabel;
 
 /**
- *
+ * An spreadsheet window for users to enter values.
  * @author 20378332
  */
 public class CalcInputWindow extends javax.swing.JFrame {
@@ -66,6 +66,9 @@ public class CalcInputWindow extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Resets the width of each column to a certain size.
+     */
     protected void resetColWidth()    {
         setDefaultTableColumnSize();
         setR0ColumnSize();

@@ -17,7 +17,7 @@ import org.jCharts.axisChart.*;
 import org.jCharts.properties.*;
 
 /**
- *
+ * A window to show JCharts graph images
  * @author 20378332
  */
 public class GraphWindow extends javax.swing.JFrame {
