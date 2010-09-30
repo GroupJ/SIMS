@@ -131,7 +131,7 @@ public class FileChooserRequest {
 
                 javax.swing.JOptionPane.showMessageDialog(null,
                         "Cannot " + (save ? "write to" : "read from") + " the following files:\n" +
-                        sb.toString(),
+                        sb.toString() + "\nInsufficient Permission.",
                         "OS restriction",
                         javax.swing.JOptionPane.ERROR_MESSAGE);
             }

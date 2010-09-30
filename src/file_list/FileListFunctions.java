@@ -223,7 +223,8 @@ public class FileListFunctions {
         } catch (Exception e)   {
             e.printStackTrace();
             javax.swing.JOptionPane.showMessageDialog(null,
-                    "Cannot obtain R values. Please check input file.",
+                    "Cannot obtain R values. Please check input file:\n" +
+                    dh.absolutePath,
                     "Cannot find R values",
                     javax.swing.JOptionPane.ERROR_MESSAGE);
         }

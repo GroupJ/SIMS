@@ -177,7 +177,7 @@ public class DSFrontEnd {
         if (tableModel.getRowCount() != 0)
             window.setEnabled(true);
         else
-            window.setEnabled(false);
+            window.setEnabled(true);
         
         showSummaryWindow();
     }

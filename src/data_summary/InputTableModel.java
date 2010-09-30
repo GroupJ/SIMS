@@ -60,7 +60,12 @@ public class InputTableModel extends DefaultTableModel  {
      */
     protected void addRow(String name, int RTotal)    {
 
-        String sampleName = name.substring(0, name.indexOf("@"));
+        int lastindex = name.indexOf("@");
+        String sampleName = null;
+        if (lastindex != -1)
+            sampleName = name.substring(0, lastindex);
+        else
+            sampleName = name.substring(0,name.indexOf("."));
 
         int index = -1;
         for (int i = 0; i < tableEntries.size(); i++)   {

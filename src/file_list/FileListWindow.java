@@ -88,6 +88,9 @@ public class FileListWindow extends javax.swing.JFrame {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 fileListMousePressed(evt);
             }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                fileListMouseReleased(evt);
+            }
         });
         jScrollPane1.setViewportView(fileList);
 
@@ -275,7 +278,7 @@ public class FileListWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_fileListMouseClicked
 
     private void resetTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetTableActionPerformed
-        if (files.size() != 0)
+        //if (files.size() != 0)
             if (FileListFunctions.requestSystemWipe())
                 FileListFunctions.resetTable(this);
     }//GEN-LAST:event_resetTableActionPerformed
@@ -331,6 +334,13 @@ public class FileListWindow extends javax.swing.JFrame {
     private void aboutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMenuItemActionPerformed
         new about.AboutWindow().setVisible(true);
     }//GEN-LAST:event_aboutMenuItemActionPerformed
+
+    private void fileListMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fileListMouseReleased
+        if (evt.isPopupTrigger()) {
+            fileList.addSelectionInterval(fileList.locationToIndex(evt.getPoint()), fileList.locationToIndex(evt.getPoint()));
+            fileListPopupMenu.show(fileList, evt.getX(), evt.getY());
+        }
+    }//GEN-LAST:event_fileListMouseReleased
 
     protected void updateList()    {
         int size = files.size();

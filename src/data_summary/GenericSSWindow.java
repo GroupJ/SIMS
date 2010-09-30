@@ -405,7 +405,7 @@ public class GenericSSWindow extends javax.swing.JFrame {
             }
         }
 
-        return counter >= total /2;
+        return counter >= 1;
     }
 
     /**
