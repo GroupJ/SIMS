@@ -18,7 +18,7 @@ package about;
  */
 public class AboutWindow extends javax.swing.JFrame {
 
-    private static final String versionId = "2.0.2";
+    private static final String versionId = "2.0.3";
 
     /** Creates new form AboutWindow */
     public AboutWindow() {
@@ -110,12 +110,12 @@ public class AboutWindow extends javax.swing.JFrame {
         sb.append("Copyright © 2010 Group J\n\n");
         sb.append("Project Manager : Ragil Prasetya\n");
         sb.append("Developer : Ragil Prasetya\n");
-        sb.append("System Testing : Nelson, Joel, James\n\n");
-        
+        sb.append("System Testing : Nelson, Joel, James\n");
+        sb.append("Members: Bryan, Arjun\n\n");
         sb.append("Credit to :\n");
         sb.append("-- JCharts <http://jcharts.sourceforge.net/>\n");
-        sb.append("-- JFreeCharts <http://www.jfree.org/jfreechart/>\n\n");
-
+        sb.append("-- JFreeCharts <http://www.jfree.org/jfreechart/>\n");
+        sb.append("-- NSIS <http://nsis.sourceforge.net/>\n\n");
         sb.append("For enquiries contact Ragil at prof_comp_group_j@googlegroups.com");
 
         contentField.setText(sb.toString());
