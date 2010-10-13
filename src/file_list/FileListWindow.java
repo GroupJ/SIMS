@@ -73,6 +73,7 @@ public class FileListWindow extends javax.swing.JFrame {
         showSpreadsheetMenuItem = new javax.swing.JMenuItem();
         showInputMenuItem = new javax.swing.JMenuItem();
         helpMenu = new javax.swing.JMenu();
+        helpMenuItem = new javax.swing.JMenuItem();
         aboutMenuItem = new javax.swing.JMenuItem();
 
         fileListPopupMenu.setName("fileListPopupMenu"); // NOI18N
@@ -206,6 +207,15 @@ public class FileListWindow extends javax.swing.JFrame {
 
         helpMenu.setText("Help");
         helpMenu.setName("helpMenu"); // NOI18N
+
+        helpMenuItem.setText("help");
+        helpMenuItem.setName("helpMenuItem"); // NOI18N
+        helpMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                helpMenuItemActionPerformed(evt);
+            }
+        });
+        helpMenu.add(helpMenuItem);
 
         aboutMenuItem.setText("about");
         aboutMenuItem.setName("aboutMenuItem"); // NOI18N
@@ -359,6 +369,10 @@ public class FileListWindow extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_fileListMouseReleased
 
+    private void helpMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpMenuItemActionPerformed
+        FileListFunctions.openHelpWindow();
+    }//GEN-LAST:event_helpMenuItemActionPerformed
+
     protected void updateList()    {
         int size = files.size();
         ((DefaultListModel)fileList.getModel()).clear();
@@ -374,6 +388,7 @@ public class FileListWindow extends javax.swing.JFrame {
     private javax.swing.JPopupMenu fileListPopupMenu;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenu helpMenu;
+    private javax.swing.JMenuItem helpMenuItem;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JMenuItem loadInputFileMenu;

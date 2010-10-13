@@ -29,6 +29,7 @@ import java.io.*;
 import IO.*;
 import data_summary.*;
 import file_output.*;
+import java.awt.Desktop;
 import java.util.*;
 import java.awt.Point;
 
@@ -457,5 +458,16 @@ public class FileListFunctions {
 
     protected static void exportSummaryTable()  {
         DSFrontEnd.exportSummaryTable();
+    }
+
+    protected static void openHelpWindow()  {
+        String url = "SIMS_Manual/index.html";
+        try {
+            Desktop.getDesktop().open(new File(url));
+        } catch (Exception e)   {
+             javax.swing.JOptionPane.showMessageDialog(null, "Cannot open help file.\nCheck for missing : " + url +"\nCheck for JRE 1.6.",
+                     "Missing File",
+                     javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
     }
 }
